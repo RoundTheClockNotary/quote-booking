@@ -37,6 +37,52 @@ header h1{font-family:"Cinzel",serif;color:var(--gold-bright);font-size:clamp(1.
 .prog-bg{height:3px;background:var(--cream-dark);border-radius:3px;overflow:hidden}
 .prog-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-bright));border-radius:3px;transition:width .5s ease;width:0%}
 .prog-label{font-size:.68rem;color:var(--muted);text-align:right;margin-top:.3rem;font-family:"Cinzel",serif;letter-spacing:.05em}
+
+/* ── STATUS BAR ── */
+.status-bar{
+  position:sticky;top:0;z-index:200;
+  background:rgba(10,16,30,0.97);
+  border-bottom:1px solid rgba(201,168,76,0.22);
+  backdrop-filter:blur(10px);
+  padding:.55rem 1.25rem .0rem;
+}
+.status-bar-top{
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:.4rem .75rem;
+  margin-bottom:.45rem;
+}
+.status-step-label{
+  font-family:"Cinzel",serif;
+  font-size:.68rem;font-weight:600;
+  letter-spacing:.13em;color:var(--gold-bright);
+  white-space:nowrap;
+}
+.status-policy{
+  display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+}
+.policy-pill{
+  font-family:"DM Sans",sans-serif;
+  font-size:.63rem;color:rgba(255,255,255,.52);
+  letter-spacing:.02em;line-height:1.4;
+}
+.policy-sep{color:rgba(201,168,76,.3);font-size:.7rem;}
+.status-bar .prog-bg{
+  height:3px;background:rgba(255,255,255,.08);
+  border-radius:0;overflow:hidden;
+  margin:0 -1.25rem;
+}
+.status-bar .prog-fill{
+  height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-bright));
+  border-radius:0;
+  transition:width .5s ease;
+  width:11.1%;
+}
+@media(max-width:600px){
+  .status-bar-top{flex-direction:column;align-items:flex-start;}
+  .status-policy{flex-direction:column;gap:.2rem;}
+  .policy-sep{display:none;}
+}
 .rt{background:linear-gradient(135deg,var(--navy),var(--navy-mid));border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem;border:1px solid rgba(201,168,76,.2);box-shadow:0 8px 32px rgba(14,27,58,.2)}
 .rt-title{font-family:"Cinzel",serif;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
 .rt-title::after{content:"";flex:1;height:1px;background:rgba(201,168,76,.15)}
@@ -55,6 +101,49 @@ header h1{font-family:"Cinzel",serif;color:var(--gold-bright);font-size:clamp(1.
 .card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:1.75rem;box-shadow:0 2px 20px rgba(14,27,58,.07);margin-bottom:1rem;position:relative;overflow:hidden}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-bright),var(--gold))}
 .step-num{display:inline-flex;align-items:center;font-family:"Cinzel",serif;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:var(--navy);padding:.25rem .85rem;border-radius:20px;margin-bottom:1rem}
+
+/* ── CARD PROGRESS HEADER ── */
+.card-progress{
+  margin:-1.75rem -1.75rem 1.25rem;
+  padding:.65rem 1.25rem .0rem;
+  background:var(--navy);
+  border-radius:16px 16px 0 0;
+}
+.card-step-label{
+  font-family:"Cinzel",serif;
+  font-size:.6rem;font-weight:700;
+  letter-spacing:.13em;text-transform:uppercase;
+  color:var(--gold-bright);
+  text-align:center;
+  padding-bottom:.5rem;
+}
+.card-prog-bg{
+  height:3px;background:rgba(255,255,255,.15);
+  margin:0 -1.25rem;
+  overflow:hidden;
+}
+.card-prog-fill{
+  height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-bright));
+  transition:width .5s ease;
+}
+
+/* ── TRAVEL INFO BOX ── */
+.travel-info-box{
+  background:#f7f4ec;
+  border:1px solid rgba(14,27,58,.12);
+  border-left:3px solid var(--gold);
+  border-radius:8px;
+  padding:.75rem 1rem;
+  margin-bottom:1.25rem;
+  font-family:"DM Sans",sans-serif;
+  font-size:.82rem;
+  color:#3d3520;
+  line-height:1.6;
+}
+.tib-row{display:flex;align-items:baseline;gap:.5rem;margin-bottom:.15rem;}
+.tib-row:last-child{margin-bottom:0;}
+.tib-check{color:var(--gold);font-weight:700;flex-shrink:0;}
 .step-title{font-family:"Cinzel",serif;font-size:1.15rem;color:var(--navy);margin-bottom:.4rem;line-height:1.3}
 .step-sub{font-family:"DM Sans",sans-serif;font-size:.88rem;color:#3d3520;font-weight:500;margin-bottom:1.25rem;line-height:1.6}
 input[type=text],input[type=tel],input[type=email],input[type=date]{width:100%;padding:.9rem 1.1rem;border:2px solid var(--border);border-radius:10px;font-family:"DM Sans",sans-serif;font-size:.97rem;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:.7rem}
@@ -172,7 +261,7 @@ input[type=text]:focus,input[type=tel]:focus,input[type=email]:focus,input[type=
 .ty-appt-label{font-family:"Cinzel",serif;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:.4rem}
 .ty-appt-val{font-family:"Cinzel",serif;font-size:1rem;color:#e8c96a}
 @media print{
-  header,.not-booking-bar,.prog-wrap,.rt,.step:not(#step9),.nav,footer{display:none !important}
+  header,.not-booking-bar,.status-bar,.prog-wrap,.rt,.step:not(#step9),.nav,footer{display:none !important}
   #step9{display:block !important}
   body{background:white;margin:0;padding:0}
   .wrapper{padding:0;margin:0;max-width:100%}
@@ -208,13 +297,16 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   </div>
 </header>
 <div class="gold-rule"></div>
+
+<!-- ── POLICY BAR ── -->
 <div class="not-booking-bar">
-  &#128274; This is a <strong>FREE QUOTE TOOL ONLY</strong> &mdash; not a booking system. Appointment not confirmed until you receive a confirmation text/email.
+  &#128204; Deposit applied to balance &mdash; non-refundable if canceled &lt;24 hrs &nbsp;|&nbsp; &#128663; Travel fee applies once notary is en route &mdash; non-refundable
 </div>
+
 <div class="wrapper">
-  <div class="prog-wrap">
-    <div class="prog-bg"><div class="prog-fill" id="progressFill"></div></div>
-    <div class="prog-label" id="progressLabel">Step 1 of 9</div>
+  <div class="prog-wrap" style="display:none">
+    <div class="prog-bg"><div class="prog-fill-hidden"></div></div>
+    <div class="prog-label" style="display:none"></div>
   </div>
   <div class="rt" id="runningTotal" style="display:none">
     <div class="rt-title">Running Total</div>
@@ -229,9 +321,17 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   <!-- STEP 1: Location -->
   <div class="step active" id="step1">
     <div class="card">
-      <div class="step-num">Step 1 of 9 &middot; Location</div>
+      <div class="card-progress">
+        <div class="card-step-label" id="progressLabel">STEP 1 OF 9 &mdash; SERVICE LOCATION</div>
+        <div class="card-prog-bg"><div class="card-prog-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
       <div class="step-title">Where Should the Clock Stop?</div>
-      <div class="step-sub">Enter your appointment address. We can meet at your home, a coffee shop, local business, medical facility, or any public place. Locations within 5 miles of either Granbury Post Office receive free travel.</div>
+      <div class="step-sub">Enter your appointment address. We can meet at your home, a coffee shop, local business, medical facility, or any public place.</div>
+      <div class="travel-info-box">
+        <div class="tib-row"><span class="tib-check">&#10003;</span><span>Within 5 miles of Granbury &mdash; <strong>Free travel</strong></span></div>
+        <div class="tib-row"><span class="tib-check">&#10003;</span><span>5&ndash;20 miles &mdash; <strong>$0.725/mile round trip</strong> (first 5 free)</span></div>
+        <div class="tib-row"><span class="tib-check">&#10003;</span><span>Over 20 miles &mdash; <strong>Full mileage rate, $75 deposit required</strong></span></div>
+      </div>
       <input type="text" id="addressInput" placeholder="123 Oak Street, Granbury TX 76048" autocomplete="off">
       <div class="addr-status" id="addrStatus"></div>
       <div class="privacy-note">&#128274; Your information is used only to prepare your quote and schedule your appointment. We never sell or share your data.</div>
@@ -242,7 +342,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   <!-- STEP 2: Service -->
   <div class="step" id="step2">
     <div class="card">
-      <div class="step-num">Step 2 of 9 &middot; Service</div>
+      <div class="card-progress"><div class="card-step-label">STEP 2 OF 9 &mdash; SERVICE TYPE</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:11.1%"></div></div></div>
       <div class="step-title">Choose Your Timepiece</div>
       <div class="step-sub">Select the service that fits your needs.</div>
       <div class="opts">
@@ -277,7 +377,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   <!-- STEP 3: Add-Ons -->
   <div class="step" id="step3">
     <div class="card">
-      <div class="step-num">Step 3 of 9 &middot; Add-Ons</div>
+      <div class="card-progress"><div class="card-step-label">STEP 3 OF 9 &mdash; ADD-ONS</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:22.2%"></div></div></div>
       <div class="step-title">Fine Tune the Clock</div>
       <div class="step-sub" id="step3Sub">All optional. Your running total updates as you go.</div>
       <div class="ctr-row" id="print1Row">
@@ -345,7 +445,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   <!-- STEP 4: Timing -->
   <div class="step" id="step4">
     <div class="card">
-      <div class="step-num">Step 4 of 9 &middot; Timing</div>
+      <div class="card-progress"><div class="card-step-label">STEP 4 OF 9 &mdash; APPOINTMENT TIMING</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:37.5%"></div></div></div>
       <div class="step-title">Set the Clock</div>
       <div class="step-sub">Check all that apply. If none apply, just continue.</div>
       <div class="chks">
@@ -417,7 +517,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   <!-- STEP 6: Pick Date & Time -->
   <div class="step" id="step6">
     <div class="card">
-      <div class="step-num">Step 6 of 9 &middot; Appointment</div>
+      <div class="card-progress"><div class="card-step-label">STEP 6 OF 9 &mdash; DATE &amp; TIME</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:62.5%"></div></div></div>
       <div class="step-title">&#128197; Pick Your Date &amp; Time</div>
       <div class="step-sub">Choose a date to see available times. Slots are based on your service duration.</div>
       <label class="field-label" for="apptDate">Appointment Date <span class="req">*</span></label>
@@ -439,7 +539,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   <!-- STEP 7: Contact Info + TOS -->
   <div class="step" id="step7">
     <div class="card">
-      <div class="step-num">Step 7 of 9 &middot; Your Information</div>
+      <div class="card-progress"><div class="card-step-label">STEP 7 OF 9 &mdash; YOUR INFORMATION</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:75%"></div></div></div>
       <div class="step-title">Who&#8217;s Behind the Clock?</div>
       <div class="step-sub">Required to confirm your appointment and send your confirmation text.</div>
       <label class="field-label" for="clientName">Full Name <span class="req">*</span></label>
@@ -485,7 +585,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   <!-- STEP 8: Pay Deposit -->
   <div class="step" id="step8">
     <div class="card">
-      <div class="step-num">Step 8 of 9 &middot; Secure Your Spot</div>
+      <div class="card-progress"><div class="card-step-label">STEP 8 OF 9 &mdash; SECURE YOUR SPOT</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:87.5%"></div></div></div>
       <div class="step-title">&#128274; Pay Your Deposit</div>
       <div class="step-sub">Your deposit holds your appointment and is applied toward your balance due at signing.</div>
       <div class="rt" style="margin-bottom:1.25rem">
@@ -507,7 +607,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
         </div>
       </div>
       <div id="longDistNotice" style="display:none;background:rgba(139,31,47,.07);border:1px solid rgba(139,31,47,.2);border-left:3px solid #8b1f2f;border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:#3a1820;line-height:1.6">
-        &#128205; <strong>Long Distance#x1F4CD; <strong>Long Distance Appointment</strong> — Your location is more than 20 miles out. A $75.00 deposit is required.
+        &#128205; <strong>Long Distance Appointment</strong> — Your location is more than 20 miles out. A $75.00 deposit is required.
       </div>
       <div style="margin-bottom:1rem">
         <div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;text-align:center">Secure Payment via PayPal</div>
@@ -581,7 +681,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   </p>
 </footer>
 
-
+<script>
 // ── State ────────────────────────────────────────────────────────────
 var S = {
   step:1, address:"", nearestPO:null, dist:0,
@@ -708,8 +808,12 @@ function showStep(n){
   S.step=n;
   var total=9;
   var pct=((n-1)/(total-1))*100;
-  document.getElementById("progressFill").style.width=pct+"%";
-  document.getElementById("progressLabel").textContent="Step "+n+" of "+total;
+  var stepNames=["","SERVICE LOCATION","SERVICE TYPE","ADD-ONS","APPOINTMENT TIMING","QUOTE SUMMARY","DATE & TIME","YOUR INFORMATION","SECURE YOUR SPOT","CONFIRMED"];
+  // Update step 1 card-progress (has dynamic ids); others are static HTML
+  var fill=document.getElementById("progressFill");
+  var label=document.getElementById("progressLabel");
+  if(fill) fill.style.width=pct+"%";
+  if(label) label.textContent="STEP "+n+" OF "+total+" \u2014 "+(stepNames[n]||"");
   document.getElementById("runningTotal").style.display=(n>1&&n<9)?"block":"none";
   window.scrollTo({top:0,behavior:"smooth"});
 }
@@ -839,8 +943,8 @@ function loadAvailableSlots(){
   document.getElementById("slotError").style.display="none";
   document.getElementById("timeSlots").style.display="block";
   document.getElementById("slotsList").innerHTML="<div style='font-size:.82rem;color:var(--muted)'>Checking availability…</div>";
-  var timeMin=date+"T00:00:00-06:00";
-  var timeMax=date+"T23:59:59-06:00";
+  var timeMin=date+"T00:00:00";
+  var timeMax=date+"T23:59:59";
   fetch("https://www.googleapis.com/calendar/v3/freeBusy?key="+GCAL_API_KEY,{
     method:"POST",headers:{"Content-Type":"application/json"},
     body:JSON.stringify({timeMin:timeMin,timeMax:timeMax,items:[{id:GCAL_ID}]})
@@ -861,7 +965,7 @@ function renderSlots(date,busyPeriods){
   var startH=(day===0||day===6)?9:8,endH=(day===0||day===6)?20:22;
   for(var h=startH;h<endH;h++){
     for(var m=0;m<60;m+=30){
-      var slotStart=new Date(date+"T"+pad2(h)+":"+pad2(m)+":00-06:00");
+      var slotStart=new Date(date+"T"+pad2(h)+":"+pad2(m)+":00");
       var slotEnd=new Date(slotStart.getTime()+duration*60000);
       if(slotEnd.getHours()>endH||(slotEnd.getHours()===endH&&slotEnd.getMinutes()>0))continue;
       var isBusy=busyPeriods.some(function(b){var bs=new Date(b.start),be=new Date(b.end);return slotStart<be&&slotEnd>bs;});
@@ -1056,7 +1160,7 @@ function startOver(){
     print1:0,print2:0,witness:0,surcharges:{},deposit:30,
     clientName:"",clientPhone:"",clientEmail:"",
     apptDate:"",apptTime:"",apptTimeISO:"",
-    tosAgreed:false,lastQuote:false,depositPaid:false,paypalOrderId:"",gcalEventId:""};
+    tosAgreed:false,lastQuote:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:""};
   document.getElementById("addressInput").value="";
   document.getElementById("addrStatus").textContent="";
   document.getElementById("addrStatus").className="addr-status";
