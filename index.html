@@ -235,7 +235,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
       <input type="text" id="addressInput" placeholder="123 Oak Street, Granbury TX 76048" autocomplete="off">
       <div class="addr-status" id="addrStatus"></div>
       <div class="privacy-note">&#128274; Your information is used only to prepare your quote and schedule your appointment. We never sell or share your data.</div>
-      <div class="nav"><button class="btn-next" id="addrNextBtn">&#128205; Find My Location &#8594;</button></div>
+      <div class="nav"><button class="btn-next" id="addrNextBtn">&#x1F4CD; Find My Location &#x2192;</button></div>
     </div>
   </div>
 
@@ -507,7 +507,7 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
         </div>
       </div>
       <div id="longDistNotice" style="display:none;background:rgba(139,31,47,.07);border:1px solid rgba(139,31,47,.2);border-left:3px solid #8b1f2f;border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-family:'DM Sans',sans-serif;font-size:.82rem;color:#3a1820;line-height:1.6">
-        &#128205; <strong>Long Distance Appointment</strong> — Your location is more than 20 miles out. A $75.00 deposit is required.
+        &#128205; <strong>Long Distance#x1F4CD; <strong>Long Distance Appointment</strong> — Your location is more than 20 miles out. A $75.00 deposit is required.
       </div>
       <div style="margin-bottom:1rem">
         <div style="font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.6rem;text-align:center">Secure Payment via PayPal</div>
@@ -577,11 +577,11 @@ footer a{color:var(--gold);text-decoration:none;font-weight:500}
   <p style="margin-top:.3rem">
     <a href="https://www.roundtheclocknotary.com">RoundTheClockNotary.com</a> &nbsp;&middot;&nbsp;
     <a href="tel:8175127217">817-512-7217</a> &nbsp;&middot;&nbsp;
-    <a href="mailto:&#105;&#110;&#102;&#111;&#64;&#114;&#111;&#117;&#110;&#100;&#116;&#104;&#101;&#99;&#108;&#111;&#99;&#107;&#110;&#111;&#116;&#97;&#114;&#121;&#46;&#99;&#111;&#109;">&#105;&#110;&#102;&#111;&#64;&#114;&#111;&#117;&#110;&#100;&#116;&#104;&#101;&#99;&#108;&#111;&#99;&#107;&#110;&#111;&#116;&#97;&#114;&#121;&#46;&#99;&#111;&#109;</a>
+    <a href="/cdn-cgi/l/email-protection#7452574544414f52574545444f52574544464f52574545454f525742404f52574545404f52574545454f52574545434f52574545444f52574544444f52574545424f52574544404f52574544454f52574d4d4f525745444c4f52574545454f52574d4d4f52574544434f52574545444f52574545454f52574545424f52574d434f52574545404f52574546454f525740424f52574d4d4f52574545454f525745444d4f">&#105;&#110;&#102;&#111;&#64;&#114;&#111;&#117;&#110;&#100;&#116;&#104;&#101;&#99;&#108;&#111;&#99;&#107;&#110;&#111;&#116;&#97;&#114;&#121;&#46;&#99;&#111;&#109;</a>
   </p>
 </footer>
 
-<script>
+
 // ── State ────────────────────────────────────────────────────────────
 var S = {
   step:1, address:"", nearestPO:null, dist:0,
@@ -722,22 +722,37 @@ function handleAddr(){
   if(!addr){st.className="addr-status err";st.textContent="⚠ Please enter your address.";return;}
   btn.textContent="Looking up…";btn.disabled=true;
   st.className="addr-status loading";st.textContent="Locating your address…";
-  var censusUrl="https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address="+encodeURIComponent(addr)+"&benchmark=Public_AR_Current&format=json";
-  var photonUrl="https://photon.komoot.io/api/?q="+encodeURIComponent(addr)+"&limit=1&lang=en";
-  var nominatimUrl="https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(addr)+"&format=json&limit=1&countrycodes=us";
+  // Always append TX context so geocoders don't guess wrong state/city
+  var HOOD_CTR={lat:32.443,lng:-97.771};
+  var addrTX=addr;
+  var lc=addr.toLowerCase();
+  if(lc.indexOf("tx")===-1&&lc.indexOf("texas")===-1){
+    // If no zip, add Granbury TX; if zip present keep as-is but append TX
+    addrTX=addr+", Granbury TX";
+  }
+  var censusUrl="https://geocoding.geo.census.gov/geocoder/locations/onelineaddress?address="+encodeURIComponent(addrTX)+"&benchmark=Public_AR_Current&format=json";
+  var photonUrl="https://photon.komoot.io/api/?q="+encodeURIComponent(addrTX)+"&limit=3&lang=en&bbox=-98.2,32.1,-97.2,32.8";
+  var nominatimUrl="https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(addrTX)+"&format=json&limit=3&countrycodes=us&viewbox=-98.2,32.8,-97.2,32.1&bounded=1";
   function tryCensus(){return fetch(censusUrl).then(function(r){return r.json();}).then(function(d){var m=d&&d.result&&d.result.addressMatches;if(m&&m.length)return{lat:m[0].coordinates.y,lng:m[0].coordinates.x};return null;}).catch(function(){return null;});}
-  function tryPhoton(){return fetch(photonUrl).then(function(r){return r.json();}).then(function(d){if(d&&d.features&&d.features.length){var co=d.features[0].geometry.coordinates;return{lat:co[1],lng:co[0]};}return null;}).catch(function(){return null;});}
-  function tryNominatim(){return fetch(nominatimUrl,{headers:{"Accept-Language":"en"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.length)return{lat:parseFloat(d[0].lat),lng:parseFloat(d[0].lon)};return null;}).catch(function(){return null;});}
+  function tryPhoton(){return fetch(photonUrl).then(function(r){return r.json();}).then(function(d){if(d&&d.features&&d.features.length){
+    // pick feature closest to Hood County
+    var best=null,bd=Infinity;
+    d.features.forEach(function(f){var co=f.geometry.coordinates;var dd=distMi(co[1],co[0],HOOD_CTR.lat,HOOD_CTR.lng);if(dd<bd){bd=dd;best={lat:co[1],lng:co[0]};}});
+    return best;}return null;}).catch(function(){return null;});}
+  function tryNominatim(){return fetch(nominatimUrl,{headers:{"Accept-Language":"en","User-Agent":"RTCNotaryQuote/1.0"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.length){
+    var best=null,bd=Infinity;
+    d.forEach(function(item){var la=parseFloat(item.lat),ln=parseFloat(item.lon);var dd=distMi(la,ln,HOOD_CTR.lat,HOOD_CTR.lng);if(dd<bd){bd=dd;best={lat:la,lng:ln};}});
+    return best;}return null;}).catch(function(){return null;});}
   function bestCoords(arr){
-    var HOOD={lat:32.443,lng:-97.771};
     var valid=arr.filter(Boolean);
     if(!valid.length)return null;
-    valid.sort(function(a,b){return distMi(a.lat,a.lng,HOOD.lat,HOOD.lng)-distMi(b.lat,b.lng,HOOD.lat,HOOD.lng);});
+    // Among valid results, pick the one closest to Hood County center
+    valid.sort(function(a,b){return distMi(a.lat,a.lng,HOOD_CTR.lat,HOOD_CTR.lng)-distMi(b.lat,b.lng,HOOD_CTR.lat,HOOD_CTR.lng);});
     return valid[0];
   }
   Promise.all([tryCensus(),tryPhoton(),tryNominatim()]).then(function(results){var c=bestCoords(results);
-    btn.textContent="&#128205; Find My Location →";btn.disabled=false;
-    if(!c){st.className="addr-status err";st.textContent="⚠ Address not found. Try: 123 Main St, Granbury TX 76048";return;}
+    btn.textContent="\uD83D\uDCCD Find My Location \u2192";btn.disabled=false;
+    if(!c){st.className="addr-status err";st.textContent="\u26A0 Address not found. Try: 123 Main St, Granbury TX 76048";return;}
     // Find nearest PO using crow-flies for free zone check only
     var nearest=null,nd=Infinity;
     POS.forEach(function(p){var d=distMi(c.lat,c.lng,p.lat,p.lng);if(d<nd){nd=d;nearest=p;}});
@@ -763,7 +778,7 @@ function handleAddr(){
     else{st.className="addr-status ok";st.textContent="✓ Located · "+nd.toFixed(1)+" mi from "+nearest.name+" · Travel: "+fmt(S.travelFee)+" (first 5 mi free)";}
     updateRT();
     setTimeout(function(){showStep(2);},900);
-  }).catch(function(){btn.textContent="&#128205; Find My Location →";btn.disabled=false;st.className="addr-status err";st.textContent="⚠ Network error. Please try again.";});
+  }).catch(function(){btn.textContent="\uD83D\uDCCD Find My Location \u2192";btn.disabled=false;st.className="addr-status err";st.textContent="\u26A0 Network error. Please try again.";});
 }
 
 // ── Step 2: Service ──────────────────────────────────────────────────
@@ -1136,8 +1151,8 @@ document.addEventListener("DOMContentLoaded",function(){
   document.getElementById("back8").addEventListener("click",function(){showStep(7);});
 
   // Step 9
-  document.getElementById("startOverBtn").addEventListener("click",startOver);
   document.getElementById("printBtn9").addEventListener("click",function(){window.print();});
+  document.getElementById("startOverBtn").addEventListener("click",startOver);
 });
 </script>
 </body>
