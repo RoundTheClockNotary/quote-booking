@@ -718,4 +718,10 @@ document.addEventListener("DOMContentLoaded",function(){
   document.getElementById("tosAgreeRow").addEventListener("click",function(){S.tosAgreed=!S.tosAgreed;document.getElementById("tosAgreeRow").classList.toggle("on",S.tosAgreed);document.getElementById("next6").disabled=!S.tosAgreed;document.getElementById("next6").style.opacity=S.tosAgreed?"1":".5";});
   document.getElementById("back6").addEventListener("click",function(){showStep(5);});
   document.getElementById("next6").addEventListener("click",function(){if(!validateStep6())return;buildPaymentStep();showStep(7);});
-  document.getElementById("b
+  document.getElementById("back7").addEventListener("click",function(){showStep(6);});
+  document.getElementById("printBtn8").addEventListener("click",function(){window.print();});
+  document.getElementById("startOverBtn").addEventListener("click",startOver);
+});
+</script>
+</body>
+</html>
