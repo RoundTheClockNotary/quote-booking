@@ -811,7 +811,22 @@ function updateRT(){var lines=buildLines();document.getElementById("rtLines").in
 
 function showStep(n){document.querySelectorAll(".step").forEach(function(s){s.classList.remove("active");});document.getElementById("step"+n).classList.add("active");S.step=n;document.getElementById("runningTotal").style.display=(n>1&&n<8)?"block":"none";window.scrollTo({top:0,behavior:"smooth"});}
 
-// toggleAcc removed — Step 4 now uses toggleTab() tab system
+function toggleAcc(which){
+  var book=document.getElementById("accBook");
+  var quote=document.getElementById("accQuote");
+  if(which==="book"){
+    var wasOpen=book.classList.contains("open");
+    book.classList.toggle("open",!wasOpen);
+    quote.classList.remove("open");
+    S.bookingPath=!wasOpen?"book":"none";
+  } else {
+    var wasOpen=quote.classList.contains("open");
+    quote.classList.toggle("open",!wasOpen);
+    book.classList.remove("open");
+    S.bookingPath=!wasOpen?"quote":"none";
+    if(!wasOpen){delete S.surcharges.rushhour;delete S.surcharges.offclock;delete S.surcharges.midnight;delete S.surcharges.redletter;S.apptTime="";S.apptTimeISO="";}
+  }
+}
 
 function selectRange(el,key,amt){
   document.querySelectorAll(".range-card").forEach(function(c){c.classList.remove("sel");});
@@ -1029,58 +1044,56 @@ function startOver(){
   document.getElementById("next4").disabled=true;document.getElementById("next4").style.opacity=".5";
   document.getElementById("selectedSlotDisplay").style.display="none";
   document.getElementById("slotsList").innerHTML="";
-  toggleTab("book");
+  document.getElementById("accBook").classList.remove("open");
+  document.getElementById("accQuote").classList.remove("open");
   document.getElementById("faqAckRow").classList.remove("on");
   showStep(1);
 }
 
 document.addEventListener("DOMContentLoaded",function(){
-  function on(id,evt,fn){var el=document.getElementById(id);if(el)el.addEventListener(evt,fn);}
-  on("addrNextBtn","click",handleAddr);
-  on("addressInput","keydown",function(e){if(e.key==="Enter")handleAddr();});
+  document.getElementById("addrNextBtn").addEventListener("click",handleAddr);
+  document.getElementById("addressInput").addEventListener("keydown",function(e){if(e.key==="Enter")handleAddr();});
   document.querySelectorAll(".opt-btn").forEach(function(b){b.addEventListener("click",function(){handleSvc(this.dataset.service);});});
-  on("back2","click",function(){showStep(1);});
-  on("next2","click",function(){if(!S.serviceType){alert("Please select a service to continue.");return;}showStep(3);});
+  document.getElementById("back2").addEventListener("click",function(){showStep(1);});
+  document.getElementById("next2").addEventListener("click",function(){if(!S.serviceType){alert("Please select a service to continue.");return;}showStep(3);});
   document.querySelectorAll(".ctr-btn").forEach(function(b){b.addEventListener("click",function(){handleCounter(this.dataset.target,parseInt(this.dataset.dir));});});
-  on("back3","click",function(){showStep(2);});
-  on("next3","click",function(){initDatePicker();showStep(4);});
-  on("checkAvailBtn","click",loadAvailableSlots);
-  on("apptDate","change",function(){
+  document.getElementById("back3").addEventListener("click",function(){showStep(2);});
+  document.getElementById("next3").addEventListener("click",function(){initDatePicker();showStep(4);});
+  document.getElementById("checkAvailBtn").addEventListener("click",loadAvailableSlots);
+  document.getElementById("apptDate").addEventListener("change",function(){
     S.apptTime="";S.apptTimeISO="";
     delete S.surcharges.rushhour;delete S.surcharges.offclock;delete S.surcharges.midnight;
-    var ssd=document.getElementById("selectedSlotDisplay");if(ssd)ssd.style.display="none";
-    var sl=document.getElementById("slotsList");if(sl)sl.innerHTML="";
-    var n4=document.getElementById("next4");if(n4){n4.disabled=true;n4.style.opacity=".5";}
+    document.getElementById("selectedSlotDisplay").style.display="none";
+    document.getElementById("slotsList").innerHTML="";
+    document.getElementById("next4").disabled=true;document.getElementById("next4").style.opacity=".5";
   });
-  on("slotsList","click",function(e){
+  document.getElementById("slotsList").addEventListener("click",function(e){
     var btn=e.target.closest(".slot-btn");if(!btn)return;
     selectSlot(btn.dataset.iso,btn.dataset.label,btn.dataset.tier,btn.dataset.rush==="true",btn);
   });
-  on("back4","click",function(){showStep(3);});
-  on("next4","click",function(){if(!S.apptTime){alert("Please select an appointment time.");return;}buildStep5();showStep(5);});
-  on("back5","click",function(){showStep(4);});
-  on("next5","click",function(){showStep(6);});
-  on("tosAgreeRow","click",function(){
+  document.getElementById("back4").addEventListener("click",function(){showStep(3);});
+  document.getElementById("next4").addEventListener("click",function(){if(!S.apptTime){alert("Please select an appointment time.");return;}buildStep5();showStep(5);});
+  document.getElementById("back5").addEventListener("click",function(){showStep(4);});
+  document.getElementById("next5").addEventListener("click",function(){showStep(6);});
+  document.getElementById("tosAgreeRow").addEventListener("click",function(){
     S.tosAgreed=!S.tosAgreed;
     this.classList.toggle("on",S.tosAgreed);
-    var n6=document.getElementById("next6");if(n6){n6.disabled=!S.tosAgreed;n6.style.opacity=S.tosAgreed?"1":".5";}
+    document.getElementById("next6").disabled=!S.tosAgreed;
+    document.getElementById("next6").style.opacity=S.tosAgreed?"1":".5";
   });
-  on("back6","click",function(){showStep(5);});
-  on("next6","click",function(){if(!validateStep6())return;buildPaymentStep();showStep(7);});
-  on("back7","click",function(){showStep(6);});
-  on("faqAckRow","click",function(){
+  document.getElementById("back6").addEventListener("click",function(){showStep(5);});
+  document.getElementById("next6").addEventListener("click",function(){if(!validateStep6())return;buildPaymentStep();showStep(7);});
+  document.getElementById("back7").addEventListener("click",function(){showStep(6);});
+  document.getElementById("faqAckRow").addEventListener("click",function(){
     S.faqAcked=!S.faqAcked;
     this.classList.toggle("on",S.faqAcked);
-    var chk=document.getElementById("faqAckChk");
-    if(chk){
-      var chkImg=chk.querySelector("img");
-      if(chkImg)chkImg.style.opacity=S.faqAcked?"1":"0";
-      chk.style.background=S.faqAcked?"var(--navy)":"";
-      chk.style.borderColor=S.faqAcked?"var(--navy)":"";
-    }
+    var chkImg=document.getElementById("faqAckChk").querySelector("img");
+    chkImg.style.opacity=S.faqAcked?"1":"0";
+    document.getElementById("faqAckChk").style.background=S.faqAcked?"var(--navy)":"";
+    document.getElementById("faqAckChk").style.borderColor=S.faqAcked?"var(--navy)":"";
   });
-  on("printBtn8","click",function(){window.print();});
-  on("startOverBtn","click",startOver);
+  document.getElementById("printBtn8").addEventListener("click",function(){window.print();});
+  document.getElementById("startOverBtn").addEventListener("click",startOver);
 });
 </script>
 </body>
