@@ -68,10 +68,23 @@ header h1{font-family:"Cinzel",serif;color:var(--gold-bright);font-size:clamp(1.
 .card-prog-fill{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-bright));transition:width .5s ease}
 
 /* Travel info */
-.travel-info-box{background:#f7f4ec;border:1px solid rgba(14,27,58,.12);border-left:3px solid var(--gold);border-radius:8px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:.82rem;color:#3d3520;line-height:1.6}
+.travel-info-box{background:#f7f4ec;border:1px solid rgba(14,27,58,.12);border-left:3px solid var(--gold);border-radius:8px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:.82rem;color:#3d3520;line-height:1.6;transition:opacity .2s}
+.travel-info-box.dimmed{opacity:.35;pointer-events:none}
 .tib-row{display:flex;align-items:center;gap:.6rem;margin-bottom:.2rem}
 .tib-row:last-child{margin-bottom:0}
 .tib-icon{width:18px;height:18px;object-fit:contain;flex-shrink:0;pointer-events:none}
+
+/* ── BOOKING MODE TOGGLE ── */
+.mode-toggle{display:flex;gap:.6rem;margin-bottom:1.25rem}
+.mode-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.75rem 1rem;border:2px solid var(--border);border-radius:10px;background:var(--cream);cursor:pointer;font-family:"Cinzel",serif;font-size:.72rem;font-weight:700;letter-spacing:.05em;color:var(--navy);transition:all .2s;user-select:none}
+.mode-btn img{width:22px;height:22px;object-fit:contain;pointer-events:none;flex-shrink:0}
+.mode-btn:hover{border-color:var(--gold);background:#fff}
+.mode-btn.sel{border-color:var(--navy);background:rgba(14,27,58,.05)}
+.mode-btn.sel.remote{border-color:var(--gold);background:rgba(201,168,76,.08)}
+
+/* RON notice */
+.ron-notice{background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.35);border-left:3px solid var(--gold);border-radius:8px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:.82rem;color:#3d2e0f;line-height:1.6;display:none}
+.ron-notice.show{display:block}
 
 /* Typography */
 .step-title{font-family:"Cinzel",serif;font-size:1.15rem;color:var(--navy);margin-bottom:.4rem;line-height:1.3;display:flex;align-items:center;gap:.5rem}
@@ -79,8 +92,9 @@ header h1{font-family:"Cinzel",serif;color:var(--gold-bright);font-size:clamp(1.
 .step-sub{font-size:.88rem;color:#3d3520;font-weight:500;margin-bottom:1.25rem;line-height:1.6}
 
 /* Inputs */
-input[type=text],input[type=tel],input[type=email]{width:100%;padding:.9rem 1.1rem;border:2px solid var(--border);border-radius:10px;font-family:"DM Sans",sans-serif;font-size:.97rem;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s,box-shadow .2s;margin-bottom:.7rem}
+input[type=text],input[type=tel],input[type=email]{width:100%;padding:.9rem 1.1rem;border:2px solid var(--border);border-radius:10px;font-family:"DM Sans",sans-serif;font-size:.97rem;color:var(--text);background:var(--cream);outline:none;transition:border-color .2s,box-shadow .2s,opacity .2s;margin-bottom:.7rem}
 input[type=text]:focus,input[type=tel]:focus,input[type=email]:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);background:#fff}
+input[type=text].dimmed{opacity:.35;pointer-events:none;background:var(--cream-dark)}
 .date-wrap{position:relative;margin-bottom:.75rem}
 .date-wrap input[type=date]{width:100%;padding:.9rem 3rem .9rem 1.1rem;border:2px solid var(--border);border-radius:10px;font-family:"DM Sans",sans-serif;font-size:.97rem;color:var(--text);background:var(--cream);outline:none;-webkit-appearance:none;appearance:none;transition:border-color .2s}
 .date-wrap input[type=date]:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15);background:#fff}
@@ -128,10 +142,21 @@ input[type=text]:focus,input[type=tel]:focus,input[type=email]:focus{border-colo
 .ctr-val{font-family:"Cinzel",serif;font-size:1rem;font-weight:700;min-width:26px;text-align:center}
 .ctr-price{font-family:"Cinzel",serif;font-size:.82rem;color:var(--gold);font-weight:600;margin-left:.6rem;min-width:44px;text-align:right}
 
+/* Digital delivery toggle row */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;border:2px solid var(--border);border-radius:12px;background:var(--cream);margin-bottom:.6rem;transition:border-color .2s;cursor:pointer;user-select:none}
+.toggle-row.on{border-color:var(--navy);background:rgba(14,27,58,.03)}
+.toggle-left{display:flex;align-items:center;gap:.6rem}
+.toggle-switch{width:42px;height:24px;border-radius:12px;background:var(--border);position:relative;transition:background .2s;flex-shrink:0}
+.toggle-switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle-row.on .toggle-switch{background:var(--navy)}
+.toggle-row.on .toggle-switch::after{transform:translateX(18px)}
+.toggle-price{font-family:"Cinzel",serif;font-size:.82rem;color:var(--gold);font-weight:600;margin-left:.6rem;min-width:44px;text-align:right}
+
 /* Nav buttons */
 .nav{display:flex;gap:.75rem;margin-top:1.1rem}
-.btn-next{flex:1;padding:.95rem;background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:var(--gold-bright);border:1px solid rgba(201,168,76,.3);border-radius:10px;font-family:"Cinzel",serif;font-size:.88rem;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:all .2s}
+.btn-next{flex:1;padding:.95rem;background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:var(--gold-bright);border:1px solid rgba(201,168,76,.3);border-radius:10px;font-family:"Cinzel",serif;font-size:.88rem;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem}
 .btn-next:hover{opacity:.9;transform:translateY(-1px)}
+.btn-next img{width:18px;height:18px;object-fit:contain;pointer-events:none}
 .btn-back{padding:.95rem 1.3rem;background:none;color:var(--muted);border:2px solid var(--border);border-radius:10px;font-size:.88rem;cursor:pointer;transition:all .18s;font-family:"DM Sans",sans-serif}
 .btn-back:hover{border-color:var(--navy);color:var(--navy)}
 
@@ -408,18 +433,40 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="card-progress"><div class="card-step-label">STEP 1 OF 8 &mdash; SERVICE LOCATION</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:0%"></div></div></div>
       <div class="step-title">Where Should the Clock Stop?</div>
       <div class="step-sub">Enter your appointment address. We travel to your home, office, hospital, or any location. Include a street address and zip code for accurate distance measurement.</div>
-      <div class="travel-info-box">
+
+      <!-- Booking mode toggle -->
+      <div class="mode-toggle">
+        <div class="mode-btn" id="modeInPerson" onclick="setBookingMode('inperson')">
+          <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-pin.png" alt="">
+          In-Person
+        </div>
+        <div class="mode-btn remote" id="modeRemote" onclick="setBookingMode('remote')">
+          <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon_RON.png" alt="">
+          Remote Online
+        </div>
+      </div>
+
+      <!-- RON notice -->
+      <div class="ron-notice" id="ronNotice">
+        No travel required. Your session will be conducted via secure video &mdash; a Texas-approved Remote Online Notarization platform. No address needed.
+      </div>
+
+      <!-- Travel info box — hidden until In-Person selected -->
+      <div class="travel-info-box" id="travelInfoBox" style="display:none">
         <div class="tib-row"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-checkmark.png" class="tib-icon" alt=""><span>Within 5 miles of Granbury &mdash; <strong>Free travel</strong></span></div>
         <div class="tib-row"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-checkmark.png" class="tib-icon" alt=""><span>5&ndash;20 miles &mdash; <strong>$0.725/mile round trip</strong> (first 5 mi free)</span></div>
         <div class="tib-row"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-checkmark.png" class="tib-icon" alt=""><span>Over 20 miles &mdash; <strong>Full mileage rate, $75 deposit required</strong></span></div>
       </div>
+
+      <div id="addrFields" style="display:none">
       <input type="text" id="addressInput" placeholder="123 Oak Street, Granbury TX 76048" autocomplete="off">
       <div class="addr-status" id="addrStatus"></div>
       <div class="privacy-note"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-padlock.png" alt=""> Your information is used only to prepare your quote and schedule your appointment.</div>
-      <div class="nav">
+      </div>
+      <div class="nav" id="addrNavBtn" style="display:none">
         <button class="btn-next" id="addrNextBtn">
-          <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-pin.png" style="width:18px;height:18px;object-fit:contain;pointer-events:none;margin-right:.25rem" alt="">
-          Find My Location &rarr;
+          <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-pin.png" id="addrBtnIcon" style="width:18px;height:18px;object-fit:contain;pointer-events:none" alt="">
+          <span id="addrBtnLabel">Find My Location &rarr;</span>
         </button>
       </div>
     </div>
@@ -497,6 +544,20 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="ctr-row" id="minuteSealsRow" style="display:none">
         <div class="ctr-left"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-addon-minute.png" class="ctr-icon" alt=""><div><div class="ctr-label">Minute Hand Seals &middot; Per Notary Stamp</div><div class="ctr-sub">$10 each</div></div></div>
         <div class="ctr-right"><div class="ctr-ctrl"><button class="ctr-btn" data-target="minuteSeals" data-dir="-1">&#8722;</button><div class="ctr-val" id="minuteSealsVal">0</div><button class="ctr-btn" data-target="minuteSeals" data-dir="1">&#43;</button></div><div class="ctr-price" id="minuteSealsPrice">$0.00</div></div>
+      </div>
+      <!-- Digital Delivery toggle -->
+      <div class="toggle-row" id="digitalDeliveryRow" onclick="toggleDigitalDelivery()">
+        <div class="toggle-left">
+          <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-electronic.png" class="ctr-icon" alt="">
+          <div>
+            <div class="ctr-label">Digital Delivery &middot; Secure Electronic Document</div>
+            <div class="ctr-sub">$5.00 flat &mdash; delivered via secure email link</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <div class="toggle-switch" id="digitalSwitch"></div>
+          <div class="toggle-price" id="digitalPrice">$0.00</div>
+        </div>
       </div>
       <div class="nav">
         <button class="btn-back" id="back3">&larr; Back</button>
@@ -717,7 +778,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
           <div class="ty-appt-label">Requested Appointment</div>
           <div class="ty-appt-val" id="tyApptVal"></div>
           <div style="font-size:.78rem;color:rgba(255,255,255,.5);margin-top:.25rem" id="tyServiceVal"></div>
-          <div style="font-family:Cinzel,serif;font-size:.65rem;letter-spacing:.12em;color:rgba(201,168,76,.5);margin-top:.35rem">Reference # &nbsp;<span id="tyBookingIdAppt" style="color:rgba(201,168,76,.8)"></span></div>
+          <div style="font-family:Cinzel,serif;font-size:.65rem;letter-spacing:.12em;color:rgba(201,168,50,.5);margin-top:.35rem">Reference # &nbsp;<span id="tyBookingIdAppt" style="color:rgba(201,168,76,.8)"></span></div>
         </div>
         <div class="ty-disclaimer">
           <p><strong>Your appointment is NOT confirmed</strong> until you receive a confirmation text or email from Round The Clock Notary.</p>
@@ -809,7 +870,7 @@ var APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbxLKopAUC7kwjZjZ6Hy
 var GCAL_API_KEY="AIzaSyBaEDQufz1Ipb6Q13frcp5JE8m28RHxfHM";
 var GCAL_ID="rtcnotary1@gmail.com";
 
-var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none"};
+var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalDelivery:false,surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
 
 function genBookingId(){var code=SVC_CODE[S.serviceType]||"XX";var now=new Date();return"RTC-"+code+"-"+String(now.getFullYear()).slice(-2)+pad2(now.getMonth()+1)+pad2(now.getDate())+"-"+(Math.floor(Math.random()*900)+100);}
 function fmt(n){return"$"+n.toFixed(2);}
@@ -817,9 +878,70 @@ function pad2(n){return n<10?"0"+n:""+n;}
 function updateDeposit(){if(S.isFar){S.deposit=75;return;}if(S.serviceType)S.deposit=SVC[S.serviceType].deposit;}
 function isHoliday(d){return FEDERAL_HOLIDAYS.indexOf(d)>=0;}
 function distMi(la1,ln1,la2,ln2){var R=3958.8,dLat=(la2-la1)*Math.PI/180,dLng=(ln2-ln1)*Math.PI/180;var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
-function calcTotal(){var t=S.travelFee+S.serviceBase+S.stateFee;t+=S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20;Object.keys(S.surcharges).forEach(function(k){t+=S.surcharges[k];});return t;}
-function buildLines(){var lines=[];if(S.isFree)lines.push({k:"Travel — "+S.nearestPO.name,v:"FREE",free:true});else if(S.travelFee>0)lines.push({k:"Hour Hand ("+S.dist.toFixed(1)+" mi RT)",v:fmt(S.travelFee)});if(S.serviceBase>0)lines.push({k:S.serviceLabel,v:fmt(S.serviceBase)});if(S.stateFee>0)lines.push({k:"TX State Fee",v:fmt(S.stateFee)});if(S.extraTicks>0)lines.push({k:"Extra Ticks ("+S.extraTicks+"x$10)",v:fmt(S.extraTicks*10)});if(S.minuteSeals>0)lines.push({k:"Minute Seals ("+S.minuteSeals+"x$10)",v:fmt(S.minuteSeals*10)});if(S.print1>0)lines.push({k:"Single Print ("+S.print1+" pg)",v:fmt(S.print1)});if(S.print2>0)lines.push({k:"Duplex Print ("+S.print2+" pg)",v:fmt(S.print2*1.5)});if(S.witness>0)lines.push({k:"Witness ("+S.witness+")",v:fmt(S.witness*20)});var sl={rushhour:"Rush Hour",offclock:"Off the Clock",midnight:"Clock Strikes Midnight",redletter:"Red Letter Day"};Object.keys(S.surcharges).forEach(function(k){lines.push({k:sl[k]||k,v:"+"+fmt(S.surcharges[k])});});return lines;}
+function calcTotal(){var t=S.travelFee+S.serviceBase+S.stateFee;t+=S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20;if(S.digitalDelivery)t+=5;Object.keys(S.surcharges).forEach(function(k){t+=S.surcharges[k];});return t;}
+
+function buildLines(){var lines=[];
+  if(S.bookingMode==="remote"){lines.push({k:"Remote Online — No Travel",v:"FREE",free:true});}
+  else if(S.isFree)lines.push({k:"Travel — "+S.nearestPO.name,v:"FREE",free:true});
+  else if(S.travelFee>0)lines.push({k:"Hour Hand ("+S.dist.toFixed(1)+" mi RT)",v:fmt(S.travelFee)});
+  if(S.serviceBase>0)lines.push({k:S.serviceLabel,v:fmt(S.serviceBase)});
+  if(S.stateFee>0)lines.push({k:(S.bookingMode==="remote"?"RON Fee":"TX State Fee"),v:fmt(S.stateFee)});
+  if(S.extraTicks>0)lines.push({k:"Extra Ticks ("+S.extraTicks+"x$10)",v:fmt(S.extraTicks*10)});
+  if(S.minuteSeals>0)lines.push({k:"Minute Seals ("+S.minuteSeals+"x$10)",v:fmt(S.minuteSeals*10)});
+  if(S.print1>0)lines.push({k:"Single Print ("+S.print1+" pg)",v:fmt(S.print1)});
+  if(S.print2>0)lines.push({k:"Duplex Print ("+S.print2+" pg)",v:fmt(S.print2*1.5)});
+  if(S.witness>0)lines.push({k:"Witness ("+S.witness+")",v:fmt(S.witness*20)});
+  if(S.digitalDelivery)lines.push({k:"Digital Delivery",v:fmt(5)});
+  var sl={rushhour:"Rush Hour",offclock:"Off the Clock",midnight:"Clock Strikes Midnight",redletter:"Red Letter Day"};
+  Object.keys(S.surcharges).forEach(function(k){lines.push({k:sl[k]||k,v:"+"+fmt(S.surcharges[k])});});
+  return lines;}
+
 function updateRT(){var lines=buildLines();var rtEl=document.getElementById("rtLines");if(rtEl){rtEl.innerHTML=lines.length?lines.map(function(l){return"<div class='rt-line'><span>"+l.k+"</span><span class='rt-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join(""):"<div class='rt-line'><span style='color:rgba(255,255,255,.28)'>No items yet</span></div>";}var rtNum=document.getElementById("rtTotalNum");if(rtNum)rtNum.textContent=calcTotal().toFixed(2);}
+
+function setBookingMode(mode){
+  S.bookingMode=mode;
+  var ipBtn=document.getElementById("modeInPerson");
+  var rmBtn=document.getElementById("modeRemote");
+  var addrFields=document.getElementById("addrFields");
+  var addrNavBtn=document.getElementById("addrNavBtn");
+  var btnIcon=document.getElementById("addrBtnIcon");
+  var btnLabel=document.getElementById("addrBtnLabel");
+  var travelBox=document.getElementById("travelInfoBox");
+  var ronNotice=document.getElementById("ronNotice");
+  var addrStatus=document.getElementById("addrStatus");
+  if(ipBtn)ipBtn.classList.toggle("sel",mode==="inperson");
+  if(rmBtn)rmBtn.classList.toggle("sel",mode==="remote");
+  if(addrNavBtn)addrNavBtn.style.display="flex";
+  if(mode==="remote"){
+    if(addrFields)addrFields.style.display="none";
+    if(travelBox)travelBox.style.display="none";
+    if(ronNotice)ronNotice.classList.add("show");
+    if(btnIcon)btnIcon.src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon_RON.png";
+    if(btnLabel)btnLabel.innerHTML="Next &rarr;";
+    if(addrStatus){addrStatus.className="addr-status";addrStatus.textContent="";}
+    S.isFree=false;S.isFar=false;S.travelFee=0;S.dist=0;S.nearestPO={name:"Remote Online"};
+    if(S.serviceType&&SVC[S.serviceType]){S.stateFee=(SVC[S.serviceType].stateFee>0)?25:0;}
+    updateDeposit();updateRT();
+  } else {
+    if(addrFields)addrFields.style.display="block";
+    if(travelBox)travelBox.style.display="block";
+    if(ronNotice)ronNotice.classList.remove("show");
+    if(btnIcon)btnIcon.src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-pin.png";
+    if(btnLabel)btnLabel.innerHTML="Find My Location &rarr;";
+    S.isFree=false;S.isFar=false;S.travelFee=0;S.dist=0;S.nearestPO=null;
+    if(S.serviceType&&SVC[S.serviceType]){S.stateFee=SVC[S.serviceType].stateFee;}
+    updateDeposit();updateRT();
+  }
+}
+
+function toggleDigitalDelivery(){
+  S.digitalDelivery=!S.digitalDelivery;
+  var row=document.getElementById("digitalDeliveryRow");
+  var price=document.getElementById("digitalPrice");
+  if(row)row.classList.toggle("on",S.digitalDelivery);
+  if(price)price.textContent=S.digitalDelivery?"$5.00":"$0.00";
+  updateRT();
+}
 
 function showStep(n){document.querySelectorAll(".step").forEach(function(s){s.classList.remove("active");});var el=document.getElementById("step"+n);if(el)el.classList.add("active");S.step=n;var rt=document.getElementById("runningTotal");if(rt)rt.style.display=(n>1&&n<8)?"block":"none";window.scrollTo({top:0,behavior:"smooth"});}
 
@@ -830,11 +952,32 @@ function closeQuoteModal(){var qm=document.getElementById('quoteModal');if(qm)qm
 
 function getSlotSurcharges(slotDate,bookingTime){var surcharges={};var h=slotDate.getHours();var day=slotDate.getDay();var isWeekend=(day===0||day===6);if(h>=22||h<8)surcharges.midnight=50;if(isWeekend)surcharges.offclock=15;if(!isWeekend&&h>=18&&h<22)surcharges.offclock=15;if(bookingTime&&(slotDate.getTime()-bookingTime.getTime())<=3600000&&slotDate>bookingTime){surcharges.rushhour=100;}return surcharges;}
 
-function handleAddr(){var addr=document.getElementById("addressInput").value.trim();var st=document.getElementById("addrStatus");var btn=document.getElementById("addrNextBtn");if(!addr){st.className="addr-status err";st.textContent="Please enter your address.";return;}btn.textContent="Looking up...";btn.disabled=true;st.className="addr-status loading";st.textContent="Locating your address...";var HOOD={lat:32.443,lng:-97.771};var addrTX=(addr.toLowerCase().indexOf("tx")<0&&addr.toLowerCase().indexOf("texas")<0)?addr+", TX":addr;function tryPhoton(){return fetch("https://photon.komoot.io/api/?q="+encodeURIComponent(addrTX)+"&limit=3&lang=en").then(function(r){return r.json();}).then(function(d){if(d&&d.features&&d.features.length){var best=null,bd=Infinity;d.features.forEach(function(f){var co=f.geometry.coordinates;var dd=distMi(co[1],co[0],HOOD.lat,HOOD.lng);if(dd<bd){bd=dd;best={lat:co[1],lng:co[0]};}});return best;}return null;}).catch(function(){return null;});}
-function tryNominatim(){return fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(addrTX)+"&format=json&limit=3&countrycodes=us",{headers:{"Accept-Language":"en","User-Agent":"RTCNotaryQuote/1.0"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.length){var best=null,bd=Infinity;d.forEach(function(item){var la=parseFloat(item.lat),ln=parseFloat(item.lon);var dd=distMi(la,ln,HOOD.lat,HOOD.lng);if(dd<bd){bd=dd;best={lat:la,lng:ln};}});return best;}return null;}).catch(function(){return null;});}
-Promise.all([tryPhoton(),tryNominatim()]).then(function(results){var valid=results.filter(Boolean);btn.textContent="Find My Location";btn.disabled=false;if(!valid.length){st.className="addr-status err";st.textContent="Address not found. Try: 123 Main St, Granbury TX 76048";return;}valid.sort(function(a,b){return distMi(a.lat,a.lng,HOOD.lat,HOOD.lng)-distMi(b.lat,b.lng,HOOD.lat,HOOD.lng);});var c=valid[0];var nearest=null,nd=Infinity;POS.forEach(function(p){var d=distMi(c.lat,c.lng,p.lat,p.lng);if(d<nd){nd=d;nearest=p;}});S.address=addr;S.nearestPO=nearest;S.dist=nd;S.isFree=nd<=5;S.isFar=nd>20;if(S.isFree){S.travelFee=0;}else if(S.isFar){S.travelFee=Math.round(nd*2*0.725*100)/100;}else{var bm=Math.max(0,nd-5);S.travelFee=Math.round(bm*2*0.725*100)/100;if(S.travelFee===0)S.isFree=true;}updateDeposit();if(S.isFree)st.className="addr-status ok",st.textContent="Free travel zone — within 5 miles of "+nearest.name+"!";else if(S.isFar)st.className="addr-status ok",st.textContent="Located · "+nd.toFixed(1)+" mi · Travel: "+fmt(S.travelFee)+" · Long distance deposit: $75.00";else st.className="addr-status ok",st.textContent="Located · "+nd.toFixed(1)+" mi from "+nearest.name+" · Travel: "+fmt(S.travelFee)+" (first 5 mi free)";updateRT();setTimeout(function(){showStep(2);},900);});}
+function handleAddr(){
+  if(S.bookingMode==="remote"){showStep(2);return;}
+  var addr=document.getElementById("addressInput").value.trim();var st=document.getElementById("addrStatus");var btn=document.getElementById("addrNextBtn");
+  if(!addr){st.className="addr-status err";st.textContent="Please enter your address.";return;}
+  btn.disabled=true;var lbl=document.getElementById("addrBtnLabel");if(lbl)lbl.textContent="Looking up...";
+  st.className="addr-status loading";st.textContent="Locating your address...";
+  var HOOD={lat:32.443,lng:-97.771};var addrTX=(addr.toLowerCase().indexOf("tx")<0&&addr.toLowerCase().indexOf("texas")<0)?addr+", TX":addr;
+  function tryPhoton(){return fetch("https://photon.komoot.io/api/?q="+encodeURIComponent(addrTX)+"&limit=3&lang=en").then(function(r){return r.json();}).then(function(d){if(d&&d.features&&d.features.length){var best=null,bd=Infinity;d.features.forEach(function(f){var co=f.geometry.coordinates;var dd=distMi(co[1],co[0],HOOD.lat,HOOD.lng);if(dd<bd){bd=dd;best={lat:co[1],lng:co[0]};}});return best;}return null;}).catch(function(){return null;});}
+  function tryNominatim(){return fetch("https://nominatim.openstreetmap.org/search?q="+encodeURIComponent(addrTX)+"&format=json&limit=3&countrycodes=us",{headers:{"Accept-Language":"en","User-Agent":"RTCNotaryQuote/1.0"}}).then(function(r){return r.json();}).then(function(d){if(d&&d.length){var best=null,bd=Infinity;d.forEach(function(item){var la=parseFloat(item.lat),ln=parseFloat(item.lon);var dd=distMi(la,ln,HOOD.lat,HOOD.lng);if(dd<bd){bd=dd;best:{lat:la,lng:ln};}});return best;}return null;}).catch(function(){return null;});}
+  Promise.all([tryPhoton(),tryNominatim()]).then(function(results){
+    var valid=results.filter(Boolean);
+    btn.disabled=false;var lbl2=document.getElementById("addrBtnLabel");if(lbl2)lbl2.innerHTML="Find My Location &rarr;";
+    if(!valid.length){st.className="addr-status err";st.textContent="Address not found. Try: 123 Main St, Granbury TX 76048";return;}
+    valid.sort(function(a,b){return distMi(a.lat,a.lng,HOOD.lat,HOOD.lng)-distMi(b.lat,b.lng,HOOD.lat,HOOD.lng);});
+    var c=valid[0];var nearest=null,nd=Infinity;
+    POS.forEach(function(p){var d=distMi(c.lat,c.lng,p.lat,p.lng);if(d<nd){nd=d;nearest=p;}});
+    S.address=addr;S.nearestPO=nearest;S.dist=nd;S.isFree=nd<=5;S.isFar=nd>20;
+    if(S.isFree){S.travelFee=0;}else if(S.isFar){S.travelFee=Math.round(nd*2*0.725*100)/100;}else{var bm=Math.max(0,nd-5);S.travelFee=Math.round(bm*2*0.725*100)/100;if(S.travelFee===0)S.isFree=true;}
+    updateDeposit();
+    if(S.isFree)st.className="addr-status ok",st.textContent="Free travel zone — within 5 miles of "+nearest.name+"!";
+    else if(S.isFar)st.className="addr-status ok",st.textContent="Located · "+nd.toFixed(1)+" mi · Travel: "+fmt(S.travelFee)+" · Long distance deposit: $75.00";
+    else st.className="addr-status ok",st.textContent="Located · "+nd.toFixed(1)+" mi from "+nearest.name+" · Travel: "+fmt(S.travelFee)+" (first 5 mi free)";
+    updateRT();setTimeout(function(){showStep(2);},900);
+  });}
 
-function handleSvc(type){document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});var btn=document.querySelector(".opt-btn[data-service='"+type+"']");if(btn)btn.classList.add("sel");var svc=SVC[type];S.serviceType=type;S.serviceBase=svc.base;S.serviceLabel=svc.label;S.stateFee=svc.stateFee;updateDeposit();S.extraTicks=0;S.minuteSeals=0;["extraTicks","minuteSeals"].forEach(function(t){var v=document.getElementById(t+"Val");if(v)v.textContent="0";var p=document.getElementById(t+"Price");if(p)p.textContent="$0.00";});var isSecond=type==="second",isMinute=type==="minute";var etRow=document.getElementById("extraTicksRow");if(etRow)etRow.style.display=(isSecond||isMinute)?"flex":"none";var msRow=document.getElementById("minuteSealsRow");if(msRow)msRow.style.display=isMinute?"flex":"none";var sub=document.getElementById("step3Sub");if(sub)sub.textContent=isMinute?"All add-ons available.":(isSecond?"Add-ons plus Extra Ticks available.":"Add-ons 1-3 available.");updateRT();}
+function handleSvc(type){document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});var btn=document.querySelector(".opt-btn[data-service='"+type+"']");if(btn)btn.classList.add("sel");var svc=SVC[type];S.serviceType=type;S.serviceBase=svc.base;S.serviceLabel=svc.label;S.stateFee=(S.bookingMode==="remote"&&svc.stateFee>0)?25:svc.stateFee;updateDeposit();S.extraTicks=0;S.minuteSeals=0;["extraTicks","minuteSeals"].forEach(function(t){var v=document.getElementById(t+"Val");if(v)v.textContent="0";var p=document.getElementById(t+"Price");if(p)p.textContent="$0.00";});var isSecond=type==="second",isMinute=type==="minute";var etRow=document.getElementById("extraTicksRow");if(etRow)etRow.style.display=(isSecond||isMinute)?"flex":"none";var msRow=document.getElementById("minuteSealsRow");if(msRow)msRow.style.display=isMinute?"flex":"none";var sub=document.getElementById("step3Sub");if(sub)sub.textContent=isMinute?"All add-ons available.":(isSecond?"Add-ons plus Extra Ticks available.":"Add-ons 1-3 available.");updateRT();}
 
 function handleCounter(target,dir){var valEl=document.getElementById(target+"Val");var priceEl=document.getElementById(target+"Price");if(!valEl||!priceEl)return;var cur=Math.max(0,(parseInt(valEl.textContent)||0)+dir);valEl.textContent=cur;S[target]=cur;var prices={extraTicks:10,minuteSeals:10,print1:1.0,print2:1.5,witness:20};var row=document.getElementById(target+"Row");if(row)row.classList.toggle("on",cur>0);priceEl.textContent=fmt(cur*prices[target]);updateRT();}
 
@@ -859,11 +1002,44 @@ function handleMockPayment(){S.depositPaid=true;S.paypalOrderId="MOCK-"+Date.now
 
 function buildStep8(){function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}set("tyName",S.clientName.split(" ")[0]);set("tyBookingId","Booking #: "+S.bookingId);set("tyApptVal",S.apptDate?(S.apptDate+" at "+S.apptTime):"Free Quote");set("tyServiceVal",S.serviceLabel+" · "+((S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60)+" min appointment");set("tyBookingIdAppt",S.bookingId);var total=calcTotal(),dep=S.deposit,due=total-dep;set("sumTotal8",fmt(total));set("sumDepositPaid8",fmt(dep)+" (Paid)");set("sumDue8",fmt(due));var sl8=document.getElementById("sumLines8");if(sl8)sl8.innerHTML=buildLines().map(function(l){return"<div class='sum-line'><span class='sum-key'>"+l.k+"</span><span class='sum-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join("");}
 
-function logBooking(){var zone=S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard");var total=calcTotal();fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({bookingId:S.bookingId,clientName:S.clientName,clientPhone:S.clientPhone,clientEmail:S.clientEmail,address:S.address,serviceLabel:S.serviceLabel,apptDate:S.apptDate,apptTime:S.apptTime,apptTimeISO:S.apptTimeISO,durationMinutes:(S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60,miles:S.dist.toFixed(1),zone:zone,total:fmt(total),depositPaid:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit),paypalOrderId:S.paypalOrderId,gcalEventId:S.gcalEventId})}).catch(function(){});}
+function logBooking(){var zone=S.bookingMode==="remote"?"Remote Online":(S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard"));var total=calcTotal();fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({bookingId:S.bookingId,clientName:S.clientName,clientPhone:S.clientPhone,clientEmail:S.clientEmail,address:S.bookingMode==="remote"?"Remote Online":S.address,serviceLabel:S.serviceLabel,apptDate:S.apptDate,apptTime:S.apptTime,apptTimeISO:S.apptTimeISO,durationMinutes:(S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60,miles:S.dist.toFixed(1),zone:zone,total:fmt(total),depositPaid:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit),paypalOrderId:S.paypalOrderId,gcalEventId:S.gcalEventId,digitalDelivery:S.digitalDelivery,bookingMode:S.bookingMode})}).catch(function(){});}
 
 function selectRange(el,key,amt){document.querySelectorAll(".range-card").forEach(function(c){c.classList.remove("sel");});el.classList.add("sel");delete S.surcharges.offclock;delete S.surcharges.midnight;if(amt>0)S.surcharges[key]=amt;updateDeposit();updateRT();}
 
-function startOver(){S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none"};function clr(id){var el=document.getElementById(id);if(el)el.value="";}function txt(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}function cls(id,c){var el=document.getElementById(id);if(el)el.className=c;}clr("addressInput");clr("clientName");clr("clientPhone");clr("clientEmail");cls("addrStatus","addr-status");txt("addrStatus","");["nameStatus","phoneStatus","emailStatus"].forEach(function(id){cls(id,"addr-status");txt(id,"");});document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});["extraTicks","minuteSeals","print1","print2","witness"].forEach(function(t){txt(t+"Val","0");txt(t+"Price","$0.00");var row=document.getElementById(t+"Row");if(row)row.classList.remove("on");});var tar=document.getElementById("tosAgreeRow");if(tar)tar.classList.remove("on");var n6=document.getElementById("next6");if(n6){n6.disabled=true;n6.style.opacity=".5";}var n4=document.getElementById("next4");if(n4){n4.disabled=true;n4.style.opacity=".5";}var ssd=document.getElementById("selectedSlotDisplay");if(ssd)ssd.style.display="none";var sl=document.getElementById("slotsList");if(sl)sl.innerHTML="";var faqRow=document.getElementById("faqAckRow");if(faqRow)faqRow.classList.remove("on");var pb=document.getElementById("printBtn8");if(pb){pb.disabled=true;pb.style.opacity=".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});showStep(1);}
+function startOver(){
+  S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalDelivery:false,surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
+  function clr(id){var el=document.getElementById(id);if(el)el.value="";}
+  function txt(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+  function cls(id,c){var el=document.getElementById(id);if(el)el.className=c;}
+  clr("addressInput");clr("clientName");clr("clientPhone");clr("clientEmail");
+  cls("addrStatus","addr-status");txt("addrStatus","");
+  ["nameStatus","phoneStatus","emailStatus"].forEach(function(id){cls(id,"addr-status");txt(id,"");});
+  document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});
+  ["extraTicks","minuteSeals","print1","print2","witness"].forEach(function(t){txt(t+"Val","0");txt(t+"Price","$0.00");var row=document.getElementById(t+"Row");if(row)row.classList.remove("on");});
+  var tar=document.getElementById("tosAgreeRow");if(tar)tar.classList.remove("on");
+  var n6=document.getElementById("next6");if(n6){n6.disabled=true;n6.style.opacity=".5";}
+  var n4=document.getElementById("next4");if(n4){n4.disabled=true;n4.style.opacity=".5";}
+  var ssd=document.getElementById("selectedSlotDisplay");if(ssd)ssd.style.display="none";
+  var sl=document.getElementById("slotsList");if(sl)sl.innerHTML="";
+  var faqRow=document.getElementById("faqAckRow");if(faqRow)faqRow.classList.remove("on");
+  var pb=document.getElementById("printBtn8");if(pb){pb.disabled=true;pb.style.opacity=".5";}
+  var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
+  // Reset mode toggle
+  var ipBtn=document.getElementById("modeInPerson");if(ipBtn)ipBtn.classList.remove("sel");
+  var rmBtn=document.getElementById("modeRemote");if(rmBtn)rmBtn.classList.remove("sel");
+  var addrFields=document.getElementById("addrFields");if(addrFields)addrFields.style.display="none";
+  var addrNavBtn=document.getElementById("addrNavBtn");if(addrNavBtn)addrNavBtn.style.display="none";
+  var travelBox=document.getElementById("travelInfoBox");if(travelBox)travelBox.style.display="none";
+  var ronNotice=document.getElementById("ronNotice");if(ronNotice)ronNotice.classList.remove("show");
+  var btnIcon=document.getElementById("addrBtnIcon");if(btnIcon)btnIcon.src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-pin.png";
+  var btnLabel=document.getElementById("addrBtnLabel");if(btnLabel)btnLabel.innerHTML="Find My Location &rarr;";
+  // Reset digital delivery
+  var dRow=document.getElementById("digitalDeliveryRow");if(dRow)dRow.classList.remove("on");
+  var dPrice=document.getElementById("digitalPrice");if(dPrice)dPrice.textContent="$0.00";
+  showStep(1);
+}
 
 document.addEventListener("DOMContentLoaded",function(){
   function on(id,ev,fn){var el=document.getElementById(id);if(el)el.addEventListener(ev,fn);}
