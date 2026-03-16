@@ -353,6 +353,11 @@ input[type=text].dimmed{opacity:.35;pointer-events:none;background:var(--cream-d
 .modal{background:#fff;border-radius:18px;overflow:hidden;max-width:480px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:90vh;overflow-y:auto}
 .modal-hdr{background:linear-gradient(160deg,#0a1530,#0e1b3a);padding:1.5rem;text-align:center;position:relative}
 .modal-hdr::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.18),transparent 65%)}
+.modal-logo{width:64px;height:64px;margin:0 auto .5rem;position:relative}
+.modal-logo img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(201,168,76,.4))}
+.modal-brand{font-family:"Cinzel",serif;font-size:.95rem;font-weight:700;color:var(--gold-bright);letter-spacing:.06em;position:relative;margin-bottom:.3rem}
+.modal-contact{font-size:.68rem;color:rgba(255,255,255,.65);letter-spacing:.04em;position:relative;margin-bottom:.15rem;line-height:1.8}
+.modal-contact-dot{margin:0 .3rem;opacity:.4}
 .modal-badge{display:inline-block;background:rgba(201,168,76,.18);color:#f0dfa0;font-family:"Cinzel",serif;font-size:.58rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.22rem .8rem;border-radius:20px;border:1px solid rgba(201,168,76,.3);margin-bottom:.6rem;position:relative}
 .modal-total-lbl{font-family:"Cinzel",serif;font-size:.6rem;letter-spacing:.15em;color:rgba(255,255,255,.45);text-transform:uppercase;position:relative}
 .modal-total{font-family:"Cinzel",serif;font-size:2.5rem;color:var(--gold-bright);position:relative}
@@ -391,11 +396,35 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 .footer-copy span{display:block}
 
 @media print{
+  /* Default: printing step 8 confirmation */
   header,.not-booking-bar,.rt,.step:not(#step8),.nav,footer{display:none !important}
   #step8{display:block !important}
   body{background:white}.wrapper{padding:0;max-width:100%}
   .sum-card{box-shadow:none}
   #printBtn8,#startOverBtn{display:none !important}
+  /* Modal print override */
+  body.printing-modal header,
+  body.printing-modal .not-booking-bar,
+  body.printing-modal .rt,
+  body.printing-modal .step,
+  body.printing-modal .wrapper,
+  body.printing-modal footer,
+  body.printing-modal .modal-overlay{display:none !important}
+  body.printing-modal .modal-print-sheet{display:block !important}
+  .modal-print-sheet{display:none;max-width:100%;padding:0}
+  .modal-print-sheet .modal-hdr{background:#fff !important;border-bottom:2px solid #c9a84c;padding:1rem 1.5rem}
+  .modal-print-sheet .modal-hdr::before{display:none}
+  .modal-print-sheet .modal-logo img{filter:none}
+  .modal-print-sheet .modal-brand{color:#0e1b3a !important}
+  .modal-print-sheet .modal-contact{color:#3d3520 !important}
+  .modal-print-sheet .modal-badge{background:#f0dfa0 !important;color:#0e1b3a !important;border-color:#c9a84c !important}
+  .modal-print-sheet .modal-total-lbl{color:#6b7280 !important}
+  .modal-print-sheet .modal-total{color:#0e1b3a !important;font-size:2rem}
+  .modal-print-sheet .modal-total sup{color:#c9a84c !important}
+  .modal-print-sheet .modal-body{padding:1rem 1.5rem}
+  .modal-print-sheet .modal-actions{display:none !important}
+  .modal-print-sheet .modal-tv.gold{color:#c9a84c !important}
+  .modal-print-sheet .modal-notice{border-left-color:#c9a84c;background:#f8f3e8}
   @page{margin:.4in;size:letter portrait}
 }
 </style>
@@ -876,7 +905,16 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 <div class="modal-overlay" id="quoteModal" onclick="if(event.target===this)closeQuoteModal()">
   <div class="modal">
     <div class="modal-hdr">
-      <div class="modal-badge">Quote Preview</div>
+      <div class="modal-logo"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/logo.png" alt="Round the Clock Notary"></div>
+      <div class="modal-brand">Round the Clock Notary</div>
+      <div class="modal-contact">
+        <span>817-512-7217</span>
+        <span class="modal-contact-dot">&middot;</span>
+        <span>info@roundtheclocknotary.com</span>
+        <span class="modal-contact-dot">&middot;</span>
+        <span>roundtheclocknotary.com</span>
+      </div>
+      <div class="modal-badge" style="margin-top:.75rem">Quote Preview</div>
       <div class="modal-total-lbl">Estimated Total</div>
       <div class="modal-total"><sup>$</sup><span id="modalTotal">0.00</span></div>
     </div>
@@ -889,11 +927,38 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="modal-total-row"><span class="modal-tl">Est. Due at Signing</span><span class="modal-tv gold" id="modalDue">$0.00</span></div>
       <div class="modal-notice"><strong>Estimate only.</strong> Final charges determined at time of service.</div>
       <div class="modal-actions">
-        <button class="modal-btn print" onclick="window.print()"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-printer.png" alt=""> Print</button>
+        <button class="modal-btn print" onclick="printModalQuote()"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-printer.png" alt=""> Print</button>
         <button class="modal-btn book-btn" onclick="closeQuoteModal();toggleTab('book')"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-calendar.png" alt=""> Book Now</button>
         <button class="modal-btn close-btn" onclick="closeQuoteModal()">Close</button>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Hidden print-only sheet for modal quote -->
+<div class="modal-print-sheet" id="modalPrintSheet">
+  <div class="modal-hdr">
+    <div class="modal-logo"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/logo.png" alt="Round the Clock Notary"></div>
+    <div class="modal-brand">Round the Clock Notary</div>
+    <div class="modal-contact">
+      <span>817-512-7217</span>
+      <span class="modal-contact-dot">&middot;</span>
+      <span>info@roundtheclocknotary.com</span>
+      <span class="modal-contact-dot">&middot;</span>
+      <span>roundtheclocknotary.com</span>
+    </div>
+    <div class="modal-badge" style="margin-top:.75rem">Quote Preview</div>
+    <div class="modal-total-lbl">Estimated Total</div>
+    <div class="modal-total"><sup>$</sup><span id="modalTotalPrint">0.00</span></div>
+  </div>
+  <div class="modal-body">
+    <div class="modal-sec">Quote Details</div>
+    <div id="modalLinesPrint"></div>
+    <div class="modal-div"></div>
+    <div class="modal-total-row"><span class="modal-tl">Total</span><span class="modal-tv" id="modalTotalBottomPrint">$0.00</span></div>
+    <div class="modal-total-row"><span class="modal-tl">Deposit Due Now</span><span class="modal-tv" id="modalDepositPrint">$30.00</span></div>
+    <div class="modal-total-row"><span class="modal-tl">Est. Due at Signing</span><span class="modal-tv gold" id="modalDuePrint">$0.00</span></div>
+    <div class="modal-notice"><strong>Estimate only.</strong> Final charges determined at time of service.</div>
   </div>
 </div>
 
@@ -1037,8 +1102,9 @@ function showStep(n){document.querySelectorAll(".step").forEach(function(s){s.cl
 
 function toggleTab(which){document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});var tabBtn=document.getElementById('tab-'+which);var tabContent=document.getElementById('tc-'+which);if(tabBtn)tabBtn.classList.add('active');if(tabContent)tabContent.classList.add('active');S.bookingPath=which;if(which!=='book'){delete S.surcharges.rushhour;delete S.surcharges.offclock;delete S.surcharges.midnight;S.apptTime='';S.apptTimeISO='';}}
 
-function showQuoteModal(){var total=calcTotal(),dep=S.deposit,due=total-dep;var lines=buildLines();var ml=document.getElementById('modalLines');if(ml)ml.innerHTML=lines.map(function(l){return'<div class="modal-line"><span>'+l.k+'</span><span'+(l.free?' style="color:var(--green)"':'')+'>'+l.v+'</span></div>';}).join('');var mt=document.getElementById('modalTotal');if(mt)mt.textContent=total.toFixed(2);var mtb=document.getElementById('modalTotalBottom');if(mtb)mtb.textContent=fmt(total);var md=document.getElementById('modalDeposit');if(md)md.textContent=fmt(dep);var mdu=document.getElementById('modalDue');if(mdu)mdu.textContent=fmt(due);var qm=document.getElementById('quoteModal');if(qm)qm.classList.add('show');}
+function showQuoteModal(){var total=calcTotal(),dep=S.deposit,due=total-dep;var lines=buildLines();var lineHTML=lines.map(function(l){return'<div class="modal-line"><span>'+l.k+'</span><span'+(l.free?' style="color:var(--green)"':'')+'>'+l.v+'</span></div>';}).join('');var ml=document.getElementById('modalLines');if(ml)ml.innerHTML=lineHTML;var mlp=document.getElementById('modalLinesPrint');if(mlp)mlp.innerHTML=lineHTML;function setEl(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}setEl('modalTotal',total.toFixed(2));setEl('modalTotalBottom',fmt(total));setEl('modalDeposit',fmt(dep));setEl('modalDue',fmt(due));setEl('modalTotalPrint',total.toFixed(2));setEl('modalTotalBottomPrint',fmt(total));setEl('modalDepositPrint',fmt(dep));setEl('modalDuePrint',fmt(due));var qm=document.getElementById('quoteModal');if(qm)qm.classList.add('show');}
 function closeQuoteModal(){var qm=document.getElementById('quoteModal');if(qm)qm.classList.remove('show');}
+function printModalQuote(){document.body.classList.add('printing-modal');window.print();document.body.classList.remove('printing-modal');}
 
 function getSlotSurcharges(slotDate,bookingTime){var surcharges={};var h=slotDate.getHours();var day=slotDate.getDay();var isWeekend=(day===0||day===6);if(h>=22||h<8)surcharges.midnight=50;if(isWeekend)surcharges.offclock=15;if(!isWeekend&&h>=18&&h<22)surcharges.offclock=15;if(bookingTime&&(slotDate.getTime()-bookingTime.getTime())<=3600000&&slotDate>bookingTime){surcharges.rushhour=100;}return surcharges;}
 
@@ -1114,12 +1180,7 @@ function startOver(){
   document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});
   ["extraTicks","minuteSeals","print1","print2","witness"].forEach(function(t){txt(t+"Val","0");txt(t+"Price","$0.00");var row=document.getElementById(t+"Row");if(row)row.classList.remove("on");});
   var tar=document.getElementById("tosAgreeRow");if(tar)tar.classList.remove("on");
-  var n6=document.getElementById("next6");if(n6){n6.disabled=true;n6.style.opacity=".5";}
-  var n4=document.getElementById("next4");if(n4){n4.disabled=true;n4.style.opacity=".5";}
-  var ssd=document.getElementById("selectedSlotDisplay");if(ssd)ssd.style.display="none";
-  var sl=document.getElementById("slotsList");if(sl)sl.innerHTML="";
-  var faqRow=document.getElementById("faqAckRow");if(faqRow)faqRow.classList.remove("on");
-  var pb=document.getElementById("printBtn8");if(pb){pb.disabled=true;pb.style.opacity=".5";}
+  var n6=document.getElementById("next6");if(n6){n6.disableb){pb.disabled=true;pb.style.opacity=".5";}
   var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
@@ -1165,7 +1226,7 @@ document.addEventListener("DOMContentLoaded",function(){
   on("back6","click",function(){showStep(5);});
   on("next6","click",function(){if(!validateStep6())return;buildPaymentStep();showStep(7);});
   on("back7","click",function(){showStep(6);});
-  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var chkImg=document.getElementById("faqAckChk");if(chkImg){var img=chkImg.querySelector("img");if(img)img.style.opacity=S.faqAcked?"1":"0";chkImg.style.background=S.faqAcked?"var(--navy)":"";}var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}});
+  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var chkImg=document.getElementById("faqAckChk");if(chkImg){var img=chkImg.querySelector("img");if(img)img.style.opacity=S.faqAcked?"1":"0";chkImg.style.background=S.faqAcked?"var(--navy)":"";} var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}});
   on("printBtn8","click",function(){if(S.faqAcked)window.print();});
   on("startOverBtn","click",startOver);
 });
