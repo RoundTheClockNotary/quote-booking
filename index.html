@@ -904,7 +904,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="footer-nav-dot"></div>
     <a href="tel:+18175127217">817-512-7217</a>
     <div class="footer-nav-dot"></div>
-    <a href="/cdn-cgi/l/email-protection#cba2a5ada48bb9a4bea5afbfa3aea8a7a4a8a0a5a4bfaab9b2e5a8a4a6">Email Us</a>
+    <a href="mailto:info@roundtheclocknotary.com">Email Us</a>
   </nav>
   <div class="footer-socials">
     <a class="footer-social-link" href="https://www.facebook.com/roundtheclocknotary" target="_blank" aria-label="Facebook">
@@ -1163,4 +1163,10 @@ document.addEventListener("DOMContentLoaded",function(){
   on("back6","click",function(){showStep(5);});
   on("next6","click",function(){if(!validateStep6())return;buildPaymentStep();showStep(7);});
   on("back7","click",function(){showStep(6);});
-  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var chkImg=document.getElementById("faqAckChk");if(chkImg){var img=chkImg.querySelector("img");if(img)img.style.opacity=S.faqAcked?"1":"0";chkImg.style.background=S.faqAcked?"var(--navy)":"";}var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.sty
+  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var chkImg=document.getElementById("faqAckChk");if(chkImg){var img=chkImg.querySelector("img");if(img)img.style.opacity=S.faqAcked?"1":"0";chkImg.style.background=S.faqAcked?"var(--navy)":"";}var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.sty  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var chkImg=document.getElementById("faqAckChk");if(chkImg){var img=chkImg.querySelector("img");if(img)img.style.opacity=S.faqAcked?"1":"0";chkImg.style.background=S.faqAcked?"var(--navy)":"";}var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}});
+  on("printBtn8","click",function(){if(S.faqAcked)window.print();});
+  on("startOverBtn","click",startOver);
+});
+</script>
+</body>
+</html>
