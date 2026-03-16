@@ -940,7 +940,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 </div>
 
 <!-- Hidden print-only sheet for modal quote -->
-<div class="modal-print-sheet" id="modalPrintSheet">
+<div class="modal-print-sheet" id="modalPrintSheet" style="display:none !important">
   <div class="modal-hdr">
     <div class="modal-logo"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/logo.png" alt="Round the Clock Notary"></div>
     <div class="modal-brand">Round the Clock Notary</div>
@@ -1108,7 +1108,7 @@ function toggleTab(which){document.querySelectorAll('.tab-btn').forEach(function
 
 function showQuoteModal(){var total=calcTotal(),dep=S.deposit,due=total-dep;var lines=buildLines();var lineHTML=lines.map(function(l){return'<div class="modal-line"><span>'+l.k+'</span><span'+(l.free?' style="color:var(--green)"':'')+'>'+l.v+'</span></div>';}).join('');var ml=document.getElementById('modalLines');if(ml)ml.innerHTML=lineHTML;var mlp=document.getElementById('modalLinesPrint');if(mlp)mlp.innerHTML=lineHTML;function setEl(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}setEl('modalTotal',total.toFixed(2));setEl('modalTotalBottom',fmt(total));setEl('modalDeposit',fmt(dep));setEl('modalDue',fmt(due));setEl('modalTotalPrint',total.toFixed(2));setEl('modalTotalBottomPrint',fmt(total));setEl('modalDepositPrint',fmt(dep));setEl('modalDuePrint',fmt(due));var qm=document.getElementById('quoteModal');if(qm)qm.classList.add('show');}
 function closeQuoteModal(){var qm=document.getElementById('quoteModal');if(qm)qm.classList.remove('show');}
-function printModalQuote(){document.body.classList.add('printing-modal');window.print();document.body.classList.remove('printing-modal');}
+function printModalQuote(){var ps=document.getElementById('modalPrintSheet');if(ps)ps.style.removeProperty('display');document.body.classList.add('printing-modal');window.print();document.body.classList.remove('printing-modal');if(ps)ps.style.setProperty('display','none','important');}
 
 function getSlotSurcharges(slotDate,bookingTime){var surcharges={};var h=slotDate.getHours();var day=slotDate.getDay();var isWeekend=(day===0||day===6);if(h>=22||h<8)surcharges.midnight=50;if(isWeekend)surcharges.offclock=15;if(!isWeekend&&h>=18&&h<22)surcharges.offclock=15;if(bookingTime&&(slotDate.getTime()-bookingTime.getTime())<=3600000&&slotDate>bookingTime){surcharges.rushhour=100;}return surcharges;}
 
@@ -1233,10 +1233,9 @@ document.addEventListener("DOMContentLoaded",function(){
   on("next5","click",function(){showStep(6);});
   on("tosAgreeRow","click",function(){S.tosAgreed=!S.tosAgreed;this.classList.toggle("on",S.tosAgreed);var n6=document.getElementById("next6");if(n6){n6.disabled=!S.tosAgreed;n6.style.opacity=S.tosAgreed?"1":".5";}});
   on("back6","click",function(){showStep(5);});
-  on("next6","click",function(){if(!validateStep6())return;buildPaymentStep();showStep(7);});
+  on("next6","click",function(){if(!S.tosAgreed){alert("Please agree to the Terms of Service.");return;}buildPaymentStep();loadPayPalSDK(function(){buildPaymentStep();});showStep(7);});
   on("back7","click",function(){showStep(6);});
-  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}});
-  on("printBtn8","click",function(){if(S.faqAcked)window.print();});
+  on("paypalMockBtn","click",handleMockPayment);
   on("startOverBtn","click",startOver);
 });
 </script>
