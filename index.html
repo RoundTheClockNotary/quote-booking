@@ -1180,7 +1180,9 @@ function startOver(){
   document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});
   ["extraTicks","minuteSeals","print1","print2","witness"].forEach(function(t){txt(t+"Val","0");txt(t+"Price","$0.00");var row=document.getElementById(t+"Row");if(row)row.classList.remove("on");});
   var tar=document.getElementById("tosAgreeRow");if(tar)tar.classList.remove("on");
-  var n6=document.getElementById("next6");if(n6){n6.disableb){pb.disabled=true;pb.style.opacity=".5";}
+  var n6=document.getElementById("next6");if(n6){n6.disabled=true;n6.style.opacity=".5";}
+  var n4=document.getElementById("next4");if(n4){n4.disabled=true;n4.style.opacity=".5";}
+  var pb=document.getElementById("printBtn8");if(pb){pb.disabled=true;pb.style.opacity=".5";}
   var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}
   document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
   document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
