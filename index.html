@@ -152,6 +152,26 @@ input[type=text].dimmed{opacity:.35;pointer-events:none;background:var(--cream-d
 .toggle-row.on .toggle-switch::after{transform:translateX(18px)}
 .toggle-price{font-family:"Cinzel",serif;font-size:.82rem;color:var(--gold);font-weight:600;margin-left:.6rem;min-width:44px;text-align:right}
 
+/* Delivery row — 3-way method toggle */
+.delivery-row{border:2px solid var(--border);border-radius:12px;background:var(--cream);margin-bottom:.6rem;transition:border-color .2s,background .2s;overflow:hidden}
+.delivery-row.on{border-color:var(--navy);background:rgba(14,27,58,.03)}
+.delivery-header{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.1rem;cursor:pointer;user-select:none}
+.delivery-toggle-wrap{display:flex;align-items:center;gap:.5rem}
+.delivery-price{font-family:"Cinzel",serif;font-size:.82rem;color:var(--gold);font-weight:600;min-width:44px;text-align:right}
+.delivery-methods{display:none;padding:.1rem 1.1rem .85rem;border-top:1px solid rgba(14,27,58,.08)}
+.delivery-row.on .delivery-methods{display:block}
+.method-label{font-family:"Cinzel",serif;font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(14,27,58,.4);margin-bottom:.5rem;margin-top:.6rem}
+.method-opts{display:flex;gap:.5rem;flex-wrap:wrap}
+.method-btn{flex:1;min-width:80px;padding:.55rem .75rem;border:2px solid var(--border);border-radius:8px;background:#fff;cursor:pointer;font-family:"Cinzel",serif;font-size:.68rem;font-weight:700;letter-spacing:.05em;color:var(--navy);text-align:center;transition:all .18s;user-select:none;display:flex;flex-direction:column;align-items:center;gap:.25rem}
+.method-btn:hover{border-color:var(--gold)}
+.method-btn.sel{border-color:var(--navy);background:rgba(14,27,58,.06)}
+.method-btn img{width:20px;height:20px;object-fit:contain;pointer-events:none}
+.method-note{font-family:"DM Sans",sans-serif;font-size:.65rem;font-weight:400;color:#4a4a4a;letter-spacing:0;margin-top:.1rem}
+.postage-notice{display:none;margin-top:.65rem;padding:.55rem .8rem;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.35);border-left:3px solid var(--gold);border-radius:7px;font-size:.78rem;color:#3d2e0f;line-height:1.5}
+.postage-notice.show{display:block}
+.addon-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:.75rem 0}
+.ron-badge{font-size:.62rem;font-family:"Cinzel",serif;font-weight:700;letter-spacing:.06em;color:#8b5e00;background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);border-radius:20px;padding:.12rem .55rem;white-space:nowrap}
+
 /* Nav buttons */
 .nav{display:flex;gap:.75rem;margin-top:1.1rem}
 .btn-next{flex:1;padding:.95rem;background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:var(--gold-bright);border:1px solid rgba(201,168,76,.3);border-radius:10px;font-family:"Cinzel",serif;font-size:.88rem;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.4rem}
@@ -507,7 +527,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
           <div class="opt-left">
             <div class="opt-chk"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-checkmark.png" alt=""></div>
             <div class="opt-icon"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-closing.png" alt=""></div>
-            <div><span class="opt-name">Closing Table</span><span class="opt-desc">Loan Signing and Real Estate Closing &mdash; all signatures included.</span></div>
+            <div><span class="opt-name">Closing Table</span><span class="opt-desc">Loan Signing and Real Estate Closing &mdash; all signatures included.</span><span class="opt-desc" style="margin-top:.3rem;color:#7a5c00;font-size:.75rem">Remote Online Notarization available for this service. Lender must authorize RON prior to appointment.</span></div>
           </div>
           <div class="opt-right"><span class="opt-price">$150</span><span class="opt-fees">flat fee</span></div>
         </button>
@@ -545,18 +565,58 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
         <div class="ctr-left"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-addon-minute.png" class="ctr-icon" alt=""><div><div class="ctr-label">Minute Hand Seals &middot; Per Notary Stamp</div><div class="ctr-sub">$10 each</div></div></div>
         <div class="ctr-right"><div class="ctr-ctrl"><button class="ctr-btn" data-target="minuteSeals" data-dir="-1">&#8722;</button><div class="ctr-val" id="minuteSealsVal">0</div><button class="ctr-btn" data-target="minuteSeals" data-dir="1">&#43;</button></div><div class="ctr-price" id="minuteSealsPrice">$0.00</div></div>
       </div>
-      <!-- Digital Delivery toggle -->
-      <div class="toggle-row" id="digitalDeliveryRow" onclick="toggleDigitalDelivery()">
+      <div class="addon-divider"></div>
+      <!-- Digital Clock (E-Notary) — greyed out for Closing Table -->
+      <div class="toggle-row" id="digitalClockRow" onclick="toggleDigitalClock()">
         <div class="toggle-left">
           <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-electronic.png" class="ctr-icon" alt="">
           <div>
-            <div class="ctr-label">Digital Delivery &middot; Secure Electronic Document</div>
-            <div class="ctr-sub">$5.00 flat &mdash; delivered via secure email link</div>
+            <div class="ctr-label" style="display:flex;align-items:center;gap:.5rem">Digital Clock &middot; E-Notary <span class="ron-badge" id="ronBadge" style="display:none">RON &mdash; Lender Auth Required</span></div>
+            <div class="ctr-sub" id="digitalClockSub">$5.00 flat &mdash; electronic signature on your document</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:.5rem">
-          <div class="toggle-switch" id="digitalSwitch"></div>
-          <div class="toggle-price" id="digitalPrice">$0.00</div>
+          <div class="toggle-switch" id="digitalClockSwitch"></div>
+          <div class="toggle-price" id="digitalClockPrice">$0.00</div>
+        </div>
+      </div>
+      <!-- Time Flies — Document Delivery -->
+      <div class="delivery-row" id="timeFlyRow">
+        <div class="delivery-header" onclick="toggleTimeFlies()">
+          <div class="ctr-left">
+            <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-delivery.png" class="ctr-icon" alt="">
+            <div>
+              <div class="ctr-label">Time Flies &middot; Document Delivery</div>
+              <div class="ctr-sub">$5.00 flat &mdash; choose your delivery method below</div>
+            </div>
+          </div>
+          <div class="delivery-toggle-wrap">
+            <div class="toggle-switch" id="timeFlySwitch"></div>
+            <div class="delivery-price" id="timeFlyPrice">$0.00</div>
+          </div>
+        </div>
+        <div class="delivery-methods" id="timeFlyMethods">
+          <div class="method-label">Select Delivery Method</div>
+          <div class="method-opts">
+            <button class="method-btn" id="methodEmail" onclick="selectDeliveryMethod('email')">
+              <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-electronic.png" alt="">
+              Email
+              <span class="method-note">Sent to your inbox</span>
+            </button>
+            <button class="method-btn" id="methodFax" onclick="selectDeliveryMethod('fax')">
+              <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-delivery.png" alt="">
+              Fax
+              <span class="method-note">To your fax number</span>
+            </button>
+            <button class="method-btn" id="methodMail" onclick="selectDeliveryMethod('mail')">
+              <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-delivery.png" alt="">
+              Mail
+              <span class="method-note">$5 + postage</span>
+            </button>
+          </div>
+          <div class="postage-notice" id="postageNotice">
+            <strong>Postage Note:</strong> All delivery methods are $5.00 flat. Mail also requires postage, billed at time of service based on weight and destination.
+          </div>
         </div>
       </div>
       <div class="nav">
@@ -844,7 +904,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="footer-nav-dot"></div>
     <a href="tel:+18175127217">817-512-7217</a>
     <div class="footer-nav-dot"></div>
-    <a href="mailto:info@roundtheclocknotary.com">Email Us</a>
+    <a href="/cdn-cgi/l/email-protection#cba2a5ada48bb9a4bea5afbfa3aea8a7a4a8a0a5a4bfaab9b2e5a8a4a6">Email Us</a>
   </nav>
   <div class="footer-socials">
     <a class="footer-social-link" href="https://www.facebook.com/roundtheclocknotary" target="_blank" aria-label="Facebook">
@@ -870,7 +930,7 @@ var APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbxLKopAUC7kwjZjZ6Hy
 var GCAL_API_KEY="AIzaSyBaEDQufz1Ipb6Q13frcp5JE8m28RHxfHM";
 var GCAL_ID="rtcnotary1@gmail.com";
 
-var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalDelivery:false,surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
+var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
 
 function genBookingId(){var code=SVC_CODE[S.serviceType]||"XX";var now=new Date();return"RTC-"+code+"-"+String(now.getFullYear()).slice(-2)+pad2(now.getMonth()+1)+pad2(now.getDate())+"-"+(Math.floor(Math.random()*900)+100);}
 function fmt(n){return"$"+n.toFixed(2);}
@@ -878,7 +938,7 @@ function pad2(n){return n<10?"0"+n:""+n;}
 function updateDeposit(){if(S.isFar){S.deposit=75;return;}if(S.serviceType)S.deposit=SVC[S.serviceType].deposit;}
 function isHoliday(d){return FEDERAL_HOLIDAYS.indexOf(d)>=0;}
 function distMi(la1,ln1,la2,ln2){var R=3958.8,dLat=(la2-la1)*Math.PI/180,dLng=(ln2-ln1)*Math.PI/180;var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
-function calcTotal(){var t=S.travelFee+S.serviceBase+S.stateFee;t+=S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20;if(S.digitalDelivery)t+=5;Object.keys(S.surcharges).forEach(function(k){t+=S.surcharges[k];});return t;}
+function calcTotal(){var t=S.travelFee+S.serviceBase+S.stateFee;t+=S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20;if(S.digitalClock)t+=5;if(S.timeFlies)t+=5;Object.keys(S.surcharges).forEach(function(k){t+=S.surcharges[k];});return t;}
 
 function buildLines(){var lines=[];
   if(S.bookingMode==="remote"){lines.push({k:"Remote Online — No Travel",v:"FREE",free:true});}
@@ -891,7 +951,8 @@ function buildLines(){var lines=[];
   if(S.print1>0)lines.push({k:"Single Print ("+S.print1+" pg)",v:fmt(S.print1)});
   if(S.print2>0)lines.push({k:"Duplex Print ("+S.print2+" pg)",v:fmt(S.print2*1.5)});
   if(S.witness>0)lines.push({k:"Witness ("+S.witness+")",v:fmt(S.witness*20)});
-  if(S.digitalDelivery)lines.push({k:"Digital Delivery",v:fmt(5)});
+  if(S.digitalClock)lines.push({k:"Digital Clock (E-Notary)",v:fmt(5)});
+  if(S.timeFlies){var dm=S.deliveryMethod==="email"?"Email":S.deliveryMethod==="fax"?"Fax":"Mail";lines.push({k:"Time Flies \u00b7 Delivery ("+dm+")",v:fmt(5)});}
   var sl={rushhour:"Rush Hour",offclock:"Off the Clock",midnight:"Clock Strikes Midnight",redletter:"Red Letter Day"};
   Object.keys(S.surcharges).forEach(function(k){lines.push({k:sl[k]||k,v:"+"+fmt(S.surcharges[k])});});
   return lines;}
@@ -934,12 +995,39 @@ function setBookingMode(mode){
   }
 }
 
-function toggleDigitalDelivery(){
-  S.digitalDelivery=!S.digitalDelivery;
-  var row=document.getElementById("digitalDeliveryRow");
-  var price=document.getElementById("digitalPrice");
-  if(row)row.classList.toggle("on",S.digitalDelivery);
-  if(price)price.textContent=S.digitalDelivery?"$5.00":"$0.00";
+function toggleDigitalClock(){
+  var row=document.getElementById("digitalClockRow");
+  if(row&&row.style.pointerEvents==="none")return;
+  S.digitalClock=!S.digitalClock;
+  if(row)row.classList.toggle("on",S.digitalClock);
+  var price=document.getElementById("digitalClockPrice");
+  if(price)price.textContent=S.digitalClock?"$5.00":"$0.00";
+  updateRT();
+}
+
+function toggleTimeFlies(){
+  S.timeFlies=!S.timeFlies;
+  var row=document.getElementById("timeFlyRow");
+  var price=document.getElementById("timeFlyPrice");
+  if(row)row.classList.toggle("on",S.timeFlies);
+  if(price)price.textContent=S.timeFlies?"$5.00":"$0.00";
+  if(!S.timeFlies){
+    document.querySelectorAll(".method-btn").forEach(function(b){b.classList.remove("sel");});
+    var pn=document.getElementById("postageNotice");if(pn)pn.classList.remove("show");
+    S.deliveryMethod="email";
+  } else {
+    selectDeliveryMethod("email");
+  }
+  updateRT();
+}
+
+function selectDeliveryMethod(method){
+  S.deliveryMethod=method;
+  document.querySelectorAll(".method-btn").forEach(function(b){b.classList.remove("sel");});
+  var btn=document.getElementById("method"+method.charAt(0).toUpperCase()+method.slice(1));
+  if(btn)btn.classList.add("sel");
+  var pn=document.getElementById("postageNotice");
+  if(pn)pn.classList.toggle("show",method==="mail");
   updateRT();
 }
 
@@ -977,7 +1065,14 @@ function handleAddr(){
     updateRT();setTimeout(function(){showStep(2);},900);
   });}
 
-function handleSvc(type){document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});var btn=document.querySelector(".opt-btn[data-service='"+type+"']");if(btn)btn.classList.add("sel");var svc=SVC[type];S.serviceType=type;S.serviceBase=svc.base;S.serviceLabel=svc.label;S.stateFee=(S.bookingMode==="remote"&&svc.stateFee>0)?25:svc.stateFee;updateDeposit();S.extraTicks=0;S.minuteSeals=0;["extraTicks","minuteSeals"].forEach(function(t){var v=document.getElementById(t+"Val");if(v)v.textContent="0";var p=document.getElementById(t+"Price");if(p)p.textContent="$0.00";});var isSecond=type==="second",isMinute=type==="minute";var etRow=document.getElementById("extraTicksRow");if(etRow)etRow.style.display=(isSecond||isMinute)?"flex":"none";var msRow=document.getElementById("minuteSealsRow");if(msRow)msRow.style.display=isMinute?"flex":"none";var sub=document.getElementById("step3Sub");if(sub)sub.textContent=isMinute?"All add-ons available.":(isSecond?"Add-ons plus Extra Ticks available.":"Add-ons 1-3 available.");updateRT();}
+function handleSvc(type){document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});var btn=document.querySelector(".opt-btn[data-service='"+type+"']");if(btn)btn.classList.add("sel");var svc=SVC[type];S.serviceType=type;S.serviceBase=svc.base;S.serviceLabel=svc.label;S.stateFee=(S.bookingMode==="remote"&&svc.stateFee>0)?25:svc.stateFee;updateDeposit();S.extraTicks=0;S.minuteSeals=0;["extraTicks","minuteSeals"].forEach(function(t){var v=document.getElementById(t+"Val");if(v)v.textContent="0";var p=document.getElementById(t+"Price");if(p)p.textContent="$0.00";});var isSecond=type==="second",isMinute=type==="minute";var etRow=document.getElementById("extraTicksRow");if(etRow)etRow.style.display=(isSecond||isMinute)?"flex":"none";var msRow=document.getElementById("minuteSealsRow");if(msRow)msRow.style.display=isMinute?"flex":"none";
+  var sub=document.getElementById("step3Sub");if(sub)sub.textContent=isMinute?"All add-ons available.":(isSecond?"Add-ons plus Extra Ticks available.":"Add-ons 1\u20133 available.");
+  var isClosing=type==="closing";
+  var dcRow=document.getElementById("digitalClockRow");
+  var ronBadge=document.getElementById("ronBadge");
+  var dcSub=document.getElementById("digitalClockSub");
+  if(dcRow){if(isClosing){dcRow.style.opacity=".38";dcRow.style.pointerEvents="none";if(ronBadge)ronBadge.style.display="inline";if(dcSub)dcSub.textContent="Not available for Closing Table \u2014 RON requires lender authorization.";if(S.digitalClock){S.digitalClock=false;dcRow.classList.remove("on");var dp=document.getElementById("digitalClockPrice");if(dp)dp.textContent="$0.00";}}else{dcRow.style.opacity="1";dcRow.style.pointerEvents="auto";if(ronBadge)ronBadge.style.display="none";if(dcSub)dcSub.textContent="$5.00 flat \u2014 electronic signature on your document";}}
+  updateRT();}
 
 function handleCounter(target,dir){var valEl=document.getElementById(target+"Val");var priceEl=document.getElementById(target+"Price");if(!valEl||!priceEl)return;var cur=Math.max(0,(parseInt(valEl.textContent)||0)+dir);valEl.textContent=cur;S[target]=cur;var prices={extraTicks:10,minuteSeals:10,print1:1.0,print2:1.5,witness:20};var row=document.getElementById(target+"Row");if(row)row.classList.toggle("on",cur>0);priceEl.textContent=fmt(cur*prices[target]);updateRT();}
 
@@ -1002,12 +1097,12 @@ function handleMockPayment(){S.depositPaid=true;S.paypalOrderId="MOCK-"+Date.now
 
 function buildStep8(){function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}set("tyName",S.clientName.split(" ")[0]);set("tyBookingId","Booking #: "+S.bookingId);set("tyApptVal",S.apptDate?(S.apptDate+" at "+S.apptTime):"Free Quote");set("tyServiceVal",S.serviceLabel+" · "+((S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60)+" min appointment");set("tyBookingIdAppt",S.bookingId);var total=calcTotal(),dep=S.deposit,due=total-dep;set("sumTotal8",fmt(total));set("sumDepositPaid8",fmt(dep)+" (Paid)");set("sumDue8",fmt(due));var sl8=document.getElementById("sumLines8");if(sl8)sl8.innerHTML=buildLines().map(function(l){return"<div class='sum-line'><span class='sum-key'>"+l.k+"</span><span class='sum-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join("");}
 
-function logBooking(){var zone=S.bookingMode==="remote"?"Remote Online":(S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard"));var total=calcTotal();fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({bookingId:S.bookingId,clientName:S.clientName,clientPhone:S.clientPhone,clientEmail:S.clientEmail,address:S.bookingMode==="remote"?"Remote Online":S.address,serviceLabel:S.serviceLabel,apptDate:S.apptDate,apptTime:S.apptTime,apptTimeISO:S.apptTimeISO,durationMinutes:(S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60,miles:S.dist.toFixed(1),zone:zone,total:fmt(total),depositPaid:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit),paypalOrderId:S.paypalOrderId,gcalEventId:S.gcalEventId,digitalDelivery:S.digitalDelivery,bookingMode:S.bookingMode})}).catch(function(){});}
+function logBooking(){var zone=S.bookingMode==="remote"?"Remote Online":(S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard"));var total=calcTotal();fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({bookingId:S.bookingId,clientName:S.clientName,clientPhone:S.clientPhone,clientEmail:S.clientEmail,address:S.bookingMode==="remote"?"Remote Online":S.address,serviceLabel:S.serviceLabel,apptDate:S.apptDate,apptTime:S.apptTime,apptTimeISO:S.apptTimeISO,durationMinutes:(S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60,miles:S.dist.toFixed(1),zone:zone,total:fmt(total),depositPaid:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit),paypalOrderId:S.paypalOrderId,gcalEventId:S.gcalEventId,digitalClock:S.digitalClock,timeFlies:S.timeFlies,deliveryMethod:S.deliveryMethod,bookingMode:S.bookingMode})}).catch(function(){});}
 
 function selectRange(el,key,amt){document.querySelectorAll(".range-card").forEach(function(c){c.classList.remove("sel");});el.classList.add("sel");delete S.surcharges.offclock;delete S.surcharges.midnight;if(amt>0)S.surcharges[key]=amt;updateDeposit();updateRT();}
 
 function startOver(){
-  S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalDelivery:false,surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
+  S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
   function clr(id){var el=document.getElementById(id);if(el)el.value="";}
   function txt(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
   function cls(id,c){var el=document.getElementById(id);if(el)el.className=c;}
@@ -1035,9 +1130,15 @@ function startOver(){
   var ronNotice=document.getElementById("ronNotice");if(ronNotice)ronNotice.classList.remove("show");
   var btnIcon=document.getElementById("addrBtnIcon");if(btnIcon)btnIcon.src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-pin.png";
   var btnLabel=document.getElementById("addrBtnLabel");if(btnLabel)btnLabel.innerHTML="Find My Location &rarr;";
-  // Reset digital delivery
-  var dRow=document.getElementById("digitalDeliveryRow");if(dRow)dRow.classList.remove("on");
-  var dPrice=document.getElementById("digitalPrice");if(dPrice)dPrice.textContent="$0.00";
+  // Reset Digital Clock and Time Flies
+  var dcRow=document.getElementById("digitalClockRow");if(dcRow){dcRow.classList.remove("on");dcRow.style.opacity="1";dcRow.style.pointerEvents="auto";}
+  var dcPrice=document.getElementById("digitalClockPrice");if(dcPrice)dcPrice.textContent="$0.00";
+  var ronBadge=document.getElementById("ronBadge");if(ronBadge)ronBadge.style.display="none";
+  var dcSub=document.getElementById("digitalClockSub");if(dcSub)dcSub.textContent="$5.00 flat \u2014 electronic signature on your document";
+  var tfRow=document.getElementById("timeFlyRow");if(tfRow)tfRow.classList.remove("on");
+  var tfPrice=document.getElementById("timeFlyPrice");if(tfPrice)tfPrice.textContent="$0.00";
+  document.querySelectorAll(".method-btn").forEach(function(b){b.classList.remove("sel");});
+  var pn=document.getElementById("postageNotice");if(pn)pn.classList.remove("show");
   showStep(1);
 }
 
@@ -1062,10 +1163,4 @@ document.addEventListener("DOMContentLoaded",function(){
   on("back6","click",function(){showStep(5);});
   on("next6","click",function(){if(!validateStep6())return;buildPaymentStep();showStep(7);});
   on("back7","click",function(){showStep(6);});
-  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var chkImg=document.getElementById("faqAckChk");if(chkImg){var img=chkImg.querySelector("img");if(img)img.style.opacity=S.faqAcked?"1":"0";chkImg.style.background=S.faqAcked?"var(--navy)":"";}var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}});
-  on("printBtn8","click",function(){if(S.faqAcked)window.print();});
-  on("startOverBtn","click",startOver);
-});
-</script>
-</body>
-</html>
+  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var chkImg=document.getElementById("faqAckChk");if(chkImg){var img=chkImg.querySelector("img");if(img)img.style.opacity=S.faqAcked?"1":"0";chkImg.style.background=S.faqAcked?"var(--navy)":"";}var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.sty
