@@ -908,7 +908,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="modal-contact">
         <span>817-512-7217</span>
         <span class="modal-contact-dot">&middot;</span>
-        <span><a href="/cdn-cgi/l/email-protection#bed7d0d8d1feccd1cbd0dacad6dbddd2d1ddd5d0d1cadfccc790ddd1d3" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="3950575f56794b564c575d4d515c5a55565a5257564d584b40175a5654">[email&#160;protected]</span></a></span>
+        <span><a href="mailto:info@roundtheclocknotary.com" style="color:var(--gold-bright);text-decoration:none">info@roundtheclocknotary.com</a></span>
         <span class="modal-contact-dot">&middot;</span>
         <span>roundtheclocknotary.com</span>
       </div>
@@ -941,7 +941,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="modal-contact">
       <span>817-512-7217</span>
       <span class="modal-contact-dot">&middot;</span>
-      <span><a href="/cdn-cgi/l/email-protection#e881868e87a89a879d868c9c808d8b84878b8386879c899a91c68b8785" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="d4bdbab2bb94a6bba1bab0a0bcb1b7b8bbb7bfbabba0b5a6adfab7bbb9">[email&#160;protected]</span></a></span>
+      <span><a href="mailto:info@roundtheclocknotary.com" style="color:var(--gold-bright);text-decoration:none">info@roundtheclocknotary.com</a></span>
       <span class="modal-contact-dot">&middot;</span>
       <span>roundtheclocknotary.com</span>
     </div>
@@ -969,7 +969,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="footer-nav-dot"></div>
     <a href="tel:+18175127217">817-512-7217</a>
     <div class="footer-nav-dot"></div>
-    <a href="/cdn-cgi/l/email-protection#51383f373e11233e243f35253934323d3e323a3f3e253023287f323e3c">Email Us</a>
+    <a href="mailto:info@roundtheclocknotary.com">Email Us</a>
   </nav>
   <div class="footer-socials">
     <a class="footer-social-link" href="https://www.facebook.com/roundtheclocknotary" target="_blank" aria-label="Facebook">
@@ -986,7 +986,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 var FEDERAL_HOLIDAYS=['2025-01-01','2025-01-20','2025-02-17','2025-05-26','2025-06-19','2025-07-04','2025-09-01','2025-10-13','2025-11-11','2025-11-27','2025-12-25','2026-01-01','2026-01-19','2026-02-16','2026-05-25','2026-06-19','2026-07-04','2026-09-07','2026-10-12','2026-11-11','2026-11-26','2026-12-25','2027-01-01','2027-01-18','2027-02-15','2027-05-31','2027-06-19','2027-07-04','2027-09-06','2027-10-11','2027-11-11','2027-11-25','2027-12-25'];
 var SVC_CODE={second:"SH",minute:"MH",bedside:"BC",closing:"LS"};
 var POS=[{name:"Granbury Post Office",lat:32.447311,lng:-97.786530},{name:"Acton Post Office",lat:32.419700,lng:-97.689700}];
@@ -1244,4 +1244,13 @@ document.addEventListener("DOMContentLoaded",function(){
     var st=document.getElementById("leadStatus");
     if(!name||!email||email.indexOf("@")<0){if(st){st.style.display="block";st.textContent="Please enter your name and a valid email.";}return;}
     var total=calcTotal();
-    fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address|
+    fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
+    var form=document.getElementById("leadContactForm");
+    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.85rem;color:var(--navy);font-weight:700;margin-bottom:.5rem\">Got it! We\'ll be in touch.</div><div style=\"font-size:.8rem;color:var(--muted)\">We\'ll reach out shortly to confirm your details.</div></div>";
+  });
+  setBookingMode("inperson");
+  var mps=document.getElementById("modalPrintSheet");if(mps)mps.style.setProperty("display","none","important");
+});
+</script>
+</body>
+</html>
