@@ -6,7 +6,6 @@
 <title>Round the Clock Notary — Free Quote</title>
 <link rel="icon" type="image/png" href="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/round_clock_favicon_64.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://www.paypal.com/sdk/js?client-id=AVSw_Z_wHbrF7Ldula64ka2HcQgWRsRWG3cykmyz8c1t84AmdfnUtmhVFAHghCiIt0a5wbnuVpEPZ1by&currency=USD&components=buttons"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -394,6 +393,8 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 .footer-rule{height:1px;background:rgba(201,168,76,.15);margin-bottom:.85rem}
 .footer-copy{text-align:center;font-size:.68rem;color:rgba(255,255,255,.4);line-height:1.9;font-family:"DM Sans",sans-serif}
 .footer-copy span{display:block}
+
+.modal-print-sheet{display:none !important}
 
 @media print{
   /* Default: printing step 8 confirmation */
@@ -914,7 +915,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="modal-contact">
         <span>817-512-7217</span>
         <span class="modal-contact-dot">&middot;</span>
-        <span>info@roundtheclocknotary.com</span>
+        <span><a href="mailto:info@roundtheclocknotary.com">info@roundtheclocknotary.com</a></span>
         <span class="modal-contact-dot">&middot;</span>
         <span>roundtheclocknotary.com</span>
       </div>
@@ -940,14 +941,14 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 </div>
 
 <!-- Hidden print-only sheet for modal quote -->
-<div class="modal-print-sheet" id="modalPrintSheet">
+<div class="modal-print-sheet" id="modalPrintSheet" style="display:none">
   <div class="modal-hdr">
     <div class="modal-logo"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/logo.png" alt="Round the Clock Notary"></div>
     <div class="modal-brand">Round the Clock Notary</div>
     <div class="modal-contact">
       <span>817-512-7217</span>
       <span class="modal-contact-dot">&middot;</span>
-      <span>info@roundtheclocknotary.com</span>
+      <span><a href="mailto:info@roundtheclocknotary.com">info@roundtheclocknotary.com</a></span>
       <span class="modal-contact-dot">&middot;</span>
       <span>roundtheclocknotary.com</span>
     </div>
@@ -1108,7 +1109,7 @@ function toggleTab(which){document.querySelectorAll('.tab-btn').forEach(function
 
 function showQuoteModal(){var total=calcTotal(),dep=S.deposit,due=total-dep;var lines=buildLines();var lineHTML=lines.map(function(l){return'<div class="modal-line"><span>'+l.k+'</span><span'+(l.free?' style="color:var(--green)"':'')+'>'+l.v+'</span></div>';}).join('');var ml=document.getElementById('modalLines');if(ml)ml.innerHTML=lineHTML;var mlp=document.getElementById('modalLinesPrint');if(mlp)mlp.innerHTML=lineHTML;function setEl(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}setEl('modalTotal',total.toFixed(2));setEl('modalTotalBottom',fmt(total));setEl('modalDeposit',fmt(dep));setEl('modalDue',fmt(due));setEl('modalTotalPrint',total.toFixed(2));setEl('modalTotalBottomPrint',fmt(total));setEl('modalDepositPrint',fmt(dep));setEl('modalDuePrint',fmt(due));var qm=document.getElementById('quoteModal');if(qm)qm.classList.add('show');}
 function closeQuoteModal(){var qm=document.getElementById('quoteModal');if(qm)qm.classList.remove('show');}
-function printModalQuote(){document.body.classList.add('printing-modal');window.print();document.body.classList.remove('printing-modal');}
+function printModalQuote(){var ps=document.getElementById('modalPrintSheet');if(ps)ps.style.display='';document.body.classList.add('printing-modal');window.print();document.body.classList.remove('printing-modal');if(ps)ps.style.display='none';}
 
 function getSlotSurcharges(slotDate,bookingTime){var surcharges={};var h=slotDate.getHours();var day=slotDate.getDay();var isWeekend=(day===0||day===6);if(h>=22||h<8)surcharges.midnight=50;if(isWeekend)surcharges.offclock=15;if(!isWeekend&&h>=18&&h<22)surcharges.offclock=15;if(bookingTime&&(slotDate.getTime()-bookingTime.getTime())<=3600000&&slotDate>bookingTime){surcharges.rushhour=100;}return surcharges;}
 
@@ -1163,7 +1164,7 @@ function buildStep5(){var total=calcTotal(),dep=S.deposit,due=total-dep;function
 
 function validateStep6(){var name=document.getElementById("clientName").value.trim();var phone=document.getElementById("clientPhone").value.trim();var email=document.getElementById("clientEmail").value.trim();var ok=true;function setStatus(id,cls,msg){var el=document.getElementById(id);if(el){el.className="addr-status"+cls;el.textContent=msg;}}if(!name){setStatus("nameStatus"," err","Name is required.");ok=false;}else{setStatus("nameStatus","","");}if(!phone){setStatus("phoneStatus"," err","Phone is required.");ok=false;}else{setStatus("phoneStatus","","");}if(!email||email.indexOf("@")<0){setStatus("emailStatus"," err","Valid email is required.");ok=false;}else{setStatus("emailStatus","","");}if(!S.tosAgreed){alert("Please agree to the Terms of Service to continue.");ok=false;}if(ok){S.clientName=name;S.clientPhone=phone;S.clientEmail=email;}return ok;}
 
-function buildPaymentStep(){var total=calcTotal(),dep=S.deposit,due=total-dep;function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}var psl=document.getElementById("paymentSummaryLines");if(psl)psl.innerHTML=buildLines().map(function(l){return"<div class='rt-line'><span>"+l.k+"</span><span class='rt-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join("");set("paymentTotal",total.toFixed(2));set("paymentDepositAmt",fmt(dep));set("paymentDueAmt",fmt(due));set("mockDepositLabel",fmt(dep));var atd=document.getElementById("apptTimeDisplay");if(atd)atd.textContent=S.apptDate?(S.apptDate+" at "+S.apptTime):"Free Quote — No specific time selected";var ldn=document.getElementById("longDistNotice");if(ldn)ldn.style.display=S.isFar?"block":"none";var ppContainer=document.getElementById("paypal-button-container");var mockBtn=document.getElementById("paypalMockBtn");if(ppContainer)ppContainer.innerHTML="";if(window.paypal&&ppContainer&&mockBtn){mockBtn.style.display="none";ppContainer.style.display="block";window.paypal.Buttons({style:{layout:"vertical",color:"blue",shape:"rect",label:"pay"},createOrder:function(data,actions){return actions.order.create({purchase_units:[{description:"Round the Clock Notary — Appointment Deposit",amount:{value:dep.toFixed(2),currency_code:"USD"}}]});},onApprove:function(data,actions){return actions.order.capture().then(function(details){S.depositPaid=true;S.paypalOrderId=details.id;S.bookingId=genBookingId();logBooking();buildStep8();showStep(8);});},onError:function(){alert("Payment error. Please try again or call 817-512-7217.");}}).render("#paypal-button-container");}else{if(ppContainer)ppContainer.style.display="none";if(mockBtn)mockBtn.style.display="block";}}
+function buildPaymentStep(){var total=calcTotal(),dep=S.deposit,due=total-dep;function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}var psl=document.getElementById("paymentSummaryLines");if(psl)psl.innerHTML=buildLines().map(function(l){return"<div class='rt-line'><span>"+l.k+"</span><span class='rt-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join("");set("paymentTotal",total.toFixed(2));set("paymentDepositAmt",fmt(dep));set("paymentDueAmt",fmt(due));set("mockDepositLabel",fmt(dep));var atd=document.getElementById("apptTimeDisplay");if(atd)atd.textContent=S.apptDate?(S.apptDate+" at "+S.apptTime):"Free Quote — No specific time selected";var ldn=document.getElementById("longDistNotice");if(ldn)ldn.style.display=S.isFar?"block":"none";var ppContainer=document.getElementById("paypal-button-container");var mockBtn=document.getElementById("paypalMockBtn");if(ppContainer)ppContainer.innerHTML="";function renderPayPal(){if(window.paypal&&ppContainer&&mockBtn){mockBtn.style.display="none";ppContainer.style.display="block";window.paypal.Buttons({style:{layout:"vertical",color:"blue",shape:"rect",label:"pay"},createOrder:function(data,actions){return actions.order.create({purchase_units:[{description:"Round the Clock Notary — Appointment Deposit",amount:{value:dep.toFixed(2),currency_code:"USD"}}]});},onApprove:function(data,actions){return actions.order.capture().then(function(details){S.depositPaid=true;S.paypalOrderId=details.id;S.bookingId=genBookingId();logBooking();buildStep8();showStep(8);});},onError:function(){alert("Payment error. Please try again or call 817-512-7217.");}}).render("#paypal-button-container");}else{if(ppContainer)ppContainer.style.display="none";if(mockBtn)mockBtn.style.display="block";}}if(window.paypal){renderPayPal();}else{var s=document.createElement("script");s.src="https://www.paypal.com/sdk/js?client-id=AVSw_Z_wHbrF7Ldula64ka2HcQgWRsRWG3cykmyz8c1t84AmdfnUtmhVFAHghCiIt0a5wbnuVpEPZ1by&currency=USD&components=buttons";s.onload=function(){renderPayPal();};s.onerror=function(){if(ppContainer)ppContainer.style.display="none";if(mockBtn)mockBtn.style.display="block";};document.head.appendChild(s);}}
 
 function handleMockPayment(){S.depositPaid=true;S.paypalOrderId="MOCK-"+Date.now();S.bookingId=genBookingId();logBooking();buildStep8();showStep(8);}
 
@@ -1235,4 +1236,10 @@ document.addEventListener("DOMContentLoaded",function(){
   on("back6","click",function(){showStep(5);});
   on("next6","click",function(){if(!validateStep6())return;buildPaymentStep();showStep(7);});
   on("back7","click",function(){showStep(6);});
-  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var chkImg=document.getElementById("faqAckChk");if(chkImg){var img=chkImg.querySelector("img");if(img)img.style.opacity=S.faqAcked?"1":"0";chkImg.style.background=S.faqAcked?"var(--navy)":"";}var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.sty
+  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var pb=document.getElementById("printBtn8");if(pb){pb.disabled=!S.faqAcked;pb.style.opacity=S.faqAcked?"1":".5";}});
+  on("printBtn8","click",function(){if(S.faqAcked)window.print();});
+  on("startOverBtn","click",startOver);
+});
+</script>
+</body>
+</html>
