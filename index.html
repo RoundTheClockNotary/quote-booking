@@ -1674,10 +1674,10 @@ document.addEventListener("DOMContentLoaded",function(){
     var total=calcTotal();
     fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
     var form=document.getElementById("leadContactForm");
-    
-    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem\">Message Sent</div><div style=\"font-size:.85rem;color:#3d3520\">We\'ll be in touch shortly.</div></div>";
-    if(st)st.style.display="none";
+    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.85rem;color:var(--navy);font-weight:700;margin-bottom:.5rem\">Got it! We\'ll be in touch.</div><div style=\"font-size:.8rem;color:var(--muted)\">We\'ll reach out shortly to confirm your details.</div></div>";
   });
+  var addrNavBtn=document.getElementById("addrNavBtn");if(addrNavBtn)addrNavBtn.style.display="flex";
+  var mps=document.getElementById("modalPrintSheet");if(mps)mps.style.setProperty("display","none","important");
 });
 </script>
 </body>
