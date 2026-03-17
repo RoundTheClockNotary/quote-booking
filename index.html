@@ -468,9 +468,39 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   /* Default: printing step 8 confirmation */
   header,.not-booking-bar,.rt,.step:not(#step8),.nav,footer{display:none !important}
   #step8{display:block !important}
-  body{background:white}.wrapper{padding:0;max-width:100%}
-  .sum-card{box-shadow:none}
-  #printBtn8,#startOverBtn{display:none !important}
+  body{background:white !important}
+  .wrapper{padding:0;max-width:100%}
+  #printBtn8,#startOverBtn,#faqAckRow,.step8-actions,.act-btns{display:none !important}
+  /* Compress step 8 hero */
+  .ty-hdr{padding:.5rem 1rem !important}
+  .ty-icon{width:36px !important;height:36px !important;margin:.25rem auto !important}
+  .ty-badge{font-size:.55rem !important;padding:.15rem .5rem !important;margin-bottom:.25rem !important}
+  .ty-booking-id{font-size:.62rem !important;margin-bottom:.2rem !important}
+  .ty-name{font-size:1.3rem !important;margin-bottom:.15rem !important}
+  .ty-sub{font-size:.72rem !important}
+  /* Compress appointment card */
+  .ty-appt-card{padding:.6rem .9rem !important;margin:.5rem 0 !important}
+  .ty-appt-label{font-size:.55rem !important;margin-bottom:.2rem !important}
+  .ty-appt-date{font-size:.9rem !important}
+  .ty-appt-svc,.ty-appt-ref{font-size:.68rem !important}
+  /* Compress pending notice */
+  .ty-pending-notice{padding:.5rem .75rem !important;margin:.4rem 0 !important;font-size:.72rem !important}
+  .ty-pending-notice p{margin:.15rem 0 !important}
+  /* Compress quote summary */
+  .ty-sum-section{padding:.5rem 0 !important}
+  .sum-sec{font-size:.6rem !important;margin-bottom:.3rem !important}
+  .sum-line{padding:.15rem 0 !important;font-size:.75rem !important}
+  .sum-key,.sum-val{font-size:.75rem !important}
+  .sum-div{margin:.3rem 0 !important}
+  .sum-tot-row{padding:.2rem 0 !important}
+  .stl{font-size:.72rem !important}
+  .stv{font-size:.85rem !important}
+  #sumDue8{font-size:1rem !important}
+  /* Compress disclaimer */
+  .disc,.policy,.ty-disc{padding:.35rem .5rem !important;font-size:.68rem !important;margin:.3rem 0 !important}
+  /* Force single page */
+  @page{margin:.35in;size:letter portrait}
+  #step8{page-break-inside:avoid}
   /* Modal print override */
   body.printing-modal header,
   body.printing-modal .not-booking-bar,
@@ -494,7 +524,6 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   .modal-print-sheet .modal-actions{display:none !important}
   .modal-print-sheet .modal-tv.gold{color:#c9a84c !important}
   .modal-print-sheet .modal-notice{border-left-color:#c9a84c;background:#f8f3e8}
-  @page{margin:.4in;size:letter portrait}
 }
 
 /* ── FAQ PREP MODAL ── */
@@ -1081,7 +1110,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 <div class="faq-modal-overlay" id="faqModal">
   <div class="faq-modal">
     <div class="faq-modal-hdr">
-      <div style="width:64px;height:64px;margin:0 auto .6rem;position:relative;z-index:2"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-logo.png" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(201,168,76,.4))" alt="Round the Clock Notary"></div>
+      <div style="width:64px;height:64px;margin:0 auto .6rem;position:relative;z-index:2"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/logo.png" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(201,168,76,.4))" alt="Round the Clock Notary"></div>
       <div class="faq-modal-title">Before the Clock Starts</div>
       <div class="faq-modal-sub">Scroll to the bottom to confirm you have read the preparation guide.</div>
       <button class="faq-modal-close" onclick="closeFAQModal()">&#x2715;</button>
@@ -1112,7 +1141,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
         <div class="faq-a">Appointments canceled less than 24 hours before the scheduled time are non-refundable. Deposits secure the appointment time and travel schedule. If documents are incomplete or identification is missing at the time of the appointment, a new appointment and new deposit will be required.</div>
       </div>
       <div style="text-align:center;padding:.75rem 0 .25rem;border-top:1px solid var(--border);margin-top:.5rem">
-        <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" style="font-size:.75rem;color:var(--gold);font-weight:600;text-decoration:none;font-family:'Cinzel',serif;letter-spacing:.05em">View full FAQ on our website &rarr;</a>
+        <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" style="font-size:.75rem;color:var(--navy);font-weight:600;text-decoration:underline;font-family:'Cinzel',serif;letter-spacing:.05em">Visit Our Website for FAQ &rarr;</a>
       </div>
     </div>
     <div class="faq-modal-footer">
