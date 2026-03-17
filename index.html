@@ -1484,13 +1484,6 @@ function logBooking(){
   var zone=S.bookingMode==="remote"?"Remote Online":(S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard"));
   var total=calcTotal();
   var nn=document.getElementById("noteNotary");var noteVal=nn?nn.value.trim():"";
-  var tfDetail="";
-  if(S.timeFlies){
-    if(S.tfDeliveryMethod==="email")tfDetail="Email: "+S.tfEmail;
-    else if(S.tfDeliveryMethod==="fax")tfDetail="Fax: "+S.tfFax;
-    else if(S.tfDeliveryMethod==="mail")tfDetail="Mail: "+S.tfMailName+", "+S.tfMailAddr+", "+S.tfMailCity+" "+S.tfMailState+" "+S.tfMailZip+" ["+S.shippingService+"]";
-    else if(S.tfDeliveryMethod==="bring")tfDetail="Bring to appointment";
-  }
   var surchargeList=[];
   var surchargeLabels={rushhour:"Rush Hour (+$100)",offclock:"Off the Clock (+$15)",midnight:"Clock Strikes Midnight (+$50)",redletter:"Red Letter Day (+$50)"};
   Object.keys(S.surcharges).forEach(function(k){surchargeList.push(surchargeLabels[k]||k);});
@@ -1675,4 +1668,13 @@ document.addEventListener("DOMContentLoaded",function(){
     var st=document.getElementById("leadStatus");
     if(!name||!email||email.indexOf("@")<0){if(st){st.style.display="block";st.textContent="Please enter your name and a valid email.";}return;}
     var total=calcTotal();
-    fetch(A
+    fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
+    var form=document.getElementById("leadContactForm");
+    
+    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem\">Message Sent</div><div style=\"font-size:.85rem;color:#3d3520\">We\'ll be in touch shortly.</div></div>";
+    if(st)st.style.display="none";
+  });
+});
+</script>
+</body>
+</html>
