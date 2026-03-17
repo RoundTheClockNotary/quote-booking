@@ -976,19 +976,6 @@ body {
 
 <!-- MAIN -->
 <main class="main">
-  <div class="stats-row">
-    <div class="stat-card"><span class="stat-num" id="sPending">—</span><span class="stat-lbl">Pending</span></div>
-    <div class="stat-card"><span class="stat-num" id="sClaimed">—</span><span class="stat-lbl">Claimed</span></div>
-    <div class="stat-card"><span class="stat-num" id="sTotal">—</span><span class="stat-lbl">All Jobs</span></div>
-  </div>
-
-  <div class="filter-row">
-    <span class="filter-lbl">View:</span>
-    <button class="filter-btn active" onclick="setFilter('all',this)">All Jobs</button>
-    <button class="filter-btn" onclick="setFilter('PENDING',this)">Pending</button>
-    <button class="filter-btn" onclick="setFilter('CLAIMED',this)">Claimed</button>
-  </div>
-
   <!-- EARNINGS TRACKER -->
   <div class="tracker" id="earningsTracker">
     <button class="tracker-toggle" onclick="toggleTracker()">
@@ -1004,6 +991,19 @@ body {
       <div id="trackerSummary"><!-- filled by renderTracker() --></div>
       <div id="trackerMonths"><!-- filled by renderTracker() --></div>
     </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card"><span class="stat-num" id="sPending">—</span><span class="stat-lbl">Pending</span></div>
+    <div class="stat-card"><span class="stat-num" id="sClaimed">—</span><span class="stat-lbl">Claimed</span></div>
+    <div class="stat-card"><span class="stat-num" id="sTotal">—</span><span class="stat-lbl">All Jobs</span></div>
+  </div>
+
+  <div class="filter-row">
+    <span class="filter-lbl">View:</span>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All Jobs</button>
+    <button class="filter-btn" onclick="setFilter('PENDING',this)">Pending</button>
+    <button class="filter-btn" onclick="setFilter('CLAIMED',this)">Claimed</button>
   </div>
 
   <div id="jobsContainer">
@@ -1044,8 +1044,8 @@ const MOCK_JOBS = [
     dateTime:'Sat, Mar 21, 2026 at 10:30 AM',
     serviceType:'Second Hand — Single Notarization',
     addons:['Single-sided print (5 pages)'], surcharges:[],
-    baseFee:20, stateFee:10, travelFee:0, addonsTotal:5, surchargesTotal:0,
-    total:35, depositPaid:30, dueAtSigning:5,
+    baseFee:30, stateFee:10, travelFee:0, addonsTotal:5, surchargesTotal:0,
+    total:45, depositPaid:30, dueAtSigning:15,
     noteToNotary:'Client is elderly. Please allow extra time. Documents are loan modification paperwork.',
     notaryName:'', claimedAt:''
   },
@@ -1074,7 +1074,7 @@ const MOCK_JOBS = [
     baseFee:75, stateFee:0, travelFee:13.05, addonsTotal:20, surchargesTotal:0,
     total:108.05, depositPaid:50, dueAtSigning:58.05,
     noteToNotary:'Patient at Baylor Scott & White. Check in at front desk, room 214.',
-    notaryName:'Maria Torres', claimedAt:'Mar 18, 9:12 AM'
+    notaryName:'Sharee Westlund', claimedAt:'Mar 18, 9:12 AM'
   },
   {
     // Closing Table, long distance, Rush Hour, witness — tests cap scenario
