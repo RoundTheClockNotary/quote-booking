@@ -811,6 +811,9 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
             <p>Review our preparation guide so you know exactly what to bring and what to expect.</p>
             <button class="step5-faq-link-btn" onclick="openFAQModal()">Before the Clock Starts &rarr;</button>
           </div>
+          <div style="text-align:right;margin-top:.35rem">
+            <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" style="font-size:.72rem;color:var(--gold);font-weight:600;text-decoration:none;font-family:'Cinzel',serif;letter-spacing:.04em">View on our website &rarr;</a>
+          </div>
           <div class="faq-ack-box" id="faqAckRow" style="cursor:default">
             <div class="faq-ack-chk" id="faqAckChk"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-checkmark.png" alt=""></div>
             <div class="faq-ack-text">I have reviewed the appointment preparation guide and understand what to bring to my appointment.</div>
@@ -864,7 +867,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="step-sub">Required to confirm your appointment and send your confirmation text.</div>
       <div class="not-confirmed-notice">
         <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-caution.png" alt="">
-        <p><strong>Your booking is NOT confirmed until you complete payment and receive a confirmation number.</strong> If your quote does not display a confirmation number, the payment process has not been completed.</p>
+        <p><strong>Your appointment request is pending</strong> until you receive a confirmation text from Round The Clock Notary at <strong>817-512-7217</strong>. Completing payment generates your booking reference number &mdash; your confirmation text will reference that same number.</p>
       </div>
       <label class="field-label" for="clientName">Full Name <span class="req">*</span></label>
       <input type="text" id="clientName" placeholder="Jane Smith">
@@ -898,7 +901,14 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
         <div class="tf-delivery-hdr"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-delivery.png" alt=""> Time Flies &mdash; Delivery Details</div>
         <div class="tf-method-opts">
           <button class="tf-method-btn" id="tfBtnEmail" onclick="selectTFMethod('email')">Email</button>
+          <button class="tf-method-btn" id="tfBtnFax" onclick="selectTFMethod('fax')">Fax</button>
           <button class="tf-method-btn" id="tfBtnMail" onclick="selectTFMethod('mail')">Mail</button>
+        </div>
+        <!-- Fax fields -->
+        <div class="tf-fields" id="tfFaxFields">
+          <label class="field-label" for="tfFax">Fax Number <span class="req">*</span></label>
+          <input type="tel" id="tfFax" placeholder="(817) 555-0100">
+          <div class="addr-status" id="tfFaxStatus"></div>
         </div>
         <!-- Email fields -->
         <div class="tf-fields" id="tfEmailFields">
@@ -957,8 +967,13 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
         <!-- Bring to appointment -->
         <div class="tf-bring-row" id="tfBringRow" onclick="selectTFMethod('bring')">
           <div class="tf-bring-chk" id="tfBringChk"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-checkmark.png" alt=""></div>
-          <div class="tf-bring-label">I will bring my documents to the appointment &mdash; skip delivery</div>
+          <div class="tf-bring-label">I will bring my delivery information to the appointment</div>
         </div>
+      </div>
+      <div class="note-notary-wrap">
+        <label class="note-notary-label" for="noteNotary">Notes &amp; Special Instructions <span style="font-family:'DM Sans',sans-serif;font-weight:400;color:var(--muted);letter-spacing:0;text-transform:none;font-size:.7rem">(Optional)</span></label>
+        <textarea class="note-notary-textarea" id="noteNotary" maxlength="500" placeholder="Gate code, parking instructions, special requests, or anything else your notary should know..."></textarea>
+        <div class="note-notary-counter"><span id="noteNotaryCount">0</span>/500</div>
       </div>
       <div class="privacy-note" style="margin-top:.75rem"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-padlock.png" alt=""> Your information is used only to prepare your quote and schedule your appointment. We never sell or share your data.</div>
       <div class="nav">
@@ -978,7 +993,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="step-sub">Your deposit holds your appointment and is applied toward your balance due at signing.</div>
       <div class="not-confirmed-notice">
         <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-caution.png" alt="">
-        <p><strong>Your appointment is NOT confirmed until payment is complete and you receive a confirmation number.</strong> Completing payment below will generate your booking reference number.</p>
+        <p><strong>Your appointment request is pending</strong> until you receive a confirmation text from Round The Clock Notary at <strong>817-512-7217</strong>. Completing payment generates your booking reference number &mdash; your confirmation text will reference that same number.</p>
       </div>
       <div class="rt" style="margin-bottom:1.25rem">
         <div class="rt-title">Appointment Summary</div>
@@ -997,11 +1012,6 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       </div>
       <div id="longDistNotice" style="display:none;background:rgba(139,31,47,.07);border:1px solid rgba(139,31,47,.2);border-left:3px solid #8b1f2f;border-radius:8px;padding:.85rem 1rem;margin-bottom:1rem;font-size:.82rem;color:#3a1820;line-height:1.6">
         <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-caution.png" style="width:14px;height:16px;object-fit:contain;margin-right:.3rem;pointer-events:none" alt=""> <strong>Long Distance Appointment</strong> &mdash; A $75.00 deposit is required.
-      </div>
-      <div class="note-notary-wrap">
-        <label class="note-notary-label" for="noteNotary">Note to Notary <span style="font-family:'DM Sans',sans-serif;font-weight:400;color:var(--muted);letter-spacing:0;text-transform:none;font-size:.7rem">(Optional)</span></label>
-        <textarea class="note-notary-textarea" id="noteNotary" maxlength="500" placeholder="Gate code, parking instructions, special requests, questions about your appointment..."></textarea>
-        <div class="note-notary-counter"><span id="noteNotaryCount">0</span>/500</div>
       </div>
       <div style="margin-bottom:1rem">
         <div class="paypal-header">
@@ -1072,6 +1082,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 <div class="faq-modal-overlay" id="faqModal">
   <div class="faq-modal">
     <div class="faq-modal-hdr">
+      <div style="width:64px;height:64px;margin:0 auto .6rem;position:relative;z-index:2"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-logo.png" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(201,168,76,.4))" alt="Round the Clock Notary"></div>
       <div class="faq-modal-title">Before the Clock Starts</div>
       <div class="faq-modal-sub">Scroll to the bottom to confirm you have read the preparation guide.</div>
       <button class="faq-modal-close" onclick="closeFAQModal()">&#x2715;</button>
@@ -1100,6 +1111,9 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="faq-item">
         <div class="faq-q">What Happens if I Cancel My Appointment</div>
         <div class="faq-a">Appointments canceled less than 24 hours before the scheduled time are non-refundable. Deposits secure the appointment time and travel schedule. If documents are incomplete or identification is missing at the time of the appointment, a new appointment and new deposit will be required.</div>
+      </div>
+      <div style="text-align:center;padding:.75rem 0 .25rem;border-top:1px solid var(--border);margin-top:.5rem">
+        <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" style="font-size:.75rem;color:var(--gold);font-weight:600;text-decoration:none;font-family:'Cinzel',serif;letter-spacing:.05em">View full FAQ on our website &rarr;</a>
       </div>
     </div>
     <div class="faq-modal-footer">
@@ -1257,7 +1271,7 @@ var APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbxLKopAUC7kwjZjZ6Hy
 var GCAL_API_KEY="AIzaSyBaEDQufz1Ipb6Q13frcp5JE8m28RHxfHM";
 var GCAL_ID="rtcnotary1@gmail.com";
 
-var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",tfDeliveryMethod:"",tfEmail:"",tfMailName:"",tfMailAddr:"",tfMailCity:"",tfMailState:"",tfMailZip:"",shippingService:"",noteToNotary:"",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
+var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",tfDeliveryMethod:"",tfEmail:"",tfFax:"",tfMailName:"",tfMailAddr:"",tfMailCity:"",tfMailState:"",tfMailZip:"",shippingService:"",noteToNotary:"",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
 
 function genBookingId(){var code=SVC_CODE[S.serviceType]||"XX";var now=new Date();return"RTC-"+code+"-"+String(now.getFullYear()).slice(-2)+pad2(now.getMonth()+1)+pad2(now.getDate())+"-"+(Math.floor(Math.random()*900)+100);}
 function fmt(n){return"$"+n.toFixed(2);}
@@ -1364,7 +1378,24 @@ function toggleTab(which){document.querySelectorAll('.tab-btn').forEach(function
 
 function showQuoteModal(){var total=calcTotal(),dep=S.deposit,due=total-dep;var lines=buildLines();var lineHTML=lines.map(function(l){return'<div class="modal-line"><span>'+l.k+'</span><span'+(l.free?' style="color:var(--green)"':'')+'>'+l.v+'</span></div>';}).join('');var ml=document.getElementById('modalLines');if(ml)ml.innerHTML=lineHTML;var mlp=document.getElementById('modalLinesPrint');if(mlp)mlp.innerHTML=lineHTML;function setEl(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}setEl('modalTotal',total.toFixed(2));setEl('modalTotalBottom',fmt(total));setEl('modalDeposit',fmt(dep));setEl('modalDue',fmt(due));setEl('modalTotalPrint',total.toFixed(2));setEl('modalTotalBottomPrint',fmt(total));setEl('modalDepositPrint',fmt(dep));setEl('modalDuePrint',fmt(due));var qm=document.getElementById('quoteModal');if(qm)qm.classList.add('show');}
 function closeQuoteModal(){var qm=document.getElementById('quoteModal');if(qm)qm.classList.remove('show');}
-function printModalQuote(){var ps=document.getElementById('modalPrintSheet');if(ps)ps.style.removeProperty('display');document.body.classList.add('printing-modal');window.print();document.body.classList.remove('printing-modal');if(ps)ps.style.setProperty('display','none','important');}
+function printModalQuote(){
+  // Always populate print sheet from live S state before printing
+  var total=calcTotal(),dep=S.deposit,due=total-dep;
+  var lines=buildLines();
+  var lineHTML=lines.map(function(l){return'<div class="modal-line"><span>'+l.k+'</span><span'+(l.free?' style="color:var(--green)"':'')+'>'+l.v+'</span></div>';}).join('');
+  function setEl(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
+  var mlp=document.getElementById('modalLinesPrint');if(mlp)mlp.innerHTML=lineHTML;
+  setEl('modalTotalPrint',total.toFixed(2));
+  setEl('modalTotalBottomPrint',fmt(total));
+  setEl('modalDepositPrint',fmt(dep));
+  setEl('modalDuePrint',fmt(due));
+  var ps=document.getElementById('modalPrintSheet');
+  if(ps)ps.style.removeProperty('display');
+  document.body.classList.add('printing-modal');
+  window.print();
+  document.body.classList.remove('printing-modal');
+  if(ps)ps.style.setProperty('display','none','important');
+}
 
 function getSlotSurcharges(slotDate,bookingTime){var surcharges={};var h=slotDate.getHours();var day=slotDate.getDay();var isWeekend=(day===0||day===6);if(h>=22||h<8)surcharges.midnight=50;if(isWeekend)surcharges.offclock=15;if(!isWeekend&&h>=18&&h<22)surcharges.offclock=15;if(bookingTime&&(slotDate.getTime()-bookingTime.getTime())<=3600000&&slotDate>bookingTime){surcharges.rushhour=100;}return surcharges;}
 
@@ -1404,7 +1435,7 @@ function handleSvc(type){document.querySelectorAll(".opt-btn").forEach(function(
 
 function handleCounter(target,dir){var valEl=document.getElementById(target+"Val");var priceEl=document.getElementById(target+"Price");if(!valEl||!priceEl)return;var cur=Math.max(0,(parseInt(valEl.textContent)||0)+dir);valEl.textContent=cur;S[target]=cur;var prices={extraTicks:10,minuteSeals:10,print1:1.0,print2:1.5,witness:20};var row=document.getElementById(target+"Row");if(row)row.classList.toggle("on",cur>0);priceEl.textContent=fmt(cur*prices[target]);updateRT();}
 
-function initDatePicker(){var d=new Date();var min=d.toISOString().split("T")[0];var inp=document.getElementById("apptDate");if(inp){inp.min=min;if(!inp.value)inp.value=min;}}
+function initDatePicker(){var d=new Date();var min=d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());var inp=document.getElementById("apptDate");if(inp){inp.min=min;if(!inp.value)inp.value=min;}}
 
 function loadAvailableSlots(){var dateEl=document.getElementById("apptDate");var slotErrEl=document.getElementById("slotError");var slotsEl=document.getElementById("slotsList");if(!dateEl||!slotsEl)return;var date=dateEl.value;if(!date){if(slotErrEl){slotErrEl.style.display="block";slotErrEl.textContent="Please select a date.";}return;}if(isHoliday(date)){if(!confirm("This date is a federal holiday (Red Letter Day). An additional +$50 fee will apply. Continue?")){return;}S.surcharges.redletter=50;updateRT();}else{delete S.surcharges.redletter;updateRT();}if(slotErrEl)slotErrEl.style.display="none";slotsEl.innerHTML="<div style='font-size:.82rem;color:var(--muted)'>Checking availability...</div>";fetch("https://www.googleapis.com/calendar/v3/freeBusy?key="+GCAL_API_KEY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({timeMin:date+"T00:00:00Z",timeMax:date+"T23:59:59Z",items:[{id:GCAL_ID}]})}).then(function(r){return r.json();}).then(function(data){var busy=[];if(data.calendars&&data.calendars[GCAL_ID]&&data.calendars[GCAL_ID].busy)busy=data.calendars[GCAL_ID].busy;renderSlots(date,busy);}).catch(function(){renderSlots(date,[]);});}
 
@@ -1415,7 +1446,7 @@ function renderSlots(date,busyPeriods){var slotsEl=document.getElementById("slot
 
 function selectSlot(isoTime,label,tier,isRush,btn){document.querySelectorAll(".slot-btn").forEach(function(b){b.classList.remove("sel");});btn.classList.add("sel");S.apptTimeISO=isoTime;S.apptTime=label;var dateStr=document.getElementById("apptDate").value;S.apptDate=new Date(dateStr+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});delete S.surcharges.rushhour;delete S.surcharges.offclock;delete S.surcharges.midnight;var slotDate=new Date(isoTime);var stackedSurcharges=getSlotSurcharges(slotDate,new Date());Object.assign(S.surcharges,stackedSurcharges);updateDeposit();updateRT();var disp=document.getElementById("selectedSlotDisplay");if(disp)disp.style.display="flex";var txt=document.getElementById("selectedSlotText");if(txt)txt.textContent="Selected: "+S.apptDate+" at "+label+(isRush?" (Rush Hour +$100)":"");var n4=document.getElementById("next4");if(n4){var canContinue=S.faqAcked;n4.disabled=!canContinue;n4.style.opacity=canContinue?"1":".5";}}
 
-function validateStep6(){var name=document.getElementById("clientName").value.trim();var phone=document.getElementById("clientPhone").value.trim();var email=document.getElementById("clientEmail").value.trim();var ok=true;function setStatus(id,cls,msg){var el=document.getElementById(id);if(el){el.className="addr-status"+cls;el.textContent=msg;}}if(!name){setStatus("nameStatus"," err","Name is required.");ok=false;}else{setStatus("nameStatus","","");}if(!phone){setStatus("phoneStatus"," err","Phone is required.");ok=false;}else{setStatus("phoneStatus","","");}if(!email||email.indexOf("@")<0){setStatus("emailStatus"," err","Valid email is required.");ok=false;}else{setStatus("emailStatus","","");}if(!S.tosAgreed){alert("Please agree to the Terms of Service to continue.");ok=false;}if(S.timeFlies){if(!S.tfDeliveryMethod){alert("Please select a delivery method for your Time Flies document delivery.");ok=false;}else if(S.tfDeliveryMethod==="email"){var tfe=document.getElementById("tfEmail");var tfev=tfe?tfe.value.trim():"";if(!tfev||tfev.indexOf("@")<0){setStatus("tfEmailStatus"," err","Valid delivery email is required.");ok=false;}else{setStatus("tfEmailStatus","","");S.tfEmail=tfev;}}else if(S.tfDeliveryMethod==="mail"){var mn=document.getElementById("tfMailName");var ma=document.getElementById("tfMailAddr");var mc=document.getElementById("tfMailCity");var ms=document.getElementById("tfMailState");var mz=document.getElementById("tfMailZip");var mnv=mn?mn.value.trim():"";var mav=ma?ma.value.trim():"";var mcv=mc?mc.value.trim():"";var msv=ms?ms.value.trim():"";var mzv=mz?mz.value.trim():"";if(!mnv||!mav||!mcv||!msv||!mzv){setStatus("tfMailStatus"," err","All mailing address fields are required.");ok=false;}else if(!S.shippingService){setStatus("tfMailStatus"," err","Please select a shipping method.");ok=false;}else{setStatus("tfMailStatus","","");S.tfMailName=mnv;S.tfMailAddr=mav;S.tfMailCity=mcv;S.tfMailState=msv;S.tfMailZip=mzv;}}}if(ok){S.clientName=name;S.clientPhone=phone;S.clientEmail=email;}return ok;}
+function validateStep6(){var name=document.getElementById("clientName").value.trim();var phone=document.getElementById("clientPhone").value.trim();var email=document.getElementById("clientEmail").value.trim();var ok=true;function setStatus(id,cls,msg){var el=document.getElementById(id);if(el){el.className="addr-status"+cls;el.textContent=msg;}}if(!name){setStatus("nameStatus"," err","Name is required.");ok=false;}else{setStatus("nameStatus","","");}if(!phone){setStatus("phoneStatus"," err","Phone is required.");ok=false;}else{setStatus("phoneStatus","","");}if(!email||email.indexOf("@")<0){setStatus("emailStatus"," err","Valid email is required.");ok=false;}else{setStatus("emailStatus","","");}if(!S.tosAgreed){alert("Please agree to the Terms of Service to continue.");ok=false;}if(S.timeFlies){if(!S.tfDeliveryMethod){alert("Please select a delivery method for your Time Flies document delivery.");ok=false;}else if(S.tfDeliveryMethod==="email"){var tfe=document.getElementById("tfEmail");var tfev=tfe?tfe.value.trim():"";if(!tfev||tfev.indexOf("@")<0){setStatus("tfEmailStatus"," err","Valid delivery email is required.");ok=false;}else{setStatus("tfEmailStatus","","");S.tfEmail=tfev;}}else if(S.tfDeliveryMethod==="fax"){var tff=document.getElementById("tfFax");var tffv=tff?tff.value.replace(/\D/g,""):"";if(tffv.length<10){setStatus("tfFaxStatus"," err","Valid fax number is required.");ok=false;}else{setStatus("tfFaxStatus","","");S.tfFax=tff.value.trim();}}else if(S.tfDeliveryMethod==="mail"){var mn=document.getElementById("tfMailName");var ma=document.getElementById("tfMailAddr");var mc=document.getElementById("tfMailCity");var ms=document.getElementById("tfMailState");var mz=document.getElementById("tfMailZip");var mnv=mn?mn.value.trim():"";var mav=ma?ma.value.trim():"";var mcv=mc?mc.value.trim():"";var msv=ms?ms.value.trim():"";var mzv=mz?mz.value.trim():"";if(!mnv||!mav||!mcv||!msv||!mzv){setStatus("tfMailStatus"," err","All mailing address fields are required.");ok=false;}else if(!S.shippingService){setStatus("tfMailStatus"," err","Please select a shipping method.");ok=false;}else{setStatus("tfMailStatus","","");S.tfMailName=mnv;S.tfMailAddr=mav;S.tfMailCity=mcv;S.tfMailState=msv;S.tfMailZip=mzv;}}}if(ok){S.clientName=name;S.clientPhone=phone;S.clientEmail=email;}return ok;}
 
 function buildPaymentStep(){var total=calcTotal(),dep=S.deposit,due=total-dep;function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}var psl=document.getElementById("paymentSummaryLines");if(psl)psl.innerHTML=buildLines().map(function(l){return"<div class='rt-line'><span>"+l.k+"</span><span class='rt-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join("");set("paymentTotal",total.toFixed(2));set("paymentDepositAmt",fmt(dep));set("paymentDueAmt",fmt(due));set("mockDepositLabel",fmt(dep));var atd=document.getElementById("apptTimeDisplay");if(atd)atd.textContent=S.apptDate?(S.apptDate+" at "+S.apptTime):"Free Quote — No specific time selected";var ldn=document.getElementById("longDistNotice");if(ldn)ldn.style.display=S.isFar?"block":"none";var ppContainer=document.getElementById("paypal-button-container");var mockBtn=document.getElementById("paypalMockBtn");if(ppContainer)ppContainer.innerHTML="";if(window.paypal&&ppContainer&&mockBtn){mockBtn.style.display="none";ppContainer.style.display="block";window.paypal.Buttons({style:{layout:"vertical",color:"blue",shape:"rect",label:"pay"},createOrder:function(data,actions){return actions.order.create({purchase_units:[{description:"Round the Clock Notary — Appointment Deposit",amount:{value:dep.toFixed(2),currency_code:"USD"}}]});},onApprove:function(data,actions){return actions.order.capture().then(function(details){S.depositPaid=true;S.paypalOrderId=details.id;S.bookingId=genBookingId();logBooking();buildStep8();showStep(8);});},onError:function(){alert("Payment error. Please try again or call 817-512-7217.");}}).render("#paypal-button-container");}else{if(ppContainer)ppContainer.style.display="none";if(mockBtn)mockBtn.style.display="block";}}
 
@@ -1423,7 +1454,7 @@ function handleMockPayment(){S.depositPaid=true;S.paypalOrderId="MOCK-"+Date.now
 
 function buildStep8(){function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}set("tyName",S.clientName.split(" ")[0]);set("tyBookingId","Booking #: "+S.bookingId);set("tyApptVal",S.apptDate?(S.apptDate+" at "+S.apptTime):"Free Quote");set("tyServiceVal",S.serviceLabel+" · "+((S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60)+" min appointment");set("tyBookingIdAppt",S.bookingId);var total=calcTotal(),dep=S.deposit,due=total-dep;set("sumTotal8",fmt(total));set("sumDepositPaid8",fmt(dep)+" (Paid)");set("sumDue8",fmt(due));var sl8=document.getElementById("sumLines8");if(sl8)sl8.innerHTML=buildLines().map(function(l){return"<div class='sum-line'><span class='sum-key'>"+l.k+"</span><span class='sum-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join("");}
 
-function logBooking(){var zone=S.bookingMode==="remote"?"Remote Online":(S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard"));var total=calcTotal();var nn=document.getElementById("noteNotary");var noteVal=nn?nn.value.trim():"";var tfDetail="";if(S.timeFlies){if(S.tfDeliveryMethod==="email")tfDetail="Email: "+S.tfEmail;else if(S.tfDeliveryMethod==="mail")tfDetail="Mail: "+S.tfMailName+", "+S.tfMailAddr+", "+S.tfMailCity+" "+S.tfMailState+" "+S.tfMailZip+" ["+S.shippingService+"]";else if(S.tfDeliveryMethod==="bring")tfDetail="Bring to appointment";}fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({bookingId:S.bookingId,clientName:S.clientName,clientPhone:S.clientPhone,clientEmail:S.clientEmail,address:S.bookingMode==="remote"?"Remote Online":S.address,serviceLabel:S.serviceLabel,apptDate:S.apptDate,apptTime:S.apptTime,apptTimeISO:S.apptTimeISO,durationMinutes:(S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60,miles:S.dist.toFixed(1),zone:zone,total:fmt(total),depositPaid:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit),paypalOrderId:S.paypalOrderId,gcalEventId:S.gcalEventId,digitalClock:S.digitalClock,timeFlies:S.timeFlies,deliveryMethod:S.deliveryMethod,tfDeliveryDetail:tfDetail,noteToNotary:noteVal,bookingMode:S.bookingMode})}).catch(function(){});}
+function logBooking(){var zone=S.bookingMode==="remote"?"Remote Online":(S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard"));var total=calcTotal();var nn=document.getElementById("noteNotary");var noteVal=nn?nn.value.trim():"";var tfDetail="";if(S.timeFlies){if(S.tfDeliveryMethod==="email")tfDetail="Email: "+S.tfEmail;else if(S.tfDeliveryMethod==="fax")tfDetail="Fax: "+S.tfFax;else if(S.tfDeliveryMethod==="mail")tfDetail="Mail: "+S.tfMailName+", "+S.tfMailAddr+", "+S.tfMailCity+" "+S.tfMailState+" "+S.tfMailZip+" ["+S.shippingService+"]";else if(S.tfDeliveryMethod==="bring")tfDetail="Bring to appointment";}fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({bookingId:S.bookingId,clientName:S.clientName,clientPhone:S.clientPhone,clientEmail:S.clientEmail,address:S.bookingMode==="remote"?"Remote Online":S.address,serviceLabel:S.serviceLabel,apptDate:S.apptDate,apptTime:S.apptTime,apptTimeISO:S.apptTimeISO,durationMinutes:(S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60,miles:S.dist.toFixed(1),zone:zone,total:fmt(total),depositPaid:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit),paypalOrderId:S.paypalOrderId,gcalEventId:S.gcalEventId,digitalClock:S.digitalClock,timeFlies:S.timeFlies,deliveryMethod:S.deliveryMethod,tfDeliveryDetail:tfDetail,noteToNotary:noteVal,bookingMode:S.bookingMode})}).catch(function(){});}
 
 function showTFDeliverySection(){
   var sec=document.getElementById("tfDeliverySection");
@@ -1432,17 +1463,21 @@ function showTFDeliverySection(){
 
 function selectTFMethod(method){
   S.tfDeliveryMethod=method;
-  // Reset all
   document.querySelectorAll(".tf-method-btn").forEach(function(b){b.classList.remove("sel");});
   var bringRow=document.getElementById("tfBringRow");
   var emailFields=document.getElementById("tfEmailFields");
+  var faxFields=document.getElementById("tfFaxFields");
   var mailFields=document.getElementById("tfMailFields");
   if(bringRow)bringRow.classList.remove("sel");
   if(emailFields)emailFields.classList.remove("show");
+  if(faxFields)faxFields.classList.remove("show");
   if(mailFields)mailFields.classList.remove("show");
   if(method==="email"){
     var eb=document.getElementById("tfBtnEmail");if(eb)eb.classList.add("sel");
     if(emailFields)emailFields.classList.add("show");
+  } else if(method==="fax"){
+    var fb=document.getElementById("tfBtnFax");if(fb)fb.classList.add("sel");
+    if(faxFields)faxFields.classList.add("show");
   } else if(method==="mail"){
     var mb=document.getElementById("tfBtnMail");if(mb)mb.classList.add("sel");
     if(mailFields)mailFields.classList.add("show");
@@ -1482,7 +1517,7 @@ function startOver(){
   var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}
   // Reset Time Flies delivery fields
   var tfd=document.getElementById("tfDeliverySection");if(tfd)tfd.style.display="none";
-  ["tfEmail","tfMailName","tfMailAddr","tfMailCity","tfMailState","tfMailZip"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});
+  ["tfEmail","tfFax","tfMailName","tfMailAddr","tfMailCity","tfMailState","tfMailZip"].forEach(function(id){var el=document.getElementById(id);if(el)el.value="";});
   ["tfBtnEmail","tfBtnMail"].forEach(function(id){var el=document.getElementById(id);if(el)el.classList.remove("sel");});
   var tfBring=document.getElementById("tfBringRow");if(tfBring)tfBring.classList.remove("sel");
   var tfEF=document.getElementById("tfEmailFields");if(tfEF)tfEF.classList.remove("show");
@@ -1559,11 +1594,4 @@ document.addEventListener("DOMContentLoaded",function(){
     var total=calcTotal();
     fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
     var form=document.getElementById("leadContactForm");
-    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.85rem;color:var(--navy);font-weight:700;margin-bottom:.5rem\">Got it! We\'ll be in touch.</div><div style=\"font-size:.8rem;color:var(--muted)\">We\'ll reach out shortly to confirm your details.</div></div>";
-  });
-  var addrNavBtn=document.getElementById("addrNavBtn");if(addrNavBtn)addrNavBtn.style.display="flex";
-  var mps=document.getElementById("modalPrintSheet");if(mps)mps.style.setProperty("display","none","important");
-});
-</script>
-</body>
-</html>
+    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-
