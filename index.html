@@ -40,7 +40,9 @@ header h1{font-family:"Cinzel",serif;color:var(--gold-bright);font-size:clamp(1.
 .ic{display:inline-block;vertical-align:middle;object-fit:contain;pointer-events:none}
 
 /* ── RUNNING TOTAL ── */
-.rt{background:linear-gradient(135deg,var(--navy),var(--navy-mid));border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem;border:1px solid rgba(201,168,76,.2);box-shadow:0 8px 32px rgba(14,27,58,.2)}
+.rt{background:linear-gradient(135deg,var(--navy),var(--navy-mid));border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1rem;border:1px solid rgba(201,168,76,.2);box-shadow:0 8px 32px rgba(14,27,58,.2);position:relative;overflow:hidden}
+.rt::before{content:"";position:absolute;inset:0;background:url("https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/logo.png") center/70% no-repeat;opacity:.07;pointer-events:none;z-index:0}
+.rt>*{position:relative;z-index:1}
 .rt-title{font-family:"Cinzel",serif;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
 .rt-title::after{content:"";flex:1;height:1px;background:rgba(201,168,76,.15)}
 .rt-lines{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.75rem}
@@ -532,8 +534,8 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 .faq-modal{background:#fff;border-radius:18px;overflow:hidden;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;max-height:88vh}
 .faq-modal-hdr{background:linear-gradient(160deg,#0a1530,#0e1b3a);padding:1.25rem 1.5rem;position:relative;flex-shrink:0}
 .faq-modal-hdr::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.18),transparent 65%)}
-.faq-modal-title{font-family:"Cinzel",serif;font-size:.95rem;font-weight:700;color:var(--gold-bright);letter-spacing:.06em;position:relative}
-.faq-modal-sub{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:.25rem;position:relative}
+.faq-modal-title{font-family:"Cinzel",serif;font-size:.95rem;font-weight:700;color:var(--gold-bright);letter-spacing:.06em;position:relative;text-align:center}
+.faq-modal-sub{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:.25rem;position:relative;text-align:center}
 .faq-modal-close{position:absolute;top:.85rem;right:1rem;width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:1rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;z-index:2}
 .faq-modal-close:hover{background:rgba(255,255,255,.2)}
 .faq-modal-body{overflow-y:auto;padding:1.25rem 1.5rem;flex:1}
@@ -840,7 +842,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
             <button class="step5-faq-link-btn" onclick="openFAQModal()">Before the Clock Starts &rarr;</button>
           </div>
           <div style="text-align:right;margin-top:.35rem">
-            <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" style="font-size:.72rem;color:var(--gold);font-weight:600;text-decoration:none;font-family:'Cinzel',serif;letter-spacing:.04em">View on our website &rarr;</a>
+            <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" style="font-size:.72rem;color:var(--navy);font-weight:600;text-decoration:underline;font-family:'Cinzel',serif;letter-spacing:.04em">View on our website &rarr;</a>
           </div>
           <div class="faq-ack-box" id="faqAckRow" style="cursor:default">
             <div class="faq-ack-chk" id="faqAckChk"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-checkmark.png" alt=""></div>
