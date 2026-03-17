@@ -1158,7 +1158,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="modal-contact">
         <span>817-512-7217</span>
         <span class="modal-contact-dot">&middot;</span>
-        <span><a href="mailto:info@roundtheclocknotary.com" style="color:var(--gold-bright);text-decoration:none">info@roundtheclocknotary.com</a></span>
+        <span><a href="/cdn-cgi/l/email-protection#f0999e969fb0829f859e94849895939c9f939b9e9f84918289de939f9d" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="d0b9beb6bf90a2bfa5beb4a4b8b5b3bcbfb3bbbebfa4b1a2a9feb3bfbd">[email&#160;protected]</span></a></span>
         <span class="modal-contact-dot">&middot;</span>
         <span>roundtheclocknotary.com</span>
       </div>
@@ -1191,7 +1191,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="modal-contact">
       <span>817-512-7217</span>
       <span class="modal-contact-dot">&middot;</span>
-      <span><a href="mailto:info@roundtheclocknotary.com" style="color:var(--gold-bright);text-decoration:none">info@roundtheclocknotary.com</a></span>
+      <span><a href="/cdn-cgi/l/email-protection#127b7c747d52607d677c76667a77717e7d71797c7d6673606b3c717d7f" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="472e292128073528322923332f22242b28242c29283326353e6924282a">[email&#160;protected]</span></a></span>
       <span class="modal-contact-dot">&middot;</span>
       <span>roundtheclocknotary.com</span>
     </div>
@@ -1219,7 +1219,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="footer-nav-dot"></div>
     <a href="tel:+18175127217">817-512-7217</a>
     <div class="footer-nav-dot"></div>
-    <a href="mailto:info@roundtheclocknotary.com">Email Us</a>
+    <a href="/cdn-cgi/l/email-protection#244d4a424b64564b514a40504c4147484b474f4a4b5045565d0a474b49">Email Us</a>
   </nav>
   <div class="footer-socials">
     <a class="footer-social-link" href="https://www.facebook.com/roundtheclocknotary" target="_blank" aria-label="Facebook">
@@ -1236,7 +1236,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 function openFAQModal(){
   var overlay=document.getElementById("faqModal");
@@ -1480,7 +1480,64 @@ function handleMockPayment(){S.depositPaid=true;S.paypalOrderId="MOCK-"+Date.now
 
 function buildStep8(){function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}set("tyName",S.clientName.split(" ")[0]);set("tyBookingId","Booking #: "+S.bookingId);set("tyApptVal",S.apptDate?(S.apptDate+" at "+S.apptTime):"Free Quote");set("tyServiceVal",S.serviceLabel+" · "+((S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60)+" min appointment");set("tyBookingIdAppt",S.bookingId);var total=calcTotal(),dep=S.deposit,due=total-dep;set("sumTotal8",fmt(total));set("sumDepositPaid8",fmt(dep)+" (Paid)");set("sumDue8",fmt(due));var sl8=document.getElementById("sumLines8");if(sl8)sl8.innerHTML=buildLines().map(function(l){return"<div class='sum-line'><span class='sum-key'>"+l.k+"</span><span class='sum-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join("");}
 
-function logBooking(){var zone=S.bookingMode==="remote"?"Remote Online":(S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard"));var total=calcTotal();var nn=document.getElementById("noteNotary");var noteVal=nn?nn.value.trim():"";var tfDetail="";if(S.timeFlies){if(S.tfDeliveryMethod==="email")tfDetail="Email: "+S.tfEmail;else if(S.tfDeliveryMethod==="fax")tfDetail="Fax: "+S.tfFax;else if(S.tfDeliveryMethod==="mail")tfDetail="Mail: "+S.tfMailName+", "+S.tfMailAddr+", "+S.tfMailCity+" "+S.tfMailState+" "+S.tfMailZip+" ["+S.shippingService+"]";else if(S.tfDeliveryMethod==="bring")tfDetail="Bring to appointment";}fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({bookingId:S.bookingId,clientName:S.clientName,clientPhone:S.clientPhone,clientEmail:S.clientEmail,address:S.bookingMode==="remote"?"Remote Online":S.address,serviceLabel:S.serviceLabel,apptDate:S.apptDate,apptTime:S.apptTime,apptTimeISO:S.apptTimeISO,durationMinutes:(S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60,miles:S.dist.toFixed(1),zone:zone,total:fmt(total),depositPaid:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit),paypalOrderId:S.paypalOrderId,gcalEventId:S.gcalEventId,digitalClock:S.digitalClock,timeFlies:S.timeFlies,deliveryMethod:S.deliveryMethod,tfDeliveryDetail:tfDetail,noteToNotary:noteVal,bookingMode:S.bookingMode})}).catch(function(){});}
+function logBooking(){
+  var zone=S.bookingMode==="remote"?"Remote Online":(S.isFree?"Free Zone":(S.isFar?"Long Distance":"Standard"));
+  var total=calcTotal();
+  var nn=document.getElementById("noteNotary");var noteVal=nn?nn.value.trim():"";
+  var tfDetail="";
+  if(S.timeFlies){
+    if(S.tfDeliveryMethod==="email")tfDetail="Email: "+S.tfEmail;
+    else if(S.tfDeliveryMethod==="fax")tfDetail="Fax: "+S.tfFax;
+    else if(S.tfDeliveryMethod==="mail")tfDetail="Mail: "+S.tfMailName+", "+S.tfMailAddr+", "+S.tfMailCity+" "+S.tfMailState+" "+S.tfMailZip+" ["+S.shippingService+"]";
+    else if(S.tfDeliveryMethod==="bring")tfDetail="Bring to appointment";
+  }
+  var surchargeList=[];
+  var surchargeLabels={rushhour:"Rush Hour (+$100)",offclock:"Off the Clock (+$15)",midnight:"Clock Strikes Midnight (+$50)",redletter:"Red Letter Day (+$50)"};
+  Object.keys(S.surcharges).forEach(function(k){surchargeList.push(surchargeLabels[k]||k);});
+  var mailFull=S.tfMailName?(S.tfMailName+(S.tfMailAddr?", "+S.tfMailAddr:"")+(S.tfMailCity?", "+S.tfMailCity:"")+(S.tfMailState?" "+S.tfMailState:"")+(S.tfMailZip?" "+S.tfMailZip:"")):"";
+  fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+    bookingId:S.bookingId,
+    clientName:S.clientName,
+    clientPhone:S.clientPhone,
+    clientEmail:S.clientEmail,
+    address:S.bookingMode==="remote"?"Remote Online":S.address,
+    serviceLabel:S.serviceLabel,
+    apptDate:S.apptDate,
+    apptTime:S.apptTime,
+    apptTimeISO:S.apptTimeISO,
+    durationMinutes:(S.serviceType&&SVC[S.serviceType])?SVC[S.serviceType].duration:60,
+    miles:S.dist.toFixed(1),
+    zone:zone,
+    total:fmt(total),
+    depositPaid:fmt(S.deposit),
+    dueAtSigning:fmt(total-S.deposit),
+    paypalOrderId:S.paypalOrderId,
+    gcalEventId:S.gcalEventId,
+    bookingMode:S.bookingMode,
+    addonWitness:S.witness,
+    addonExtraTicks:S.extraTicks,
+    addonMinuteSeals:S.minuteSeals,
+    addonPrint1:S.print1,
+    addonPrint2:S.print2,
+    digitalClock:S.digitalClock?"Yes":"No",
+    timeFlies:S.timeFlies?"Yes":"No",
+    deliveryMethod:S.timeFlies?S.tfDeliveryMethod:"",
+    deliveryEmail:S.tfDeliveryMethod==="email"?S.tfEmail:"",
+    deliveryFax:S.tfDeliveryMethod==="fax"?S.tfFax:"",
+    deliveryMailFull:S.tfDeliveryMethod==="mail"?mailFull:"",
+    deliveryMailName:S.tfMailName||"",
+    deliveryMailAddr:S.tfMailAddr||"",
+    deliveryMailCity:S.tfMailCity||"",
+    deliveryMailState:S.tfMailState||"",
+    deliveryMailZip:S.tfMailZip||"",
+    shippingService:S.shippingService||"",
+    surcharges:surchargeList.join("; ")||"None",
+    noteToNotary:noteVal,
+    tosAgreed:S.tosAgreed?"Yes":"No",
+    faqAcked:S.faqAcked?"Yes":"No",
+    bookingPath:S.bookingPath||"book"
+  })}).catch(function(){});
+}
 
 function showTFDeliverySection(){
   var sec=document.getElementById("tfDeliverySection");
@@ -1620,11 +1677,4 @@ document.addEventListener("DOMContentLoaded",function(){
     var total=calcTotal();
     fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
     var form=document.getElementById("leadContactForm");
-    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.85rem;color:var(--navy);font-weight:700;margin-bottom:.5rem\">Got it! We\'ll be in touch.</div><div style=\"font-size:.8rem;color:var(--muted)\">We\'ll reach out shortly to confirm your details.</div></div>";
-  });
-  var addrNavBtn=document.getElementById("addrNavBtn");if(addrNavBtn)addrNavBtn.style.display="flex";
-  var mps=document.getElementById("modalPrintSheet");if(mps)mps.style.setProperty("display","none","important");
-});
-</script>
-</body>
-</html>
+    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-
