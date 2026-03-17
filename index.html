@@ -1160,7 +1160,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="modal-contact">
         <span>817-512-7217</span>
         <span class="modal-contact-dot">&middot;</span>
-        <span><a href="mailto:info@roundtheclocknotary.com" style="color:var(--gold-bright);text-decoration:none">info@roundtheclocknotary.com</a></span>
+        <span><a href="/cdn-cgi/l/email-protection#f49d9a929bb4869b819a90809c9197989b979f9a9b8095868dda979b99" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="f59c9b939ab5879a809b91819d9096999a969e9b9a8194878cdb969a98">[email&#160;protected]</span></a></span>
         <span class="modal-contact-dot">&middot;</span>
         <span>roundtheclocknotary.com</span>
       </div>
@@ -1193,7 +1193,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="modal-contact">
       <span>817-512-7217</span>
       <span class="modal-contact-dot">&middot;</span>
-      <span><a href="mailto:info@roundtheclocknotary.com" style="color:var(--gold-bright);text-decoration:none">info@roundtheclocknotary.com</a></span>
+      <span><a href="/cdn-cgi/l/email-protection#a5cccbc3cae5d7cad0cbc1d1cdc0c6c9cac6cecbcad1c4d7dc8bc6cac8" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="b0d9ded6dff0c2dfc5ded4c4d8d5d3dcdfd3dbdedfc4d1c2c99ed3dfdd">[email&#160;protected]</span></a></span>
       <span class="modal-contact-dot">&middot;</span>
       <span>roundtheclocknotary.com</span>
     </div>
@@ -1223,7 +1223,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="footer-nav-dot"></div>
     <a href="tel:+18175127217">817-512-7217</a>
     <div class="footer-nav-dot"></div>
-    <a href="mailto:info@roundtheclocknotary.com">Email Us</a>
+    <a href="/cdn-cgi/l/email-protection#620b0c040d22100d170c06160a07010e0d01090c0d1603101b4c010d0f">Email Us</a>
   </nav>
   <div class="footer-socials">
     <a class="footer-social-link" href="https://www.facebook.com/roundtheclocknotary" target="_blank" aria-label="Facebook">
@@ -1240,7 +1240,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 function openFAQModal(){
   var overlay=document.getElementById("faqModal");
@@ -1298,7 +1298,7 @@ var FEDERAL_HOLIDAYS=['2025-01-01','2025-01-20','2025-02-17','2025-05-26','2025-
 var SVC_CODE={second:"SH",minute:"MH",bedside:"BC",closing:"LS"};
 var POS=[{name:"Granbury Post Office",lat:32.447311,lng:-97.786530},{name:"Acton Post Office",lat:32.419700,lng:-97.689700}];
 var SVC={second:{label:"Second Hand",base:30,deposit:30,stateFee:10,duration:30},minute:{label:"Minute Hand",base:30,deposit:30,stateFee:10,duration:45},bedside:{label:"Bedside Clock",base:75,deposit:50,stateFee:0,duration:60},closing:{label:"Closing Table",base:150,deposit:50,stateFee:0,duration:90}};
-var APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbxLKopAUC7kwjZjZ6HypJv82wBkO6n4XNyaeA3A_pkOUkRNzBDZgiVQUton27F2xaCZ/exec";
+var APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbym6SCXgNeIVdiy7iU4b1eAYW8sHBL7nQeIH_j4Zqxyn5sAxgRkpAAm8qH85ad7kt4M/exec";
 var GCAL_API_KEY="AIzaSyBaEDQufz1Ipb6Q13frcp5JE8m28RHxfHM";
 var GCAL_ID="rtcnotary1@gmail.com";
 
@@ -1532,7 +1532,12 @@ function logBooking(){
     noteToNotary:noteVal,
     tosAgreed:S.tosAgreed?"Yes":"No",
     faqAcked:S.faqAcked?"Yes":"No",
-    bookingPath:S.bookingPath||"book"
+    bookingPath:S.bookingPath||"book",
+    baseFee:S.serviceBase,
+    stateFee:S.stateFee,
+    travelFee:S.travelFee,
+    addonsTotal:Math.round((S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20+(S.digitalClock?5:0)+(S.timeFlies?5:0))*100)/100,
+    surchargesTotal:Math.round(Object.values(S.surcharges).reduce(function(a,b){return a+b;},0)*100)/100
   })}).catch(function(){});
 }
 
@@ -1674,11 +1679,4 @@ document.addEventListener("DOMContentLoaded",function(){
     var total=calcTotal();
     fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
     var form=document.getElementById("leadContactForm");
-    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.85rem;color:var(--navy);font-weight:700;margin-bottom:.5rem\">Got it! We\'ll be in touch.</div><div style=\"font-size:.8rem;color:var(--muted)\">We\'ll reach out shortly to confirm your details.</div></div>";
-  });
-  var addrNavBtn=document.getElementById("addrNavBtn");if(addrNavBtn)addrNavBtn.style.display="flex";
-  var mps=document.getElementById("modalPrintSheet");if(mps)mps.style.setProperty("display","none","important");
-});
-</script>
-</body>
-</html>
+    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-
