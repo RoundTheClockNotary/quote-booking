@@ -497,6 +497,31 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   .modal-print-sheet .modal-notice{border-left-color:#c9a84c;background:#f8f3e8}
   @page{margin:.4in;size:letter portrait}
 }
+
+/* ── FAQ PREP MODAL ── */
+.faq-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:600;align-items:center;justify-content:center;padding:1rem}
+.faq-modal-overlay.show{display:flex}
+.faq-modal{background:#fff;border-radius:18px;overflow:hidden;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;max-height:88vh}
+.faq-modal-hdr{background:linear-gradient(160deg,#0a1530,#0e1b3a);padding:1.25rem 1.5rem;position:relative;flex-shrink:0}
+.faq-modal-hdr::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,168,76,.18),transparent 65%)}
+.faq-modal-title{font-family:"Cinzel",serif;font-size:.95rem;font-weight:700;color:var(--gold-bright);letter-spacing:.06em;position:relative}
+.faq-modal-sub{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:.25rem;position:relative}
+.faq-modal-close{position:absolute;top:.85rem;right:1rem;width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:#fff;font-size:1rem;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;z-index:2}
+.faq-modal-close:hover{background:rgba(255,255,255,.2)}
+.faq-modal-body{overflow-y:auto;padding:1.25rem 1.5rem;flex:1}
+.faq-modal-body::-webkit-scrollbar{width:4px}
+.faq-modal-body::-webkit-scrollbar-track{background:#f0ece2}
+.faq-modal-body::-webkit-scrollbar-thumb{background:var(--gold);border-radius:4px}
+.faq-item{border-bottom:1px solid var(--border);padding:.9rem 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-family:"Cinzel",serif;font-size:.78rem;font-weight:700;color:var(--navy);margin-bottom:.45rem;letter-spacing:.02em}
+.faq-a{font-size:.82rem;color:#3d3520;line-height:1.65}
+.faq-modal-footer{flex-shrink:0;padding:.85rem 1.5rem;border-top:1px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:space-between;gap:.75rem}
+.faq-scroll-hint{font-size:.72rem;color:var(--muted);font-style:italic;transition:opacity .3s}
+.faq-scroll-hint.hide{opacity:0;pointer-events:none}
+.faq-modal-done{padding:.65rem 1.25rem;background:linear-gradient(135deg,var(--gold),var(--gold-bright));color:var(--navy);font-family:"Cinzel",serif;font-size:.72rem;font-weight:700;letter-spacing:.06em;border:none;border-radius:8px;cursor:pointer;transition:all .18s;opacity:.45;pointer-events:none}
+.faq-modal-done.ready{opacity:1;pointer-events:auto}
+.faq-modal-done.ready:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(201,168,76,.4)}
 </style>
 </head>
 <body>
@@ -551,7 +576,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   <!-- STEP 1: Location -->
   <div class="step active" id="step1">
     <div class="card">
-      <div class="card-progress"><div class="card-step-label">STEP 1 OF 8 &mdash; SERVICE LOCATION</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:0%"></div></div></div>
+      <div class="card-progress"><div class="card-step-label">STEP 1 OF 7 &mdash; SERVICE LOCATION</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:0%"></div></div></div>
       <div class="step-title">Where Should the Clock Stop?</div>
       <div class="step-sub">Enter your appointment address. We travel to your home, office, hospital, or any location. Include a street address and zip code for accurate distance measurement.</div>
 
@@ -596,7 +621,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   <!-- STEP 2: Service -->
   <div class="step" id="step2">
     <div class="card">
-      <div class="card-progress"><div class="card-step-label">STEP 2 OF 8 &mdash; SERVICE TYPE</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:14.3%"></div></div></div>
+      <div class="card-progress"><div class="card-step-label">STEP 2 OF 7 &mdash; SERVICE TYPE</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:14.3%"></div></div></div>
       <div class="step-title">Choose Your Timepiece</div>
       <div class="step-sub">Select the service that fits your needs.</div>
       <div class="opts">
@@ -643,7 +668,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   <!-- STEP 3: Add-Ons -->
   <div class="step" id="step3">
     <div class="card">
-      <div class="card-progress"><div class="card-step-label">STEP 3 OF 8 &mdash; ADD-ONS</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:28.6%"></div></div></div>
+      <div class="card-progress"><div class="card-step-label">STEP 3 OF 7 &mdash; ADD-ONS</div><div class="card-prog-bg"><div class="card-prog-fill" style="width:28.6%"></div></div></div>
       <div class="step-title"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-thumbtack.png" alt=""> Fine Tune the Clock</div>
       <div class="step-sub" id="step3Sub">All optional. Your running total updates as you go.</div>
       <div class="ctr-row" id="print1Row">
@@ -784,11 +809,11 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
           <div class="step5-faq-hdr">Before Your Appointment</div>
           <div class="step5-faq-link-box">
             <p>Review our preparation guide so you know exactly what to bring and what to expect.</p>
-            <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" class="step5-faq-link-btn">Before the Clock Starts &rarr;</a>
+            <button class="step5-faq-link-btn" onclick="openFAQModal()">Before the Clock Starts &rarr;</button>
           </div>
-          <div class="faq-ack-box" id="faqAckRow">
+          <div class="faq-ack-box" id="faqAckRow" style="cursor:default">
             <div class="faq-ack-chk" id="faqAckChk"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-checkmark.png" alt=""></div>
-            <div class="faq-ack-text">I have reviewed the <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank">appointment preparation guide</a> and understand what to bring to my appointment.</div>
+            <div class="faq-ack-text">I have reviewed the appointment preparation guide and understand what to bring to my appointment.</div>
           </div>
         </div>
         <div class="nav">
@@ -818,6 +843,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
           <button class="qpb navy" id="leadContactBtn"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-questions.png" alt=""> Have Questions? Contact a Notary Specialist</button>
           <div class="lead-form" id="leadContactForm">
             <div style="font-family:'Cinzel',serif;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:.65rem">We'll reach out shortly</div>
+            <div style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem;line-height:1.6">Before submitting, you may find your answer in our <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" style="color:var(--navy);font-weight:600;text-decoration:underline">FAQ &mdash; Before the Clock Starts</a>.</div>
             <input type="text" id="leadName" placeholder="Your Name *">
             <input type="email" id="leadEmail" placeholder="Email Address *">
             <textarea id="leadMsg" placeholder="Question or note (optional)"></textarea>
@@ -1041,6 +1067,47 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 
 </div><!-- /.wrapper -->
 
+
+<!-- FAQ Prep Modal -->
+<div class="faq-modal-overlay" id="faqModal">
+  <div class="faq-modal">
+    <div class="faq-modal-hdr">
+      <div class="faq-modal-title">Before the Clock Starts</div>
+      <div class="faq-modal-sub">Scroll to the bottom to confirm you have read the preparation guide.</div>
+      <button class="faq-modal-close" onclick="closeFAQModal()">&#x2715;</button>
+    </div>
+    <div class="faq-modal-body" id="faqModalBody">
+      <div class="faq-item">
+        <div class="faq-q">What Identification Is Required</div>
+        <div class="faq-a">Every signer must present valid government-issued photo identification at the appointment. Common acceptable identification includes a driver&rsquo;s license, state ID card, or passport. The name on the identification should reasonably match the name on the document.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What Should I Bring to My Appointment</div>
+        <div class="faq-a">Bring the complete document ready for signature. Do not sign the document before the appointment unless the document instructions specifically require a prior signature. Each signer must bring valid government-issued photo identification. All required signers must be present at the appointment. If witnesses are required for the document, bring the required witnesses unless witness service was requested during booking.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Can a Document Be Notarized if It Is Incomplete</div>
+        <div class="faq-a">No. Texas law prohibits notarizing documents with blank spaces or incomplete sections. All documents must be complete and ready for signature at the time of the appointment. If documents are incomplete, the appointment will be canceled and travel fees still apply.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Do All Signers Need to Be Present</div>
+        <div class="faq-a">Yes. Every signer must appear before the notary at the same time unless the document specifically allows separate notarizations. The notary must personally witness each signature.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What Happens if Someone Does Not Show Up</div>
+        <div class="faq-a">The 15-minute waiting period begins at the scheduled appointment time. If the signer has not appeared and the notarization has not begun within 15 minutes of the scheduled appointment time, the visit is treated as a completed service call. The deposit is non-refundable in this circumstance.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What Happens if I Cancel My Appointment</div>
+        <div class="faq-a">Appointments canceled less than 24 hours before the scheduled time are non-refundable. Deposits secure the appointment time and travel schedule. If documents are incomplete or identification is missing at the time of the appointment, a new appointment and new deposit will be required.</div>
+      </div>
+    </div>
+    <div class="faq-modal-footer">
+      <span class="faq-scroll-hint" id="faqScrollHint">Scroll down to continue &darr;</span>
+      <button class="faq-modal-done" id="faqModalDoneBtn" onclick="closeFAQModal()">I&rsquo;ve Read This &rarr;</button>
+    </div>
+  </div>
+</div>
 <!-- Quote Preview Modal -->
 <div class="modal-overlay" id="quoteModal" onclick="if(event.target===this)closeQuoteModal()">
   <div class="modal">
@@ -1129,6 +1196,59 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 </footer>
 
 <script>
+
+function openFAQModal(){
+  var overlay=document.getElementById("faqModal");
+  var body=document.getElementById("faqModalBody");
+  var hint=document.getElementById("faqScrollHint");
+  var doneBtn=document.getElementById("faqModalDoneBtn");
+  if(!overlay)return;
+  overlay.classList.add("show");
+  // If already acked, show done state immediately
+  if(S.faqAcked){
+    if(hint)hint.classList.add("hide");
+    if(doneBtn)doneBtn.classList.add("ready");
+    return;
+  }
+  // Reset scroll position and done state
+  if(body)body.scrollTop=0;
+  if(hint)hint.classList.remove("hide");
+  if(doneBtn)doneBtn.classList.remove("ready");
+  // Attach scroll listener
+  if(body){
+    body._faqScrollHandler=function(){
+      var remaining=body.scrollHeight-body.scrollTop-body.clientHeight;
+      if(remaining<=50){
+        // Scrolled to bottom — auto-check
+        S.faqAcked=true;
+        var row=document.getElementById("faqAckRow");
+        if(row)row.classList.add("on");
+        var chk=document.getElementById("faqAckChk");
+        if(chk){chk.style.background="var(--navy)";chk.style.borderColor="var(--navy)";var img=chk.querySelector("img");if(img)img.style.opacity="1";}
+        if(hint)hint.classList.add("hide");
+        if(doneBtn)doneBtn.classList.add("ready");
+        // Unlock next4 if slot also selected
+        var n4=document.getElementById("next4");
+        if(n4){var canContinue=S.faqAcked&&!!S.apptTime;n4.disabled=!canContinue;n4.style.opacity=canContinue?"1":".5";}
+        body.removeEventListener("scroll",body._faqScrollHandler);
+      }
+    };
+    body.addEventListener("scroll",body._faqScrollHandler);
+    // Check if content is short enough to not need scrolling
+    setTimeout(function(){
+      if(body.scrollHeight<=body.clientHeight+10){
+        // Content fits — auto-ack immediately
+        body._faqScrollHandler&&body._faqScrollHandler();
+      }
+    },100);
+  }
+}
+
+function closeFAQModal(){
+  var overlay=document.getElementById("faqModal");
+  if(overlay)overlay.classList.remove("show");
+}
+
 var FEDERAL_HOLIDAYS=['2025-01-01','2025-01-20','2025-02-17','2025-05-26','2025-06-19','2025-07-04','2025-09-01','2025-10-13','2025-11-11','2025-11-27','2025-12-25','2026-01-01','2026-01-19','2026-02-16','2026-05-25','2026-06-19','2026-07-04','2026-09-07','2026-10-12','2026-11-11','2026-11-26','2026-12-25','2027-01-01','2027-01-18','2027-02-15','2027-05-31','2027-06-19','2027-07-04','2027-09-06','2027-10-11','2027-11-11','2027-11-25','2027-12-25'];
 var SVC_CODE={second:"SH",minute:"MH",bedside:"BC",closing:"LS"};
 var POS=[{name:"Granbury Post Office",lat:32.447311,lng:-97.786530},{name:"Acton Post Office",lat:32.419700,lng:-97.689700}];
@@ -1355,6 +1475,9 @@ function startOver(){
   var ssd=document.getElementById("selectedSlotDisplay");if(ssd)ssd.style.display="none";
   var sl=document.getElementById("slotsList");if(sl)sl.innerHTML="";
   var faqRow=document.getElementById("faqAckRow");if(faqRow)faqRow.classList.remove("on");
+  var faqChk=document.getElementById("faqAckChk");if(faqChk){faqChk.style.background="";faqChk.style.borderColor="";var img=faqChk.querySelector("img");if(img)img.style.opacity="0";}
+  var faqBody=document.getElementById("faqModalBody");if(faqBody&&faqBody._faqScrollHandler){faqBody.removeEventListener("scroll",faqBody._faqScrollHandler);}
+  closeFAQModal();
   var pb=document.getElementById("printBtn8");if(pb){pb.disabled=false;pb.style.opacity="1";}
   var sb=document.getElementById("startOverBtn");if(sb){sb.disabled=false;sb.style.opacity="1";}
   // Reset Time Flies delivery fields
@@ -1419,9 +1542,12 @@ document.addEventListener("DOMContentLoaded",function(){
   on("next6","click",function(){if(!validateStep6())return;buildPaymentStep();loadPayPalSDK(function(){buildPaymentStep();});showStep(7);});
   on("back7","click",function(){showStep(6);});
   on("paypalMockBtn","click",handleMockPayment);
-  on("faqAckRow","click",function(){S.faqAcked=!S.faqAcked;this.classList.toggle("on",S.faqAcked);var n4=document.getElementById("next4");if(n4){var canContinue=S.faqAcked&&!!S.apptTime;n4.disabled=!canContinue;n4.style.opacity=canContinue?"1":".5";}});
+  // faqAckRow is now handled by FAQ modal scroll — no manual click
   // Note to Notary character counter
   on("noteNotary","input",function(){var len=this.value.length;var ctr=document.getElementById("noteNotaryCount");if(ctr){ctr.textContent=len;ctr.parentElement.classList.toggle("warn",len>450);}});
+  // FAQ modal click-outside-to-close
+  var faqOverlay=document.getElementById("faqModal");
+  if(faqOverlay)faqOverlay.addEventListener("click",function(e){if(e.target===this)closeFAQModal();});
   // printBtn8 and startOverBtn have inline onclick handlers
   on("leadContactBtn","click",function(){var form=document.getElementById("leadContactForm");if(form){form.style.display=form.style.display==="none"?"block":"none";}});
   on("leadSubmitBtn","click",function(){
@@ -1435,7 +1561,7 @@ document.addEventListener("DOMContentLoaded",function(){
     var form=document.getElementById("leadContactForm");
     if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.85rem;color:var(--navy);font-weight:700;margin-bottom:.5rem\">Got it! We\'ll be in touch.</div><div style=\"font-size:.8rem;color:var(--muted)\">We\'ll reach out shortly to confirm your details.</div></div>";
   });
-  setBookingMode("inperson");
+  var addrNavBtn=document.getElementById("addrNavBtn");if(addrNavBtn)addrNavBtn.style.display="flex";
   var mps=document.getElementById("modalPrintSheet");if(mps)mps.style.setProperty("display","none","important");
 });
 </script>
