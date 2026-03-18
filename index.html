@@ -1240,8 +1240,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   </div>
 </footer>
 
-
-<script data-cfasync="false">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 
 function openFAQModal(){
   var overlay=document.getElementById("faqModal");
@@ -1680,4 +1679,9 @@ document.addEventListener("DOMContentLoaded",function(){
     var total=calcTotal();
     fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
     var form=document.getElementById("leadContactForm");
-    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-
+    if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.82rem;font-weight:700;color:var(--green);\">Thank you! We'll be in touch shortly.<\/div><\/div>";if(st)st.style.display="none";
+  });
+});
+</script>
+</body>
+</html>
