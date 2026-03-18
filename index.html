@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta http-equiv="Cache-Control" content="no-transform">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Round the Clock Notary — Free Quote</title>
@@ -1240,8 +1241,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script data-cfasync="false">
+<script>
 
 function openFAQModal(){
   var overlay=document.getElementById("faqModal");
@@ -1301,7 +1301,7 @@ var POS=[{name:"Granbury Post Office",lat:32.447311,lng:-97.786530},{name:"Acton
 var SVC={second:{label:"Second Hand",base:30,deposit:30,stateFee:10,duration:30},minute:{label:"Minute Hand",base:30,deposit:30,stateFee:10,duration:45},bedside:{label:"Bedside Clock",base:75,deposit:50,stateFee:0,duration:60},closing:{label:"Closing Table",base:150,deposit:50,stateFee:0,duration:90}};
 var APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbym6SCXgNeIVdiy7iU4b1eAYW8sHBL7nQeIH_j4Zqxyn5sAxgRkpAAm8qH85ad7kt4M/exec";
 var GCAL_API_KEY="AIzaSyBaEDQufz1Ipb6Q13frcp5JE8m28RHxfHM";
-var GCAL_ID="rtcnotary1@gmail.com";
+var GCAL_ID="rtcnotary1"+"@"+"gmail.com";
 
 var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",tfDeliveryMethod:"",tfEmail:"",tfFax:"",tfMailName:"",tfMailAddr:"",tfMailCity:"",tfMailState:"",tfMailZip:"",shippingService:"",noteToNotary:"",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
 
