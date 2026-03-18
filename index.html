@@ -1492,7 +1492,8 @@ function logBooking(){
   var surchargeLabels={rushhour:"Rush Hour (+$100)",offclock:"Off the Clock (+$15)",midnight:"Clock Strikes Midnight (+$50)",redletter:"Red Letter Day (+$50)"};
   Object.keys(S.surcharges).forEach(function(k){surchargeList.push(surchargeLabels[k]||k);});
   var mailFull=S.tfMailName?(S.tfMailName+(S.tfMailAddr?", "+S.tfMailAddr:"")+(S.tfMailCity?", "+S.tfMailCity:"")+(S.tfMailState?" "+S.tfMailState:"")+(S.tfMailZip?" "+S.tfMailZip:"")):"";
-  fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({
+  // Use GET with encoded JSON payload — bypasses Cloudflare POST blocking
+  var payload = {
     bookingId:S.bookingId,
     clientName:S.clientName,
     clientPhone:S.clientPhone,
@@ -1538,7 +1539,9 @@ function logBooking(){
     travelFee:S.travelFee,
     addonsTotal:Math.round((S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20+(S.digitalClock?5:0)+(S.timeFlies?5:0))*100)/100,
     surchargesTotal:Math.round(Object.values(S.surcharges).reduce(function(a,b){return a+b;},0)*100)/100
-  })}).catch(function(){});
+  };
+  var getUrl = APPS_SCRIPT_URL + "?action=newBooking&data=" + encodeURIComponent(JSON.stringify(payload));
+  fetch(getUrl).catch(function(){});
 }
 
 function showTFDeliverySection(){
