@@ -1492,7 +1492,7 @@ function logBooking(){
   var surchargeLabels={rushhour:"Rush Hour (+$100)",offclock:"Off the Clock (+$15)",midnight:"Clock Strikes Midnight (+$50)",redletter:"Red Letter Day (+$50)"};
   Object.keys(S.surcharges).forEach(function(k){surchargeList.push(surchargeLabels[k]||k);});
   var mailFull=S.tfMailName?(S.tfMailName+(S.tfMailAddr?", "+S.tfMailAddr:"")+(S.tfMailCity?", "+S.tfMailCity:"")+(S.tfMailState?" "+S.tfMailState:"")+(S.tfMailZip?" "+S.tfMailZip:"")):"";
-  fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+  fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({
     bookingId:S.bookingId,
     clientName:S.clientName,
     clientPhone:S.clientPhone,
@@ -1677,7 +1677,7 @@ document.addEventListener("DOMContentLoaded",function(){
     var st=document.getElementById("leadStatus");
     if(!name||!email||email.indexOf("@")<0){if(st){st.style.display="block";st.textContent="Please enter your name and a valid email.";}return;}
     var total=calcTotal();
-    fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
+    fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
     var form=document.getElementById("leadContactForm");
     if(form)form.innerHTML="<div style=\"padding:1rem;text-align:center\"><div style=\"font-family:Cinzel,serif;font-size:.82rem;font-weight:700;color:var(--green);\">Thank you! We'll be in touch shortly.<\/div><\/div>";if(st)st.style.display="none";
   });
