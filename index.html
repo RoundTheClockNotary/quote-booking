@@ -1727,7 +1727,7 @@ document.addEventListener("DOMContentLoaded",function(){
     if(!name||!email||email.indexOf("@")<0){if(st){st.style.display="block";st.textContent="Please enter your name and a valid email.";}return;}
     var total=calcTotal();
     var quoteLines=buildLines().map(function(l){return{label:l.k,value:l.v,free:l.free||false};});
-    fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided",apptDate:S.apptDate||"",apptTime:S.apptTime||"",bookingMode:S.bookingMode||"",quoteLines:quoteLines,deposit:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit)})}).catch(function(){});
+    var lcUrl=APPS_SCRIPT_URL+"?action=leadCapture&data="+encodeURIComponent(JSON.stringify({clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided",apptDate:S.apptDate||"",apptTime:S.apptTime||"",bookingMode:S.bookingMode||"",quoteLines:quoteLines,deposit:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit)}));fetch(lcUrl).catch(function(){});
     var form=document.getElementById("leadContactForm");
     if(form){form.style.display="none";}
     if(st){st.style.display="block";st.style.color="var(--green)";st.textContent="Message sent! We'll be in touch shortly.";}
