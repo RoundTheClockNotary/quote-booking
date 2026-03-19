@@ -708,6 +708,10 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
         <div class="ctr-left"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-addon-double.png" class="ctr-icon" alt=""><div><div class="ctr-label">Double Time &middot; Duplex Full Color</div><div class="ctr-sub">$1.50 per page</div></div></div>
         <div class="ctr-right"><div class="ctr-ctrl"><button class="ctr-btn" data-target="print2" data-dir="-1">&#8722;</button><div class="ctr-val" id="print2Val">0</div><button class="ctr-btn" data-target="print2" data-dir="1">&#43;</button></div><div class="ctr-price" id="print2Price">$0.00</div></div>
       </div>
+      <!-- Print disclaimer — shown when either print add-on > 0 -->
+      <div id="printNotice" style="display:none;background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.35);border-left:3px solid var(--gold);border-radius:8px;padding:.65rem .9rem;margin-bottom:.6rem;font-size:.78rem;color:#3d2e0f;line-height:1.5">
+        We will contact you to confirm your documents before your appointment.
+      </div>
       <div class="ctr-row" id="witnessRow">
         <div class="ctr-left"><img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-addon-watch.png" class="ctr-icon" alt=""><div><div class="ctr-label">Watch The Clock &middot; Notary Witness</div><div class="ctr-sub">$20 per witness</div></div></div>
         <div class="ctr-right"><div class="ctr-ctrl"><button class="ctr-btn" data-target="witness" data-dir="-1">&#8722;</button><div class="ctr-val" id="witnessVal">0</div><button class="ctr-btn" data-target="witness" data-dir="1">&#43;</button></div><div class="ctr-price" id="witnessPrice">$0.00</div></div>
@@ -721,7 +725,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
         <div class="ctr-right"><div class="ctr-ctrl"><button class="ctr-btn" data-target="minuteSeals" data-dir="-1">&#8722;</button><div class="ctr-val" id="minuteSealsVal">0</div><button class="ctr-btn" data-target="minuteSeals" data-dir="1">&#43;</button></div><div class="ctr-price" id="minuteSealsPrice">$0.00</div></div>
       </div>
       <div class="addon-divider"></div>
-      <!-- Digital Clock (E-Notary) — greyed out for Closing Table -->
+      <!-- Digital Clock (E-Notary) — toggle for standard, counter for Closing Table RON -->
       <div class="toggle-row" id="digitalClockRow" onclick="toggleDigitalClock()">
         <div class="toggle-left">
           <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-electronic.png?v=3" class="ctr-icon" alt="">
@@ -733,6 +737,24 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
         <div style="display:flex;align-items:center;gap:.5rem">
           <div class="toggle-switch" id="digitalClockSwitch"></div>
           <div class="toggle-price" id="digitalClockPrice">$0.00</div>
+        </div>
+      </div>
+      <!-- RON Signatures counter — only visible when Closing Table selected -->
+      <div class="ctr-row" id="ronSigsRow" style="display:none">
+        <div class="ctr-left">
+          <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/icon-electronic.png?v=3" class="ctr-icon" alt="">
+          <div>
+            <div class="ctr-label">Digital Clock &middot; RON E-Sign</div>
+            <div class="ctr-sub">$5.00 per signature &mdash; lender authorization required</div>
+          </div>
+        </div>
+        <div class="ctr-right">
+          <div class="ctr-ctrl">
+            <button class="ctr-btn" data-target="ronSigs" data-dir="-1">&#8722;</button>
+            <div class="ctr-val" id="ronSigsVal">0</div>
+            <button class="ctr-btn" data-target="ronSigs" data-dir="1">&#43;</button>
+          </div>
+          <div class="ctr-price" id="ronSigsPrice">$0.00</div>
         </div>
       </div>
       <!-- Time Flies — Document Delivery -->
@@ -1244,13 +1266,15 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
 <script data-cfasync="false">
 (function(){
   var e = 'roundtheclocknotary' + '@' + 'gmail.com';
+  var ei = 'info' + '@' + 'roundtheclocknotary.com';
   var m = 'mai' + 'lto:' + e;
+  var mi = 'mai' + 'lto:' + ei;
   ['calc-email-1','calc-email-2'].forEach(function(id){
     var el = document.getElementById(id);
     if(el){ el.href = m; el.textContent = e; }
   });
   var e3 = document.getElementById('calc-email-3');
-  if(e3){ e3.href = m; }
+  if(e3){ e3.href = mi; }
 })();
 </script>
 <script data-cfasync="false">
@@ -1315,7 +1339,7 @@ var APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbym6SCXgNeIVdiy7iU4
 var GCAL_API_KEY="AIzaSyBaEDQufz1Ipb6Q13frcp5JE8m28RHxfHM";
 var GCAL_ID="rtcnotary1@gmail.com";
 
-var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",tfDeliveryMethod:"",tfEmail:"",tfFax:"",tfMailName:"",tfMailAddr:"",tfMailCity:"",tfMailState:"",tfMailZip:"",shippingService:"",noteToNotary:"",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
+var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,ronSigs:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",tfDeliveryMethod:"",tfEmail:"",tfFax:"",tfMailName:"",tfMailAddr:"",tfMailCity:"",tfMailState:"",tfMailZip:"",shippingService:"",noteToNotary:"",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
 
 function genBookingId(){var code=SVC_CODE[S.serviceType]||"XX";var now=new Date();return"RTC-"+code+"-"+String(now.getFullYear()).slice(-2)+pad2(now.getMonth()+1)+pad2(now.getDate())+"-"+(Math.floor(Math.random()*900)+100);}
 function fmt(n){return"$"+n.toFixed(2);}
@@ -1323,7 +1347,7 @@ function pad2(n){return n<10?"0"+n:""+n;}
 function updateDeposit(){if(S.isFar){S.deposit=75;return;}if(S.serviceType)S.deposit=SVC[S.serviceType].deposit;}
 function isHoliday(d){return FEDERAL_HOLIDAYS.indexOf(d)>=0;}
 function distMi(la1,ln1,la2,ln2){var R=3958.8,dLat=(la2-la1)*Math.PI/180,dLng=(ln2-ln1)*Math.PI/180;var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dLng/2)*Math.sin(dLng/2);return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));}
-function calcTotal(){var t=S.travelFee+S.serviceBase+S.stateFee;t+=S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20;if(S.digitalClock)t+=5;if(S.timeFlies)t+=5;Object.keys(S.surcharges).forEach(function(k){t+=S.surcharges[k];});return t;}
+function calcTotal(){var t=S.travelFee+S.serviceBase+S.stateFee;t+=S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20+S.ronSigs*5;if(S.digitalClock)t+=5;if(S.timeFlies)t+=5;Object.keys(S.surcharges).forEach(function(k){t+=S.surcharges[k];});return t;}
 
 function buildLines(){var lines=[];
   if(S.bookingMode==="remote"){lines.push({k:"Remote Online — No Travel",v:"FREE",free:true});}
@@ -1336,6 +1360,7 @@ function buildLines(){var lines=[];
   if(S.print1>0)lines.push({k:"Single Print ("+S.print1+" pg)",v:fmt(S.print1)});
   if(S.print2>0)lines.push({k:"Duplex Print ("+S.print2+" pg)",v:fmt(S.print2*1.5)});
   if(S.witness>0)lines.push({k:"Witness ("+S.witness+")",v:fmt(S.witness*20)});
+  if(S.ronSigs>0)lines.push({k:"RON E-Sign ("+S.ronSigs+"x$5)",v:fmt(S.ronSigs*5)});
   if(S.digitalClock)lines.push({k:"Digital Clock (E-Notary)",v:fmt(5)});
   if(S.timeFlies){var dm=S.deliveryMethod==="email"?"Email":S.deliveryMethod==="fax"?"Fax":"Mail";lines.push({k:"Time Flies \u00b7 Delivery ("+dm+")",v:fmt(5)});}
   var sl={rushhour:"Rush Hour",offclock:"Off the Clock",midnight:"Clock Strikes Midnight",redletter:"Red Letter Day"};
@@ -1471,12 +1496,21 @@ function handleSvc(type){document.querySelectorAll(".opt-btn").forEach(function(
   var sub=document.getElementById("step3Sub");if(sub)sub.textContent=isMinute?"All add-ons available.":(isSecond?"Add-ons plus Extra Ticks available.":"Add-ons 1\u20133 available.");
   var isClosing=type==="closing";
   var dcRow=document.getElementById("digitalClockRow");
+  var ronSigsRow=document.getElementById("ronSigsRow");
   var ronBadge=document.getElementById("ronBadge");
   var dcSub=document.getElementById("digitalClockSub");
-  if(dcRow){if(isClosing){dcRow.style.opacity=".38";dcRow.style.pointerEvents="none";if(ronBadge)ronBadge.style.display="inline";if(dcSub)dcSub.textContent="Not available for Closing Table \u2014 RON requires lender authorization.";if(S.digitalClock){S.digitalClock=false;dcRow.classList.remove("on");var dp=document.getElementById("digitalClockPrice");if(dp)dp.textContent="$0.00";}}else{dcRow.style.opacity="1";dcRow.style.pointerEvents="auto";if(ronBadge)ronBadge.style.display="none";if(dcSub)dcSub.textContent="$5.00 flat \u2014 electronic signature on your document";}}
+  if(isClosing){
+    // Hide standard toggle, show RON counter
+    if(dcRow){dcRow.style.display="none";if(S.digitalClock){S.digitalClock=false;dcRow.classList.remove("on");var dp=document.getElementById("digitalClockPrice");if(dp)dp.textContent="$0.00";}}
+    if(ronSigsRow)ronSigsRow.style.display="flex";
+  } else {
+    // Show standard toggle, hide RON counter
+    if(dcRow){dcRow.style.display="flex";dcRow.style.opacity="1";dcRow.style.pointerEvents="auto";if(ronBadge)ronBadge.style.display="none";if(dcSub)dcSub.textContent="$5.00 flat \u2014 electronic signature on your document";}
+    if(ronSigsRow){ronSigsRow.style.display="none";S.ronSigs=0;var rv=document.getElementById("ronSigsVal");if(rv)rv.textContent="0";var rp=document.getElementById("ronSigsPrice");if(rp)rp.textContent="$0.00";var rr=document.getElementById("ronSigsRow");if(rr)rr.classList.remove("on");}
+  }
   updateRT();}
 
-function handleCounter(target,dir){var valEl=document.getElementById(target+"Val");var priceEl=document.getElementById(target+"Price");if(!valEl||!priceEl)return;var cur=Math.max(0,(parseInt(valEl.textContent)||0)+dir);valEl.textContent=cur;S[target]=cur;var prices={extraTicks:10,minuteSeals:10,print1:1.0,print2:1.5,witness:20};var row=document.getElementById(target+"Row");if(row)row.classList.toggle("on",cur>0);priceEl.textContent=fmt(cur*prices[target]);updateRT();}
+function handleCounter(target,dir){var valEl=document.getElementById(target+"Val");var priceEl=document.getElementById(target+"Price");if(!valEl||!priceEl)return;var cur=Math.max(0,(parseInt(valEl.textContent)||0)+dir);valEl.textContent=cur;S[target]=cur;var prices={extraTicks:10,minuteSeals:10,print1:1.0,print2:1.5,witness:20,ronSigs:5};var row=document.getElementById(target+"Row");if(row)row.classList.toggle("on",cur>0);priceEl.textContent=fmt(cur*prices[target]);var pn=document.getElementById("printNotice");if(pn)pn.style.display=(S.print1>0||S.print2>0)?"block":"none";updateRT();}
 
 function initDatePicker(){var d=new Date();var min=d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate());var inp=document.getElementById("apptDate");if(inp){inp.min=min;if(!inp.value)inp.value=min;}}
 
@@ -1601,7 +1635,9 @@ function startOver(){
   cls("addrStatus","addr-status");txt("addrStatus","");
   ["nameStatus","phoneStatus","emailStatus"].forEach(function(id){cls(id,"addr-status");txt(id,"");});
   document.querySelectorAll(".opt-btn").forEach(function(b){b.classList.remove("sel");});
-  ["extraTicks","minuteSeals","print1","print2","witness"].forEach(function(t){txt(t+"Val","0");txt(t+"Price","$0.00");var row=document.getElementById(t+"Row");if(row)row.classList.remove("on");});
+  ["extraTicks","minuteSeals","print1","print2","witness","ronSigs"].forEach(function(t){txt(t+"Val","0");txt(t+"Price","$0.00");var row=document.getElementById(t+"Row");if(row)row.classList.remove("on");});
+  var pn=document.getElementById("printNotice");if(pn)pn.style.display="none";
+  var ronSigsRow=document.getElementById("ronSigsRow");if(ronSigsRow)ronSigsRow.style.display="none";
   var tar=document.getElementById("tosAgreeRow");if(tar)tar.classList.remove("on");
   var n6=document.getElementById("next6");if(n6){n6.disabled=true;n6.style.opacity=".5";}
   var n4=document.getElementById("next4");if(n4){n4.disabled=true;n4.style.opacity=".5";}
@@ -1690,7 +1726,6 @@ document.addEventListener("DOMContentLoaded",function(){
     var st=document.getElementById("leadStatus");
     if(!name||!email||email.indexOf("@")<0){if(st){st.style.display="block";st.textContent="Please enter your name and a valid email.";}return;}
     var total=calcTotal();
-    fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
     var quoteLines=buildLines().map(function(l){return{label:l.k,value:l.v,free:l.free||false};});
     fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided",apptDate:S.apptDate||"",apptTime:S.apptTime||"",bookingMode:S.bookingMode||"",quoteLines:quoteLines,deposit:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit)})}).catch(function(){});
     var form=document.getElementById("leadContactForm");
