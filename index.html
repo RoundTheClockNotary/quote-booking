@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1160,7 +1160,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <div class="modal-contact">
         <span>817-512-7217</span>
         <span class="modal-contact-dot">&middot;</span>
-        <span><a href="#" id="calc-email-1" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="c8baa7bda6acbca0adaba4a7aba3a6a7bca9bab188afa5a9a1a4e6aba7a5">[email&#160;protected]</span></a></span>
+        <span><a href="#" id="calc-email-1" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="f1839e849f95859994929d9e929a9f9e85908388b1969c90989ddf929e9c">[email&#160;protected]</span></a></span>
         <span class="modal-contact-dot">&middot;</span>
         <span>roundtheclocknotary.com</span>
       </div>
@@ -1193,7 +1193,7 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
     <div class="modal-contact">
       <span>817-512-7217</span>
       <span class="modal-contact-dot">&middot;</span>
-      <span><a href="#" id="calc-email-2" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="6b19041e050f1f030e080704080005041f0a19122b0c060a020745080406">[email&#160;protected]</span></a></span>
+      <span><a href="#" id="calc-email-2" style="color:var(--gold-bright);text-decoration:none"><span class="__cf_email__" data-cfemail="1a68756f747e6e727f797675797174756e7b68635a7d777b737634797577">[email&#160;protected]</span></a></span>
       <span class="modal-contact-dot">&middot;</span>
       <span>roundtheclocknotary.com</span>
     </div>
@@ -1240,7 +1240,8 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script data-cfasync="false">
 (function(){
   var e = 'roundtheclocknotary' + '@' + 'gmail.com';
   var m = 'mai' + 'lto:' + e;
@@ -1689,6 +1690,14 @@ document.addEventListener("DOMContentLoaded",function(){
     var st=document.getElementById("leadStatus");
     if(!name||!email||email.indexOf("@")<0){if(st){st.style.display="block";st.textContent="Please enter your name and a valid email.";}return;}
     var total=calcTotal();
+    fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided"})}).catch(function(){});
     var quoteLines=buildLines().map(function(l){return{label:l.k,value:l.v,free:l.free||false};});
     fetch(APPS_SCRIPT_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"leadCapture",clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided",apptDate:S.apptDate||"",apptTime:S.apptTime||"",bookingMode:S.bookingMode||"",quoteLines:quoteLines,deposit:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit)})}).catch(function(){});
-    var form=document.getEleme
+    var form=document.getElementById("leadContactForm");
+    if(form){form.style.display="none";}
+    if(st){st.style.display="block";st.style.color="var(--green)";st.textContent="Message sent! We'll be in touch shortly.";}
+  });
+});
+</script>
+</body>
+</html>
