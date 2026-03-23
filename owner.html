@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTC Notary — Owner Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1f3c; --navy-mid: #162d54;
+    --gold: #c9a84c; --gold-light: #e2c06e; --gold-dim: #a07830;
+    --cream: #f8f3e8; --cream-dark: #ede6d4;
+    --white: #fff; --red: #c0392b; --green: #27ae60;
+    --text-dark: #1a1a2e; --text-mid: #4a4a6a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy); min-height: 100vh; color: var(--text-dark);
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(201,168,76,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(201,168,76,0.04) 0%, transparent 50%);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy); border-bottom: 2px solid var(--gold);
+    padding: 12px 24px; display: flex; align-items: center; gap: 12px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .logo { height: 42px; }
+  .brand-name { font-family: 'Cinzel', serif; color: var(--gold); font-size: 13px; font-weight: 600; letter-spacing: 0.08em; }
+  .brand-sub { color: rgba(255,255,255,0.35); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .header-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .back-btn {
+    color: rgba(255,255,255,0.35); font-size: 11px; cursor: pointer;
+    padding: 5px 10px; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px; transition: all 0.15s; display: none;
+  }
+  .back-btn:hover { color: var(--gold); border-color: rgba(201,168,76,0.3); }
+  .payouts-link {
+    color: rgba(255,255,255,0.35); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+    padding: 5px 10px; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 6px; transition: all 0.15s;
+  }
+  .payouts-link:hover { color: var(--gold); border-color: rgba(201,168,76,0.3); }
+  .payouts-link.active { color: var(--gold); border-color: rgba(201,168,76,0.35); background: rgba(201,168,76,0.07); }
+  .private-badge {
+    background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2);
+    color: rgba(201,168,76,0.55); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 20px;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ── LOOKUP SCREEN ── */
+  .lookup-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: calc(100vh - 68px); padding: 40px 20px;
+  }
+  .lookup-inner { width: 100%; max-width: 500px; }
+  .lookup-eyebrow { text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(201,168,76,0.45); margin-bottom: 8px; }
+  .lookup-title { font-family: 'Cinzel', serif; color: var(--white); font-size: 22px; font-weight: 700; text-align: center; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .lookup-sub { text-align: center; color: rgba(255,255,255,0.22); font-size: 12px; margin-bottom: 28px; }
+  .id-wrap { position: relative; }
+  .id-input {
+    width: 100%; font-family: 'Cinzel', serif; font-size: 17px; font-weight: 600;
+    letter-spacing: 0.08em; padding: 17px 110px 17px 20px;
+    border: 2px solid rgba(201,168,76,0.2); border-radius: 12px;
+    background: rgba(255,255,255,0.05); color: var(--cream); outline: none;
+    text-transform: uppercase; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .id-input:focus { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(201,168,76,0.1); }
+  .id-input::placeholder { color: rgba(255,255,255,0.14); font-size: 13px; letter-spacing: 0.04em; }
+  .pull-btn {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: var(--gold); color: var(--navy); border: none; border-radius: 8px;
+    font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700;
+    padding: 9px 14px; cursor: pointer; letter-spacing: 0.06em; transition: background 0.15s;
+  }
+  .pull-btn:hover { background: var(--gold-light); }
+  .id-hint { text-align: center; font-size: 11px; color: rgba(255,255,255,0.18); margin-top: 12px; min-height: 18px; }
+  .id-hint.error { color: #e88; }
+
+  /* ── EDITOR SCREEN ── */
+  .editor-main { max-width: 760px; margin: 0 auto; padding: 22px 16px 60px; }
+
+  .booking-badge {
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(201,168,76,0.07); border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 10px; padding: 11px 16px; margin-bottom: 16px;
+  }
+  .booking-id { font-family: 'Cinzel', serif; color: var(--gold); font-size: 13px; font-weight: 700; letter-spacing: 0.1em; }
+  .booking-meta { color: rgba(255,255,255,0.35); font-size: 11px; margin-top: 2px; }
+  .claimed-pill { background: rgba(39,174,96,0.12); color: #5dda85; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 12px; }
+
+  /* CARDS */
+  .card { background: var(--cream); border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; border-top: 3px solid var(--gold); }
+  .card-title {
+    font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--navy);
+    margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--cream-dark);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media(max-width:560px) { .grid-3,.grid-2 { grid-template-columns: 1fr; } }
+  .field { display: flex; flex-direction: column; gap: 4px; }
+  .field label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); }
+  .field input {
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    padding: 8px 10px; border: 1.5px solid #d0c8b4; border-radius: 6px;
+    background: var(--white); color: var(--text-dark); outline: none; transition: border-color 0.15s;
+  }
+  .field input:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(201,168,76,0.1); }
+  .field input.ro { background: #f0ebe0; color: #888; cursor: default; }
+
+  /* LINE ITEMS */
+  .legend { display: flex; gap: 10px; }
+  .legend span { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-mid); font-family: 'DM Sans', sans-serif; font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .ldot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+
+  .li-hdr { display: grid; grid-template-columns: 1fr 58px 78px 30px; gap: 8px; padding: 0 8px; margin-bottom: 5px; }
+  .li-hdr span { font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-mid); }
+  .li-hdr span:nth-child(2), .li-hdr span:nth-child(3) { text-align: center; }
+
+  .li-items { display: flex; flex-direction: column; gap: 6px; }
+  .li {
+    display: grid; grid-template-columns: 1fr 58px 78px 30px; gap: 8px;
+    align-items: center; padding: 8px; border-radius: 7px;
+    border: 1.5px solid #d0c8b4; background: var(--white);
+  }
+  .li.oq { border-left: 3px solid var(--gold); }
+  .li.added { border-left: 3px solid var(--green); }
+  .li input { border: none; padding: 2px 0; font-size: 13px; background: transparent; font-family: 'DM Sans', sans-serif; color: var(--text-dark); width: 100%; outline: none; }
+  .li input.c { text-align: center; }
+  .li input.r { text-align: right; }
+  .li input:focus { border-bottom: 1.5px solid var(--gold); }
+  .del-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; line-height: 1; transition: color 0.15s; text-align: center; padding: 0; }
+  .del-btn:hover { color: var(--red); }
+
+  .presets { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+  .preset {
+    background: var(--navy); color: var(--gold); border: 1px solid rgba(201,168,76,0.22);
+    font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 16px;
+    cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif;
+  }
+  .preset:hover { background: var(--gold); color: var(--navy); }
+  .add-custom {
+    background: none; border: 1.5px dashed var(--gold-dim); color: var(--gold-dim);
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    padding: 7px; border-radius: 7px; cursor: pointer; width: 100%;
+    margin-top: 8px; transition: all 0.15s;
+  }
+  .add-custom:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* DEPOSIT + ADJ */
+  .dep-adj { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  @media(max-width:520px) { .dep-adj { grid-template-columns: 1fr; } }
+  .adj-toggle { display: flex; gap: 6px; margin-top: 8px; }
+  .adj-toggle button {
+    flex: 1; padding: 6px; border-radius: 6px;
+    border: 1.5px solid #d0c8b4; background: var(--white);
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600;
+    cursor: pointer; color: var(--text-mid); transition: all 0.15s;
+  }
+  .adj-toggle button.active-add { background: #e8f8ee; border-color: var(--green); color: var(--green); }
+  .adj-toggle button.active-sub { background: #fdecea; border-color: var(--red); color: var(--red); }
+
+  /* TOTALS */
+  .totals-block { background: var(--navy); border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; }
+  .t-row { display: flex; justify-content: space-between; font-size: 13px; padding: 5px 0; color: rgba(255,255,255,0.6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .t-row:last-child { border: none; }
+  .t-row.deduct { color: #e08080; }
+  .t-row.final { font-family: 'Cinzel', serif; font-size: 18px; font-weight: 700; color: var(--gold); padding-top: 10px; margin-top: 4px; }
+
+  /* SEND BUTTON */
+  .send-btn {
+    width: 100%; padding: 16px;
+    background: var(--gold);
+    color: var(--navy); border: none; border-radius: 10px;
+    font-family: 'Cinzel', serif; font-size: 15px; font-weight: 700;
+    letter-spacing: 0.06em; cursor: pointer;
+    box-shadow: 0 4px 16px rgba(201,168,76,0.3); transition: all 0.2s;
+  }
+  .send-btn:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(201,168,76,0.4); }
+  .send-btn:disabled { opacity: 0.6; transform: none; cursor: not-allowed; }
+
+  /* OUTPUT */
+  .output-card { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.18); border-radius: 10px; padding: 20px; margin-top: 14px; display: none; }
+  .output-card.show { display: block; animation: fadeIn 0.2s ease; }
+  .output-label { color: rgba(255,255,255,0.4); font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; margin-top: 12px; }
+  .output-label:first-child { margin-top: 0; }
+  .copy-row { display: flex; gap: 8px; }
+  .copy-row input { flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--cream); font-size: 12px; padding: 8px 11px; border-radius: 6px; font-family: 'DM Sans', sans-serif; outline: none; }
+  .copy-btn { background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.25); color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+  .copy-btn:hover { background: var(--gold); color: var(--navy); }
+  .preview-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; padding: 12px; font-size: 11px; color: rgba(255,255,255,0.65); white-space: pre-line; line-height: 1.7; font-family: 'DM Sans', sans-serif; margin-top: 6px; }
+  .status-msg { font-size: 13px; font-weight: 600; margin-bottom: 12px; min-height: 20px; }
+  .open-paypal { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #009cde; color: white; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; text-decoration: none; transition: background 0.15s; }
+  .open-paypal:hover { background: #007db7; }
+  .divider { height: 1px; background: rgba(201,168,76,0.12); margin: 12px 0; }
+
+  /* ── PAYOUTS SCREEN ── */
+  .payouts-main { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
+  .p-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .p-title { font-family: 'Cinzel', serif; color: var(--gold); font-size: 18px; font-weight: 700; }
+  .period-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .p-select { font-family: 'DM Sans', sans-serif; font-size: 13px; padding: 8px 12px; border: 1.5px solid rgba(201,168,76,0.2); border-radius: 8px; background: rgba(255,255,255,0.05); color: var(--cream); outline: none; }
+  .p-select option { background: var(--navy); }
+  .ytd-btn { background: rgba(201,168,76,0.1); border: 1.5px solid rgba(201,168,76,0.22); color: var(--gold); font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; padding: 8px 14px; border-radius: 8px; cursor: pointer; letter-spacing: 0.06em; transition: all 0.15s; }
+  .ytd-btn:hover { background: rgba(201,168,76,0.18); }
+  .ytd-btn.active { background: var(--gold); color: var(--navy); }
+  .load-btn { background: var(--gold); color: var(--navy); border: none; border-radius: 8px; font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; padding: 8px 16px; cursor: pointer; letter-spacing: 0.06em; transition: background 0.15s; }
+  .load-btn:hover { background: var(--gold-light); }
+
+  .ctabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .ctab { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.35); font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.15s; }
+  .ctab:hover { border-color: rgba(201,168,76,0.3); color: rgba(255,255,255,0.6); }
+  .ctab.active { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+  .ctab.you { border-color: rgba(39,174,96,0.25); color: rgba(39,174,96,0.6); }
+  .ctab.you.active { background: var(--green); color: var(--white); border-color: var(--green); }
+
+  /* SHAREE BLOCK */
+  .sharee-block { background: linear-gradient(135deg,#0b2614,#091e10); border: 1px solid rgba(39,174,96,0.18); border-top: 3px solid var(--green); border-radius: 12px; padding: 18px; margin-bottom: 12px; }
+  .block-title { font-family: 'Cinzel', serif; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+  .sharee-block .block-title { color: #5dda85; }
+  .stat-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .stat { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 14px; flex: 1; min-width: 80px; }
+  .stat-lbl { color: rgba(255,255,255,0.3); font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 3px; }
+  .stat-val { font-family: 'Cinzel', serif; font-size: 17px; font-weight: 700; }
+  .sharee-block .stat-val { color: #5dda85; }
+
+  /* CONTRACTOR BLOCK */
+  .c-block { background: var(--navy-mid); border: 1px solid rgba(201,168,76,0.1); border-top: 3px solid var(--gold); border-radius: 12px; padding: 18px; margin-bottom: 12px; }
+  .c-block .block-title { color: var(--gold); }
+  .c-block .stat-val { color: var(--gold); }
+  .c-meta { color: rgba(255,255,255,0.35); font-size: 11px; margin-bottom: 12px; margin-top: -8px; }
+  .cap-wrap { margin: 10px 0; }
+  .cap-top { display: flex; justify-content: space-between; font-size: 10px; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+  .cap-bar { height: 5px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; }
+  .cap-fill { height: 100%; border-radius: 3px; background: var(--gold); transition: width 0.4s; }
+  .cap-fill.capped { background: var(--green); }
+  .owe-row { display: flex; justify-content: space-between; align-items: center; background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.14); border-radius: 8px; padding: 12px 16px; margin-top: 12px; }
+  .owe-lbl { color: rgba(255,255,255,0.35); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .owe-sub { color: rgba(255,255,255,0.2); font-size: 10px; margin-top: 2px; }
+  .owe-amt { font-family: 'Cinzel', serif; color: var(--gold); font-size: 22px; font-weight: 700; }
+
+  /* JOB TABLE */
+  .job-table-wrap { overflow-x: auto; margin: 12px 0; }
+  .job-table { width: 100%; border-collapse: collapse; font-size: 11px; min-width: 560px; }
+  .job-table th { background: #f0ebe0; color: var(--text-mid); font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 10px; text-align: left; border-bottom: 1px solid #d0c8b4; }
+  .job-table th.r { text-align: right; }
+  .job-table td { padding: 8px 10px; border-bottom: 1px solid #ede6d4; color: var(--text-dark); }
+  .job-table td.r { text-align: right; }
+  .job-table tr:last-child td { border-bottom: none; }
+  .job-table tr:hover td { background: #faf6ee; }
+  .job-table .tot-row td { background: #f0ebe0; font-weight: 700; border-top: 2px solid #d0c8b4; }
+  .s-done { background: #e8f8ee; color: var(--green); font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .s-ns { background: #fdecea; color: var(--red); font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .capped-tag { background: rgba(39,174,96,0.12); color: var(--green); font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 10px; }
+
+  /* EMAIL BTN */
+  .email-btn { width: 100%; padding: 14px; background: var(--gold); color: var(--navy); border: none; border-radius: 10px; font-family: 'Cinzel', serif; font-size: 14px; font-weight: 700; letter-spacing: 0.06em; cursor: pointer; box-shadow: 0 4px 16px rgba(201,168,76,0.25); transition: all 0.2s; margin-top: 6px; }
+  .email-btn:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .email-btn:disabled { opacity: 0.6; transform: none; cursor: not-allowed; }
+
+  /* FEE REFERENCE */
+  .fee-ref { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .fee-ref-title { color: rgba(201,168,76,0.5); font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+  .fee-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px,1fr)); gap: 6px; }
+  .fee-item { font-size: 11px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+  .fee-item strong { color: rgba(201,168,76,0.7); display: block; font-size: 10px; }
+
+  /* GRAND TOTALS */
+  .grand-block { background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.15); border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; }
+  .grand-title { font-family: 'Cinzel', serif; color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+  .grand-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+  .grand-stat { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 10px 14px; flex: 1; min-width: 100px; }
+  .grand-stat .stat-lbl { color: rgba(255,255,255,0.3); }
+  .grand-stat .stat-val { color: var(--gold); font-size: 18px; }
+
+  /* STATUS BAR */
+  .p-status { background: rgba(255,255,255,0.04); border-radius: 6px; padding: 9px 14px; font-size: 12px; color: rgba(255,255,255,0.4); margin-bottom: 14px; min-height: 36px; }
+
+  /* TOAST */
+  .toast { position: fixed; top: 20px; right: 20px; background: var(--green); color: white; padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; opacity: 0; transform: translateY(-10px); transition: all 0.3s; z-index: 999; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <img src="https://cdn.jsdelivr.net/gh/laceesharee/quote-booking@main/logo.png" alt="Round the Clock Notary" class="logo">
+  <div>
+    <div class="brand-name">Round the Clock Notary</div>
+    <div class="brand-sub">Owner Dashboard</div>
+  </div>
+  <div class="header-right">
+    <div class="back-btn" id="backBtn" onclick="showLookup()">← New Booking</div>
+    <div class="payouts-link" id="payoutsToggle" onclick="togglePayouts()">💰 Payouts</div>
+    <div class="private-badge">🔒 Private</div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SCREEN 1: LOOKUP                            -->
+<!-- ════════════════════════════════════════════ -->
+<div class="screen active" id="lookupScreen">
+  <div class="lookup-wrap">
+    <div class="lookup-inner">
+      <div class="lookup-eyebrow">Owner Invoice Tool</div>
+      <div class="lookup-title">Enter Booking ID</div>
+      <div class="lookup-sub">Your claimed jobs only. Wrong ID returns nothing.</div>
+      <div class="id-wrap">
+        <input class="id-input" id="idInput" placeholder="RTC-MH-260322-001"
+          oninput="clearHint()" onkeydown="if(event.key==='Enter')pullBooking()">
+        <button class="pull-btn" onclick="pullBooking()">Pull →</button>
+      </div>
+      <div class="id-hint" id="idHint">Press Enter or click Pull</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SCREEN 2: EDITOR                            -->
+<!-- ════════════════════════════════════════════ -->
+<div class="screen" id="editorScreen">
+  <div class="editor-main">
+
+    <div class="booking-badge">
+      <div>
+        <div class="booking-id" id="badgeId"></div>
+        <div class="booking-meta" id="badgeMeta"></div>
+      </div>
+      <div class="claimed-pill">✓ Your Job</div>
+    </div>
+
+    <!-- CUSTOMER -->
+    <div class="card">
+      <div class="card-title">Customer & Appointment</div>
+      <div class="grid-3" style="margin-bottom:10px;">
+        <div class="field"><label>Customer Name</label><input type="text" id="custName"></div>
+        <div class="field"><label>Phone / Email</label><input type="text" id="custContact"></div>
+        <div class="field"><label>Location</label><input type="text" id="custLocation"></div>
+      </div>
+      <div class="grid-3">
+        <div class="field"><label>Date</label><input type="text" id="custDate" class="ro" readonly></div>
+        <div class="field"><label>Time</label><input type="text" id="custTime" class="ro" readonly></div>
+        <div class="field"><label>Miles / Zone</label><input type="text" id="custMiles" class="ro" readonly></div>
+      </div>
+    </div>
+
+    <!-- LINE ITEMS -->
+    <div class="card">
+      <div class="card-title">
+        Services
+        <div class="legend">
+          <span><span class="ldot" style="background:var(--gold)"></span>From quote</span>
+          <span><span class="ldot" style="background:var(--green)"></span>You added</span>
+        </div>
+      </div>
+      <div class="li-hdr">
+        <span>Description</span><span>Qty</span><span>Price</span><span></span>
+      </div>
+      <div class="li-items" id="lineItems"></div>
+      <div class="presets" id="presets">
+        <button class="preset" onclick="addLine('Notarization (per signature)',1,6)">+ Notarization</button>
+        <button class="preset" onclick="addLine('Loan Signing Package',1,150)">+ Loan Signing</button>
+        <button class="preset" onclick="addLine('Real Estate Closing',1,200)">+ RE Closing</button>
+        <button class="preset" onclick="addLine('Mobile Travel Fee',1,25)">+ Travel Fee</button>
+        <button class="preset" onclick="addLine('After-Hours Fee',1,50)">+ After Hours</button>
+        <button class="preset" onclick="addLine('Print/Copy Fee',1,15)">+ Print Fee</button>
+        <button class="preset" onclick="addLine('Witness Fee',1,10)">+ Witness</button>
+        <button class="preset" onclick="addLine('Apostille Assistance',1,75)">+ Apostille</button>
+        <button class="preset" onclick="addLine('Additional Signer',1,10)">+ Add\'l Signer</button>
+        <button class="preset" onclick="addLine('RON Session',1,25)">+ RON</button>
+      </div>
+      <button class="add-custom" onclick="addLine('',1,'')">+ Add Custom Line Item</button>
+    </div>
+
+    <!-- DEPOSIT + ADJ -->
+    <div class="dep-adj">
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">Deposit Paid</div>
+        <div class="field" style="margin-bottom:8px;">
+          <label>Amount ($)</label>
+          <input type="number" id="depositAmt" min="0" step="0.01" oninput="updateTotals()">
+        </div>
+        <div class="field">
+          <label>Reference</label>
+          <input type="text" id="depositRef" placeholder="PayPal order ID or date">
+        </div>
+      </div>
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-title">Adjustment</div>
+        <div class="field" style="margin-bottom:8px;">
+          <label>Reason</label>
+          <input type="text" id="adjReason" placeholder="e.g. Extra signers on-site" oninput="updateTotals()">
+        </div>
+        <div class="field">
+          <label>Amount ($)</label>
+          <input type="number" id="adjAmt" min="0" step="0.01" oninput="updateTotals()">
+        </div>
+        <div class="adj-toggle">
+          <button id="adjAddBtn" class="active-add" onclick="setAdj('add')">+ Add</button>
+          <button id="adjSubBtn" onclick="setAdj('sub')">− Subtract</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOTALS -->
+    <div class="totals-block" id="totalsBlock"></div>
+
+    <!-- SEND -->
+    <button class="send-btn" id="sendBtn" onclick="sendInvoice()">⚡ Send PayPal Invoice — $0.00</button>
+
+    <!-- OUTPUT -->
+    <div class="output-card" id="outputCard">
+      <div class="status-msg" id="statusMsg"></div>
+      <div class="output-label">PayPal Invoice / PayPal.me Link</div>
+      <div class="copy-row">
+        <input type="text" id="outLink" readonly>
+        <button class="copy-btn" onclick="cp('outLink',this)">Copy</button>
+      </div>
+      <div class="output-label">Text Message</div>
+      <div class="copy-row">
+        <input type="text" id="outText" readonly>
+        <button class="copy-btn" onclick="cp('outText',this)">Copy</button>
+      </div>
+      <div class="output-label">Invoice Summary</div>
+      <div class="preview-box" id="outPreview"></div>
+      <button class="copy-btn" style="width:100%;margin-top:8px;" onclick="cpPreview(this)">Copy Summary</button>
+      <div class="divider"></div>
+      <a class="open-paypal" id="openPaypal" href="#" target="_blank">💳 Open PayPal Link</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SCREEN 3: PAYOUTS                           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="screen" id="payoutsScreen">
+  <div class="payouts-main">
+
+    <div class="p-header">
+      <div class="p-title">Contractor Payouts</div>
+    </div>
+
+    <!-- FEE REFERENCE -->
+    <div class="fee-ref">
+      <div class="fee-ref-title">Fee Model</div>
+      <div class="fee-grid">
+        <div class="fee-item"><strong>Standard deposit ($30)</strong>RTCN $15 · Contractor $15</div>
+        <div class="fee-item"><strong>Premium deposit ($50)</strong>RTCN $25 · Contractor $25</div>
+        <div class="fee-item"><strong>Long distance ($75)</strong>RTCN $15 · Contractor $60</div>
+        <div class="fee-item"><strong>Monthly cap</strong>$150 max · 100% after cap</div>
+        <div class="fee-item"><strong>Travel / State / Surcharge</strong>Contractor keeps 100%</div>
+        <div class="fee-item"><strong>No-show</strong>Long dist deposit kept by contractor</div>
+      </div>
+    </div>
+
+    <!-- PERIOD -->
+    <div class="period-row">
+      <select class="p-select" id="selMonth">
+        <option value="1">January</option><option value="2">February</option>
+        <option value="3">March</option><option value="4">April</option>
+        <option value="5">May</option><option value="6">June</option>
+        <option value="7">July</option><option value="8">August</option>
+        <option value="9">September</option><option value="10">October</option>
+        <option value="11">November</option><option value="12">December</option>
+      </select>
+      <select class="p-select" id="selYear" style="width:82px;">
+        <option>2024</option><option>2025</option><option selected>2026</option><option>2027</option>
+      </select>
+      <button class="ytd-btn" id="ytdBtn" onclick="toggleYTD()">YTD</button>
+      <button class="load-btn" onclick="loadPayouts()">Load →</button>
+    </div>
+
+    <div class="p-status" id="pStatus">Select a period and click Load.</div>
+
+    <!-- CONTRACTOR TABS -->
+    <div class="ctabs" id="ctabs"></div>
+
+    <!-- GRAND TOTALS -->
+    <div class="grand-block hidden" id="grandBlock">
+      <div class="grand-title">Period Summary</div>
+      <div class="grand-stats">
+        <div class="grand-stat"><div class="stat-lbl">Total Jobs</div><div class="stat-val" id="gJobs">0</div></div>
+        <div class="grand-stat"><div class="stat-lbl">Total Owe Contractors</div><div class="stat-val" id="gOwe">$0</div></div>
+        <div class="grand-stat"><div class="stat-lbl">RTCN Fees Collected</div><div class="stat-val" id="gFees">$0</div></div>
+        <div class="grand-stat"><div class="stat-lbl">Contractors</div><div class="stat-val" id="gCount">0</div></div>
+      </div>
+    </div>
+
+    <!-- CONTRACTOR CONTENT -->
+    <div id="payoutContent"></div>
+
+    <!-- EMAIL BTN -->
+    <div id="emailSection" class="hidden">
+      <button class="email-btn" onclick="sendPayoutEmail()">📧 Email Payout Summary to Myself</button>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script data-cfasync="false">
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxmeNe3N4DJdsozivFUBxkrbKfK7OP9zpOMSnq8EJEhhi-q3NXbxxha91G-lrrf825e/exec';
+const SHAREE    = 'Sharee Westlund';
+
+let adjType = 'add';
+let currentBooking = null;
+let payoutsOpen = false;
+let ytdMode = false;
+let payoutData = null;
+
+// ── SCREEN NAVIGATION ───────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showLookup() {
+  showScreen('lookupScreen');
+  document.getElementById('backBtn').style.display = 'none';
+  document.getElementById('payoutsToggle').classList.remove('active');
+  document.getElementById('payoutsToggle').textContent = '💰 Payouts';
+  payoutsOpen = false;
+  document.getElementById('idInput').value = '';
+  document.getElementById('idHint').textContent = 'Press Enter or click Pull';
+  document.getElementById('idHint').className = 'id-hint';
+}
+
+function togglePayouts() {
+  if (!payoutsOpen) {
+    showScreen('payoutsScreen');
+    document.getElementById('backBtn').style.display = 'none';
+    document.getElementById('payoutsToggle').classList.add('active');
+    document.getElementById('payoutsToggle').textContent = '← Invoice';
+    payoutsOpen = true;
+    // Set current month
+    const now = new Date();
+    document.getElementById('selMonth').value = now.getMonth() + 1;
+  } else {
+    showLookup();
+  }
+}
+
+function clearHint() {
+  document.getElementById('idHint').textContent = 'Press Enter or click Pull';
+  document.getElementById('idHint').className = 'id-hint';
+}
+
+// ── BOOKING LOOKUP ───────────────────────────────────────
+async function pullBooking() {
+  const id = document.getElementById('idInput').value.trim().toUpperCase();
+  if (!id) return;
+
+  const hint = document.getElementById('idHint');
+  hint.textContent = 'Looking up...';
+  hint.className = 'id-hint';
+
+  try {
+    const url  = SCRIPT_URL + '?action=getBooking&bookingId=' + encodeURIComponent(id) + '&notary=' + encodeURIComponent(SHAREE);
+    const resp = await fetch(url);
+    const data = await resp.json();
+
+    if (!data.success) {
+      hint.textContent = '⚠ ' + (data.error || 'No matching booking found for your jobs.');
+      hint.className = 'id-hint error';
+      return;
+    }
+    loadEditor(data.booking);
+  } catch(err) {
+    hint.textContent = '⚠ Could not reach sheet. Check connection.';
+    hint.className = 'id-hint error';
+  }
+}
+
+function loadEditor(b) {
+  currentBooking = b;
+  document.getElementById('badgeId').textContent   = b.bookingId || '';
+  document.getElementById('badgeMeta').textContent = 'Claimed by Sharee Westlund · ' + (b.apptDate || '');
+  document.getElementById('custName').value         = b.clientName    || '';
+  document.getElementById('custContact').value      = b.clientEmail   || b.clientPhone || '';
+  document.getElementById('custLocation').value     = b.address       || '';
+  document.getElementById('custDate').value         = b.apptDate      || '';
+  document.getElementById('custTime').value         = b.apptTime      || '';
+  document.getElementById('custMiles').value        = (b.miles ? b.miles + ' mi' : '') + (b.zone ? ' · ' + b.zone : '');
+  document.getElementById('depositAmt').value       = b.depositPaid   || '';
+  document.getElementById('depositRef').value       = b.paypalOrderId || '';
+  document.getElementById('adjAmt').value           = '';
+  document.getElementById('adjReason').value        = '';
+
+  // Clear and populate line items
+  document.getElementById('lineItems').innerHTML = '';
+  if (b.service)                              addLine(b.service, 1, b.baseFee || 0, true);
+  if (parseFloat(b.stateFee) > 0)            addLine('Texas State Notary Fee', 1, b.stateFee, true);
+  if (parseFloat(b.travelFee) > 0)           addLine('Travel Fee (' + (b.miles||'') + ' mi)', 1, b.travelFee, true);
+  if (parseFloat(b.addonsTotal) > 0)         addLine('Add-on Services', 1, b.addonsTotal, true);
+  if (parseFloat(b.surchargesTotal) > 0)     addLine('Surcharges', 1, b.surchargesTotal, true);
+
+  document.getElementById('outputCard').classList.remove('show');
+  updateTotals();
+  showScreen('editorScreen');
+  document.getElementById('backBtn').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+// ── LINE ITEMS ───────────────────────────────────────────
+function addLine(desc, qty, price, isOQ) {
+  const id  = 'li' + Date.now() + Math.floor(Math.random()*9999);
+  const div = document.createElement('div');
+  div.className = 'li ' + (isOQ ? 'oq' : 'added');
+  div.id = id;
+  div.innerHTML = `
+    <input type="text" class="desc" value="${desc||''}" placeholder="Service" oninput="updateTotals()">
+    <input type="number" class="c" value="${qty||1}" min="1" step="1" oninput="updateTotals()">
+    <input type="number" class="r" value="${price||''}" min="0" step="0.01" placeholder="0.00" oninput="updateTotals()">
+    <button class="del-btn" onclick="delLine('${id}')">×</button>`;
+  document.getElementById('lineItems').appendChild(div);
+  updateTotals();
+}
+
+function delLine(id) {
+  const el = document.getElementById(id);
+  if (el) { el.remove(); updateTotals(); }
+}
+
+function getLines() {
+  return Array.from(document.querySelectorAll('.li')).map(li => {
+    const desc  = li.querySelector('.desc').value.trim();
+    const qty   = parseFloat(li.querySelectorAll('input')[1].value) || 1;
+    const price = parseFloat(li.querySelectorAll('input')[2].value) || 0;
+    return { desc, qty, price, total: qty * price };
+  }).filter(i => i.desc || i.price);
+}
+
+// ── TOTALS ───────────────────────────────────────────────
+function setAdj(type) {
+  adjType = type;
+  document.getElementById('adjAddBtn').className = type === 'add' ? 'active-add' : '';
+  document.getElementById('adjSubBtn').className = type === 'sub' ? 'active-sub' : '';
+  updateTotals();
+}
+
+function calcTotals() {
+  const lines    = getLines();
+  const subtotal = lines.reduce((s, l) => s + l.total, 0);
+  const deposit  = parseFloat(document.getElementById('depositAmt').value) || 0;
+  const adjAmt   = parseFloat(document.getElementById('adjAmt').value)     || 0;
+  const adj      = adjType === 'add' ? adjAmt : -adjAmt;
+  const balance  = Math.max(0, subtotal + adj - deposit);
+  return { lines, subtotal, deposit, adjAmt, adj, balance };
+}
+
+function fmt(n) { return '$' + (parseFloat(n)||0).toFixed(2); }
+
+function updateTotals() {
+  const t = calcTotals();
+  const adjReason = document.getElementById('adjReason').value || 'Adjustment';
+  const depRef    = document.getElementById('depositRef').value || '';
+
+  let html = '';
+  t.lines.forEach(l => {
+    html += `<div class="t-row"><span>${l.desc}${l.qty>1?' ×'+l.qty:''}</span><span>${fmt(l.total)}</span></div>`;
+  });
+  if (t.adjAmt > 0) {
+    html += `<div class="t-row"><span>${adjType==='add'?'+ ':' − '}${adjReason}</span><span>${adjType==='add'?'+':'-'}${fmt(t.adjAmt)}</span></div>`;
+  }
+  if (t.deposit > 0) {
+    html += `<div class="t-row deduct"><span>Deposit Paid${depRef?' ('+depRef+')':''}</span><span>-${fmt(t.deposit)}</span></div>`;
+  }
+  html += `<div class="t-row final"><span>BALANCE DUE</span><span>${fmt(t.balance)}</span></div>`;
+  document.getElementById('totalsBlock').innerHTML = html;
+  document.getElementById('sendBtn').textContent = '⚡ Send PayPal Invoice — ' + fmt(t.balance);
+}
+
+// ── SEND INVOICE ─────────────────────────────────────────
+async function sendInvoice() {
+  const t         = calcTotals();
+  const name      = document.getElementById('custName').value.trim() || 'Customer';
+  const contact   = document.getElementById('custContact').value.trim();
+  const location  = document.getElementById('custLocation').value.trim();
+  const date      = document.getElementById('custDate').value;
+  const time      = document.getElementById('custTime').value;
+  const depRef    = document.getElementById('depositRef').value.trim();
+  const adjReason = document.getElementById('adjReason').value.trim();
+  const apptStr   = date + (time ? ' at ' + time : '');
+
+  if (!t.lines.length)  { showToast('Add at least one service.'); return; }
+  if (t.balance <= 0)   { showToast('Balance is $0 — nothing to invoice.'); return; }
+
+  const isEmail      = contact.includes('@');
+  const customerEmail = isEmail ? contact : '';
+  const customerPhone = !isEmail ? contact : '';
+  const paypalMeLink  = 'https://paypal.me/RTCNotary/' + t.balance.toFixed(2);
+
+  // Build outputs immediately
+  document.getElementById('outLink').value  = paypalMeLink;
+  document.getElementById('openPaypal').href = paypalMeLink;
+  document.getElementById('outText').value  =
+    'Hi ' + name.split(' ')[0] + '! Your notary invoice is ready. Balance due: ' + fmt(t.balance) +
+    '. ' + (customerEmail ? 'Check your email for the PayPal invoice.' : 'Pay here: ' + paypalMeLink) +
+    ' — Round the Clock Notary · (817) 512-7217';
+
+  let summary = 'ROUND THE CLOCK NOTARY\nFinal Invoice\n─────────────────────\n';
+  summary += 'Client: ' + name;
+  if (contact)  summary += '\nContact: ' + contact;
+  if (apptStr)  summary += '\nAppointment: ' + apptStr;
+  if (location) summary += '\nLocation: ' + location;
+  if (currentBooking && currentBooking.bookingId) summary += '\nBooking #: ' + currentBooking.bookingId;
+  summary += '\n\nSERVICES:\n';
+  t.lines.forEach(l => { summary += '  ' + l.desc + (l.qty>1?' (×'+l.qty+')':'') + ' .... ' + fmt(l.total) + '\n'; });
+  if (t.adjAmt > 0) summary += '\n' + (adjType==='add'?'Additional':'Discount') + ' (' + (adjReason||'Adjustment') + '): ' + (adjType==='add'?'+':'-') + fmt(t.adjAmt);
+  if (t.deposit > 0) summary += '\nDeposit paid' + (depRef?' ('+depRef+')':'') + ': -' + fmt(t.deposit);
+  summary += '\n─────────────────────\nBALANCE DUE: ' + fmt(t.balance);
+  summary += '\n\nPay: ' + paypalMeLink;
+  summary += '\n\nThank you for choosing Round the Clock Notary!\n(817) 512-7217 · roundtheclocknotary.com';
+
+  document.getElementById('outPreview').textContent = summary;
+  document.getElementById('outputCard').classList.add('show');
+  document.getElementById('outputCard').scrollIntoView({ behavior: 'smooth' });
+
+  if (!customerEmail) {
+    document.getElementById('statusMsg').textContent = '⚠ No email on file — send PayPal.me link via text.';
+    document.getElementById('statusMsg').style.color = '#e2a030';
+    return;
+  }
+
+  const btn = document.getElementById('sendBtn');
+  btn.textContent = '⏳ Sending PayPal Invoice...'; btn.disabled = true;
+
+  try {
+    const payload = {
+      action: 'createPayPalInvoice',
+      customerName: name, customerEmail, customerPhone,
+      apptDate: apptStr, location,
+      lineItems: t.lines.map(l => ({ name: l.desc, qty: l.qty, unitPrice: l.price })),
+      depositPaid: t.deposit, depositRef: depRef,
+      adjReason, adjAmount: t.adjAmt, adjType,
+      balanceDue: t.balance,
+      invoiceNote: 'Notary services' + (apptStr?' — '+apptStr:'') + (location?' — '+location:''),
+      bookingId: currentBooking ? currentBooking.bookingId : ''
+    };
+    const url  = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify(payload)) + '&action=createPayPalInvoice';
+    const resp = await fetch(url);
+    const res  = await resp.json();
+
+    if (res.success) {
+      if (res.invoiceUrl) {
+        document.getElementById('outLink').value   = res.invoiceUrl;
+        document.getElementById('openPaypal').href = res.invoiceUrl;
+        document.getElementById('outText').value   =
+          'Hi ' + name.split(' ')[0] + '! Invoice ready — balance due: ' + fmt(t.balance) +
+          '. Pay: ' + res.invoiceUrl + ' — Round the Clock Notary';
+      }
+      document.getElementById('statusMsg').textContent = '✓ PayPal invoice sent to ' + customerEmail + ' · ID: ' + res.invoiceId;
+      document.getElementById('statusMsg').style.color = '#5dda85';
+      showToast('Invoice sent!');
+    } else {
+      document.getElementById('statusMsg').textContent = '⚠ Auto-send failed — use PayPal.me link. ' + (res.error||'');
+      document.getElementById('statusMsg').style.color = '#e08080';
+    }
+  } catch(err) {
+    document.getElementById('statusMsg').textContent = '⚠ Network error — use PayPal.me link below.';
+    document.getElementById('statusMsg').style.color = '#e08080';
+  }
+
+  btn.textContent = '⚡ Send PayPal Invoice — ' + fmt(t.balance);
+  btn.disabled = false;
+}
+
+// ── PAYOUTS ──────────────────────────────────────────────
+function toggleYTD() {
+  ytdMode = !ytdMode;
+  document.getElementById('ytdBtn').classList.toggle('active', ytdMode);
+  document.getElementById('selMonth').disabled = ytdMode;
+}
+
+function calcRTCNFee(deposit, miles) {
+  const isLong = parseFloat(miles) > 20;
+  if (isLong) return { rtcnFee: 15, contractorKeeps: 60 };
+  const dep = parseFloat(deposit) || 0;
+  return { rtcnFee: dep * 0.5, contractorKeeps: dep * 0.5 };
+}
+
+async function loadPayouts() {
+  const month = document.getElementById('selMonth').value;
+  const year  = document.getElementById('selYear').value;
+  const monthName = document.getElementById('selMonth').options[document.getElementById('selMonth').selectedIndex].text;
+  const label = ytdMode ? 'YTD ' + year : monthName + ' ' + year;
+
+  document.getElementById('pStatus').textContent = 'Loading ' + label + '...';
+  document.getElementById('payoutContent').innerHTML = '';
+  document.getElementById('ctabs').innerHTML = '';
+  document.getElementById('grandBlock').classList.add('hidden');
+  document.getElementById('emailSection').classList.add('hidden');
+
+  try {
+    const url  = SCRIPT_URL + '?action=getPayoutData&month=' + month + '&year=' + year + '&ytd=' + ytdMode;
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if (!data.success) { document.getElementById('pStatus').textContent = '⚠ ' + (data.error||'Error loading data.'); return; }
+    payoutData = { ...data, label };
+    renderPayouts(data, label);
+  } catch(err) {
+    document.getElementById('pStatus').textContent = '⚠ Could not reach sheet. Check your Apps Script deployment.';
+  }
+}
+
+function renderPayouts(data, label) {
+  const contractors = data.contractors || [];
+  if (!contractors.length) {
+    document.getElementById('pStatus').textContent = 'No contractor jobs found for ' + label + '.';
+    return;
+  }
+  document.getElementById('pStatus').textContent = '✓ ' + label + ' loaded — ' + contractors.length + ' contractor(s)';
+
+  // Build tabs
+  const tabsEl = document.getElementById('ctabs');
+  tabsEl.innerHTML = '';
+  contractors.forEach((c, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'ctab' + (c.name === SHAREE ? ' you' : '') + (i === 0 ? ' active' : '');
+    tab.textContent = (c.name === SHAREE ? '⭐ ' : '') + c.name.split(' ')[0];
+    tab.onclick = () => {
+      document.querySelectorAll('.ctab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('.c-section').forEach(s => s.classList.add('hidden'));
+      document.getElementById('csec-' + i).classList.remove('hidden');
+    };
+    tabsEl.appendChild(tab);
+  });
+
+  // Build content
+  let grandJobs = 0, grandOwe = 0, grandFees = 0;
+  const contentEl = document.getElementById('payoutContent');
+  contentEl.innerHTML = '';
+
+  contractors.forEach((c, idx) => {
+    const isSharee = c.name === SHAREE;
+    const jobs = c.jobs || [];
+    let rtcnTotal = 0, contractorNet = 0, shareeOwes = 0;
+
+    const jobRows = jobs.map((job, ji) => {
+      const { rtcnFee, contractorKeeps } = calcRTCNFee(job.deposit, job.miles);
+      const isLong   = parseFloat(job.miles) > 20;
+      const isNoShow = job.status !== 'COMPLETED';
+      const remaining = Math.max(0, 150 - rtcnTotal);
+      const applied   = Math.min(rtcnFee, remaining);
+      const wasCapped = remaining === 0;
+      rtcnTotal += applied;
+
+      const atDoor    = isNoShow ? 0 : (parseFloat(job.dueAtSigning)||0);
+      const stateFee  = isNoShow ? 0 : (parseFloat(job.stateFee)||0);
+      const travel    = parseFloat(job.travelFee)||0;
+      const surcharge = isNoShow ? 0 : (parseFloat(job.surcharges)||0);
+      const nsKeep    = isNoShow && isLong ? contractorKeeps : 0;
+      const net       = atDoor + stateFee + travel + surcharge - applied + nsKeep;
+      contractorNet  += net;
+
+      if (!isNoShow) shareeOwes += contractorKeeps;
+      grandJobs++; grandFees += applied;
+
+      return `<tr>
+        <td>${job.bookingId||''}</td>
+        <td>${job.date||''}</td>
+        <td>${job.service||''}</td>
+        <td>${isLong?'📍 ':''}${job.miles||0} mi</td>
+        <td class="r">${fmt(job.deposit||0)}</td>
+        <td class="r">${fmt(atDoor)}</td>
+        <td class="r">${wasCapped?'<span class="capped-tag">CAP</span>':'-'+fmt(applied)}</td>
+        <td class="r"><strong>${fmt(net)}</strong></td>
+        <td><span class="${isNoShow?'s-ns':'s-done'}">${isNoShow?'No Show':'Done'}</span></td>
+      </tr>`;
+    }).join('');
+
+    grandOwe += isSharee ? 0 : shareeOwes;
+    const capPct = Math.min(100, (rtcnTotal/150)*100);
+
+    const sec = document.createElement('div');
+    sec.id = 'csec-' + idx;
+    sec.className = 'c-section' + (idx > 0 ? ' hidden' : '');
+
+    if (isSharee) {
+      sec.innerHTML = `
+        <div class="sharee-block">
+          <div class="block-title">⭐ Your Earnings — ${label}</div>
+          <div class="stat-row">
+            <div class="stat"><div class="stat-lbl">Jobs</div><div class="stat-val">${jobs.length}</div></div>
+            <div class="stat"><div class="stat-lbl">Gross</div><div class="stat-val">${fmt(contractorNet + rtcnTotal)}</div></div>
+            <div class="stat"><div class="stat-lbl">RTCN Fee</div><div class="stat-val">${fmt(rtcnTotal)}</div></div>
+            <div class="stat"><div class="stat-lbl">Your Net</div><div class="stat-val">${fmt(contractorNet)}</div></div>
+          </div>
+          <div class="job-table-wrap">
+            <table class="job-table" style="background:var(--white)">
+              <thead><tr>
+                <th>Booking</th><th>Date</th><th>Service</th><th>Miles</th>
+                <th class="r">Deposit</th><th class="r">At Door</th><th class="r">RTCN Fee</th><th class="r">Net</th><th>Status</th>
+              </tr></thead>
+              <tbody>${jobRows}</tbody>
+              <tfoot><tr class="tot-row">
+                <td colspan="6">TOTALS</td>
+                <td class="r">-${fmt(rtcnTotal)}</td>
+                <td class="r">${fmt(contractorNet)}</td><td></td>
+              </tr></tfoot>
+            </table>
+          </div>
+        </div>`;
+    } else {
+      sec.innerHTML = `
+        <div class="c-block">
+          <div class="block-title">${c.name}</div>
+          <div class="c-meta">${c.email||''} · ${jobs.length} job(s)</div>
+          <div class="stat-row">
+            <div class="stat"><div class="stat-lbl">Jobs</div><div class="stat-val">${jobs.length}</div></div>
+            <div class="stat"><div class="stat-lbl">Gross</div><div class="stat-val">${fmt(contractorNet + rtcnTotal)}</div></div>
+            <div class="stat"><div class="stat-lbl">RTCN Fees</div><div class="stat-val">${fmt(rtcnTotal)}</div></div>
+            <div class="stat"><div class="stat-lbl">Net</div><div class="stat-val">${fmt(contractorNet)}</div></div>
+          </div>
+          <div class="cap-wrap">
+            <div class="cap-top"><span>RTCN Cap Progress</span><span>$${rtcnTotal.toFixed(0)} / $150</span></div>
+            <div class="cap-bar"><div class="cap-fill ${rtcnTotal>=150?'capped':''}" style="width:${capPct}%"></div></div>
+          </div>
+          <div class="job-table-wrap">
+            <table class="job-table" style="background:var(--white)">
+              <thead><tr>
+                <th>Booking</th><th>Date</th><th>Service</th><th>Miles</th>
+                <th class="r">Deposit</th><th class="r">At Door</th><th class="r">RTCN Fee</th><th class="r">Net</th><th>Status</th>
+              </tr></thead>
+              <tbody>${jobRows}</tbody>
+              <tfoot><tr class="tot-row">
+                <td colspan="6">TOTALS</td>
+                <td class="r">-${fmt(rtcnTotal)}</td>
+                <td class="r">${fmt(contractorNet)}</td><td></td>
+              </tr></tfoot>
+            </table>
+          </div>
+          <div class="owe-row">
+            <div>
+              <div class="owe-lbl">You Owe ${c.name.split(' ')[0]}</div>
+              <div class="owe-sub">Their share of deposits you're holding</div>
+            </div>
+            <div class="owe-amt">${fmt(shareeOwes)}</div>
+          </div>
+        </div>`;
+    }
+    contentEl.appendChild(sec);
+  });
+
+  // Grand totals
+  document.getElementById('gJobs').textContent  = grandJobs;
+  document.getElementById('gOwe').textContent   = fmt(grandOwe);
+  document.getElementById('gFees').textContent  = fmt(grandFees);
+  document.getElementById('gCount').textContent = contractors.length;
+  document.getElementById('grandBlock').classList.remove('hidden');
+  document.getElementById('emailSection').classList.remove('hidden');
+}
+
+async function sendPayoutEmail() {
+  const btn = document.querySelector('.email-btn');
+  btn.textContent = '⏳ Sending...'; btn.disabled = true;
+  try {
+    const url  = SCRIPT_URL + '?action=sendPayoutSummary&month=' + document.getElementById('selMonth').value + '&year=' + document.getElementById('selYear').value + '&ytd=' + ytdMode;
+    const resp = await fetch(url);
+    const res  = await resp.json();
+    showToast(res.success ? '✓ Payout summary emailed!' : '⚠ Could not send.');
+  } catch(err) { showToast('⚠ Network error.'); }
+  btn.textContent = '📧 Email Payout Summary to Myself'; btn.disabled = false;
+}
+
+// ── HELPERS ──────────────────────────────────────────────
+function cp(id, btn) {
+  navigator.clipboard.writeText(document.getElementById(id).value);
+  const o = btn.textContent; btn.textContent = '✓';
+  setTimeout(() => btn.textContent = o, 1500);
+  showToast();
+}
+function cpPreview(btn) {
+  navigator.clipboard.writeText(document.getElementById('outPreview').textContent);
+  const o = btn.textContent; btn.textContent = '✓ Copied';
+  setTimeout(() => btn.textContent = o, 1500);
+  showToast();
+}
+function showToast(msg='Copied!') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// Set current month on load
+document.getElementById('selMonth').value = new Date().getMonth() + 1;
+</script>
+</body>
+</html>
