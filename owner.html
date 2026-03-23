@@ -563,7 +563,7 @@ function clearHint() {
 }
 
 // ── BOOKING LOOKUP ───────────────────────────────────────
-async function pullBooking() {
+function pullBooking() {
   const id = document.getElementById('idInput').value.trim().toUpperCase();
   if (!id) return;
 
@@ -571,21 +571,28 @@ async function pullBooking() {
   hint.textContent = 'Looking up...';
   hint.className = 'id-hint';
 
-  try {
-    const url  = SCRIPT_URL + '?action=getBooking&bookingId=' + encodeURIComponent(id) + '&notary=' + encodeURIComponent(SHAREE);
-    const resp = await fetch(url);
-    const data = await resp.json();
-
+  const cbName = 'cb_' + Date.now();
+  window[cbName] = function(data) {
+    delete window[cbName];
+    const s = document.getElementById('jsonpScript');
+    if (s) s.remove();
     if (!data.success) {
       hint.textContent = '⚠ ' + (data.error || 'No matching booking found for your jobs.');
       hint.className = 'id-hint error';
       return;
     }
     loadEditor(data.booking);
-  } catch(err) {
+  };
+
+  const script = document.createElement('script');
+  script.id  = 'jsonpScript';
+  script.src = SCRIPT_URL + '?action=getBooking&bookingId=' + encodeURIComponent(id) +
+               '&notary=' + encodeURIComponent(SHAREE) + '&callback=' + cbName;
+  script.onerror = function() {
     hint.textContent = '⚠ Could not reach sheet. Check connection.';
     hint.className = 'id-hint error';
-  }
+  };
+  document.body.appendChild(script);
 }
 
 function loadEditor(b) {
