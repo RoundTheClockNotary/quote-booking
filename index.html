@@ -315,6 +315,26 @@ input[type=text].dimmed{opacity:.35;pointer-events:none;background:var(--cream-d
 .tos-agree-row.on .tos-chk img{opacity:1}
 .tos-agree-text{font-size:.82rem;color:#333;line-height:1.5}
 
+/* ── REFERRAL SOURCE ── */
+.ref-section-label{font-family:"Cinzel",serif;font-size:.6rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem;display:block;margin-top:.85rem}
+.ref-opts{display:flex;flex-direction:column;gap:.45rem;margin-bottom:.7rem}
+.ref-btn{display:flex;align-items:center;gap:.7rem;padding:.7rem .9rem;border:2px solid var(--border);border-radius:10px;background:var(--cream);cursor:pointer;transition:all .18s;user-select:none;width:100%;text-align:left;font-family:"DM Sans",sans-serif}
+.ref-btn:hover{border-color:var(--gold);background:#fff}
+.ref-btn.sel{border-color:var(--navy);background:rgba(14,27,58,.04)}
+.ref-dot{width:20px;height:20px;border:2px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .18s;background:#fff;position:relative}
+.ref-dot::after{content:"";width:9px;height:9px;border-radius:50%;background:transparent;transition:background .15s;position:absolute}
+.ref-btn.sel .ref-dot{border-color:var(--navy)}
+.ref-btn.sel .ref-dot::after{background:var(--navy)}
+.ref-icon-img{width:26px;height:26px;object-fit:contain;flex-shrink:0;pointer-events:none}
+.ref-label{font-size:.88rem;font-weight:600;color:var(--text)}
+.ref-who-wrap{display:none;margin-top:.65rem;padding:.75rem .9rem;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.3);border-radius:9px}
+.ref-who-wrap.show{display:block}
+.ref-who-label{font-family:"Cinzel",serif;font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.35rem;display:block}
+.ref-who-input{width:100%;padding:.7rem .9rem;border:2px solid var(--border);border-radius:9px;font-family:"DM Sans",sans-serif;font-size:.9rem;color:var(--text);background:#fff;outline:none;transition:border-color .2s,box-shadow .2s;margin:0}
+.ref-who-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,.15)}
+.ref-who-input::placeholder{color:#aaa}
+.ref-who-status{font-size:.73rem;color:var(--red);margin-top:.3rem;display:none}
+
 /* FAQ ack */
 .faq-ack-box{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:.85rem 1rem;margin-top:1rem;cursor:pointer;user-select:none;display:flex;align-items:flex-start;gap:.75rem;transition:border-color .2s}
 .faq-ack-box:hover{border-color:var(--gold)}
@@ -900,6 +920,29 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
             <div style="font-size:.78rem;color:var(--muted);margin-bottom:.75rem;line-height:1.6">Before submitting, you may find your answer in our <a href="https://www.roundtheclocknotary.com/#before-the-clock-starts" target="_blank" style="color:var(--navy);font-weight:600;text-decoration:underline">FAQ &mdash; Before the Clock Starts</a>.</div>
             <input type="text" id="leadName" placeholder="Your Name *">
             <input type="email" id="leadEmail" placeholder="Email Address *">
+            <span class="ref-section-label">How Did You Hear About Us? <span style="color:var(--red)">*</span></span>
+            <div class="ref-opts" id="refOpts">
+              <button type="button" class="ref-btn" data-ref="Facebook" onclick="selectRef(this)">
+                <span class="ref-dot"></span>
+                <img class="ref-icon-img" src="https://cdn.jsdelivr.net/gh/RoundTheClockNotary/quote-booking@main/icon-facebook.png" alt="Facebook">
+                <span class="ref-label">Facebook</span>
+              </button>
+              <button type="button" class="ref-btn" data-ref="Google" onclick="selectRef(this)">
+                <span class="ref-dot"></span>
+                <img class="ref-icon-img" src="https://cdn.jsdelivr.net/gh/RoundTheClockNotary/quote-booking@main/icon-google.png" alt="Google">
+                <span class="ref-label">Google</span>
+              </button>
+              <button type="button" class="ref-btn" data-ref="Other" onclick="selectRef(this)">
+                <span class="ref-dot"></span>
+                <img class="ref-icon-img" src="https://cdn.jsdelivr.net/gh/RoundTheClockNotary/quote-booking@main/icon-referral.png" alt="Referral">
+                <span class="ref-label">Other / Referred By</span>
+              </button>
+            </div>
+            <div class="ref-who-wrap" id="refWhoWrap">
+              <span class="ref-who-label">Who referred you? <span style="color:var(--red)">*</span></span>
+              <input type="text" class="ref-who-input" id="refWhoInput" placeholder="First Last or Business Name">
+              <div class="ref-who-status" id="refWhoStatus">Please enter the name of your referrer.</div>
+            </div>
             <textarea id="leadMsg" placeholder="Question or note (optional)"></textarea>
             <div class="lead-status" id="leadStatus"></div>
             <button class="btn-next" id="leadSubmitBtn" style="width:100%"><img src="https://cdn.jsdelivr.net/gh/RoundTheClockNotary/quote-booking@main/icon-padlock.png" style="width:16px;height:16px;object-fit:contain;pointer-events:none" alt=""> Send My Info &rarr;</button>
@@ -1239,9 +1282,9 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
   <nav class="footer-nav">
     <a href="https://www.roundtheclocknotary.com" target="_blank" rel="noopener">Home</a>
     <div class="footer-nav-dot"></div>
-    <a href="https://www.roundtheclocknotary.com">Free Quote</a>
+    <a href="https://roundtheclocknotary.github.io/quote-booking/" target="_blank" rel="noopener">Free Quote</a>
     <div class="footer-nav-dot"></div>
-    <a href="https://www.roundtheclocknotary.com">Book Now</a>
+    <a href="https://roundtheclocknotary.github.io/quote-booking/" target="_blank" rel="noopener">Book Now</a>
     <div class="footer-nav-dot"></div>
     <a href="tel:+18175127217">817-512-7217</a>
     <div class="footer-nav-dot"></div>
@@ -1339,7 +1382,7 @@ var APPS_SCRIPT_URL="https://script.google.com/macros/s/AKfycbym6SCXgNeIVdiy7iU4
 var GCAL_API_KEY="AIzaSyBaEDQufz1Ipb6Q13frcp5JE8m28RHxfHM";
 var GCAL_ID="rtcnotary1@gmail.com";
 
-var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,ronSigs:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",tfDeliveryMethod:"",tfEmail:"",tfFax:"",tfMailName:"",tfMailAddr:"",tfMailCity:"",tfMailState:"",tfMailZip:"",shippingService:"",noteToNotary:"",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
+var S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,ronSigs:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",tfDeliveryMethod:"",tfEmail:"",tfFax:"",tfMailName:"",tfMailAddr:"",tfMailCity:"",tfMailState:"",tfMailZip:"",shippingService:"",noteToNotary:"",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:"",referralSource:"",referralName:""};
 
 function genBookingId(){var code=SVC_CODE[S.serviceType]||"XX";var now=new Date();return"RTC-"+code+"-"+String(now.getFullYear()).slice(-2)+pad2(now.getMonth()+1)+pad2(now.getDate())+"-"+(Math.floor(Math.random()*900)+100);}
 function fmt(n){return"$"+n.toFixed(2);}
@@ -1627,7 +1670,7 @@ function selectShipping(el,service){
 function selectRange(el,key,amt){document.querySelectorAll(".range-card").forEach(function(c){c.classList.remove("sel");});el.classList.add("sel");delete S.surcharges.offclock;delete S.surcharges.midnight;if(amt>0)S.surcharges[key]=amt;updateDeposit();updateRT();}
 
 function startOver(){
-  S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:""};
+  S={step:1,address:"",nearestPO:null,dist:0,isFree:false,isFar:false,travelFee:0,serviceType:null,serviceBase:0,serviceLabel:"",stateFee:0,extraTicks:0,minuteSeals:0,print1:0,print2:0,witness:0,digitalClock:false,timeFlies:false,deliveryMethod:"email",surcharges:{},deposit:30,clientName:"",clientPhone:"",clientEmail:"",apptDate:"",apptTime:"",apptTimeISO:"",tosAgreed:false,faqAcked:false,depositPaid:false,paypalOrderId:"",gcalEventId:"",bookingId:"",bookingPath:"none",bookingMode:"",referralSource:"",referralName:""};
   function clr(id){var el=document.getElementById(id);if(el)el.value="";}
   function txt(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}
   function cls(id,c){var el=document.getElementById(id);if(el)el.className=c;}
@@ -1686,10 +1729,29 @@ function startOver(){
   var le=document.getElementById("leadEmail");if(le)le.value="";
   var lm=document.getElementById("leadMsg");if(lm)lm.value="";
   var ls=document.getElementById("leadStatus");if(ls)ls.style.display="none";
+  document.querySelectorAll(".ref-btn").forEach(function(b){b.classList.remove("sel");});
+  var rw=document.getElementById("refWhoWrap");if(rw)rw.className="ref-who-wrap";
+  var ri=document.getElementById("refWhoInput");if(ri)ri.value="";
+  var rs=document.getElementById("refWhoStatus");if(rs)rs.style.display="none";
   showStep(1);
 }
 
 function loadPayPalSDK(cb){if(window.paypal){cb();return;}var s=document.createElement("script");s.src="https://www.paypal.com/sdk/js?client-id=AVSw_Z_wHbrF7Ldula64ka2HcQgWRsRWG3cykmyz8c1t84AmdfnUtmhVFAHghCiIt0a5wbnuVpEPZ1by&currency=USD&components=buttons";s.onload=cb;document.head.appendChild(s);}
+
+function selectRef(btn){
+  document.querySelectorAll(".ref-btn").forEach(function(b){b.classList.remove("sel");});
+  btn.classList.add("sel");
+  var ref=btn.dataset.ref;
+  S.referralSource=ref;
+  S.referralName="";
+  var wrap=document.getElementById("refWhoWrap");
+  var ws=document.getElementById("refWhoStatus");
+  var inp=document.getElementById("refWhoInput");
+  if(wrap)wrap.className="ref-who-wrap"+(ref==="Other"?" show":"");
+  if(ws)ws.style.display="none";
+  if(inp&&ref!=="Other")inp.value="";
+  if(inp&&ref==="Other")setTimeout(function(){inp.focus();},50);
+}
 
 document.addEventListener("DOMContentLoaded",function(){
   function on(id,ev,fn){var el=document.getElementById(id);if(el)el.addEventListener(ev,fn);}
@@ -1725,9 +1787,16 @@ document.addEventListener("DOMContentLoaded",function(){
     var msg=document.getElementById("leadMsg").value.trim();
     var st=document.getElementById("leadStatus");
     if(!name||!email||email.indexOf("@")<0){if(st){st.style.display="block";st.textContent="Please enter your name and a valid email.";}return;}
+    if(!S.referralSource){if(st){st.style.display="block";st.textContent="Please tell us how you heard about us.";}return;}
+    if(S.referralSource==="Other"){
+      var whoVal=document.getElementById("refWhoInput").value.trim();
+      if(!whoVal){var ws=document.getElementById("refWhoStatus");if(ws)ws.style.display="block";if(st){st.style.display="block";st.textContent="Please enter the name of your referrer."}return;}
+      S.referralName=whoVal;
+    }
     var total=calcTotal();
     var quoteLines=buildLines().map(function(l){return{label:l.k,value:l.v,free:l.free||false};});
-    var lcUrl=APPS_SCRIPT_URL+"?action=leadCapture&data="+encodeURIComponent(JSON.stringify({clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided",apptDate:S.apptDate||"",apptTime:S.apptTime||"",bookingMode:S.bookingMode||"",quoteLines:quoteLines,deposit:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit)}));fetch(lcUrl).catch(function(){});
+    var refDisplay=S.referralSource==="Other"?(S.referralName?"Other / Referred By: "+S.referralName:"Other / Referred By"):S.referralSource;
+    var lcUrl=APPS_SCRIPT_URL+"?action=leadCapture&data="+encodeURIComponent(JSON.stringify({clientName:name,clientEmail:email,message:msg,serviceLabel:S.serviceLabel||"Not selected",estimatedTotal:fmt(total),address:S.address||"Not provided",apptDate:S.apptDate||"",apptTime:S.apptTime||"",bookingMode:S.bookingMode||"",quoteLines:quoteLines,deposit:fmt(S.deposit),dueAtSigning:fmt(total-S.deposit),referralSource:S.referralSource,referralName:S.referralName||""}));fetch(lcUrl).catch(function(){});
     var form=document.getElementById("leadContactForm");
     if(form){form.style.display="none";}
     if(st){st.style.display="block";st.style.color="var(--green)";st.textContent="Message sent! We'll be in touch shortly.";}
