@@ -972,6 +972,31 @@ footer{background:var(--navy);border-top:2px solid rgba(201,168,76,.25);padding:
       <label class="field-label" for="clientEmail">Email <span class="req">*</span></label>
       <input type="email" id="clientEmail" placeholder="you@example.com">
       <div class="addr-status" id="emailStatus"></div>
+      <span class="ref-section-label">How Did You Hear About Us? <span style="color:var(--red)">*</span></span>
+      <div class="ref-opts" id="refOpts6">
+        <button type="button" class="ref-btn" data-ref="Facebook" onclick="selectRef6(this)">
+          <span class="ref-dot"></span>
+          <img class="ref-icon-img" src="https://cdn.jsdelivr.net/gh/RoundTheClockNotary/quote-booking@main/icon-facebook.png" alt="Facebook">
+          <span class="ref-label">Facebook</span>
+        </button>
+        <button type="button" class="ref-btn" data-ref="Google" onclick="selectRef6(this)">
+          <span class="ref-dot"></span>
+          <img class="ref-icon-img" src="https://cdn.jsdelivr.net/gh/RoundTheClockNotary/quote-booking@main/icon-google.png" alt="Google">
+          <span class="ref-label">Google</span>
+        </button>
+        <button type="button" class="ref-btn" data-ref="Other" onclick="selectRef6(this)">
+          <span class="ref-dot"></span>
+          <img class="ref-icon-img" src="https://cdn.jsdelivr.net/gh/RoundTheClockNotary/quote-booking@main/icon-referral.png" alt="Referral">
+          <span class="ref-label">Other / Referred By</span>
+        </button>
+      </div>
+      <div class="ref-who-wrap" id="refWhoWrap6">
+        <span class="ref-who-label">Who referred you? <span style="color:var(--red)">*</span></span>
+        <input type="text" class="ref-who-input" id="refWhoInput6" placeholder="First Last or Business Name">
+        <div class="ref-who-status" id="refWhoStatus6">Please enter the name of your referrer.</div>
+      </div>
+      <div class="addr-status" id="refStatus6" style="margin-bottom:.6rem"></div>
+
       <div class="tos-inline">
         <div class="tos-hdr"><img src="https://cdn.jsdelivr.net/gh/RoundTheClockNotary/quote-booking@main/icon-scroll.png" alt=""> Terms of Service Agreement</div>
         <div class="tos-scroll">
@@ -1566,7 +1591,7 @@ function renderSlots(date,busyPeriods){var slotsEl=document.getElementById("slot
 
 function selectSlot(isoTime,label,tier,isRush,btn){document.querySelectorAll(".slot-btn").forEach(function(b){b.classList.remove("sel");});btn.classList.add("sel");S.apptTimeISO=isoTime;S.apptTime=label;var dateStr=document.getElementById("apptDate").value;S.apptDate=new Date(dateStr+"T12:00:00").toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});delete S.surcharges.rushhour;delete S.surcharges.offclock;delete S.surcharges.midnight;var slotDate=new Date(isoTime);var stackedSurcharges=getSlotSurcharges(slotDate,new Date());Object.assign(S.surcharges,stackedSurcharges);updateDeposit();updateRT();var disp=document.getElementById("selectedSlotDisplay");if(disp)disp.style.display="flex";var txt=document.getElementById("selectedSlotText");if(txt)txt.textContent="Selected: "+S.apptDate+" at "+label+(isRush?" (Rush Hour +$100)":"");var n4=document.getElementById("next4");if(n4){var canContinue=S.faqAcked;n4.disabled=!canContinue;n4.style.opacity=canContinue?"1":".5";}}
 
-function validateStep6(){var name=document.getElementById("clientName").value.trim();var phone=document.getElementById("clientPhone").value.trim();var email=document.getElementById("clientEmail").value.trim();var ok=true;function setStatus(id,cls,msg){var el=document.getElementById(id);if(el){el.className="addr-status"+cls;el.textContent=msg;}}if(!name){setStatus("nameStatus"," err","Name is required.");ok=false;}else{setStatus("nameStatus","","");}if(!phone){setStatus("phoneStatus"," err","Phone is required.");ok=false;}else{setStatus("phoneStatus","","");}if(!email||email.indexOf("@")<0){setStatus("emailStatus"," err","Valid email is required.");ok=false;}else{setStatus("emailStatus","","");}if(!S.tosAgreed){alert("Please agree to the Terms of Service to continue.");ok=false;}if(S.timeFlies){if(!S.tfDeliveryMethod){alert("Please select a delivery method for your Time Flies document delivery.");ok=false;}else if(S.tfDeliveryMethod==="email"){var tfe=document.getElementById("tfEmail");var tfev=tfe?tfe.value.trim():"";if(!tfev||tfev.indexOf("@")<0){setStatus("tfEmailStatus"," err","Valid delivery email is required.");ok=false;}else{setStatus("tfEmailStatus","","");S.tfEmail=tfev;}}else if(S.tfDeliveryMethod==="fax"){var tff=document.getElementById("tfFax");var tffv=tff?tff.value.replace(/\D/g,""):"";if(tffv.length<10){setStatus("tfFaxStatus"," err","Valid fax number is required (10 digits).");ok=false;}else{setStatus("tfFaxStatus","","");S.tfFax=tff.value.trim();}}else if(S.tfDeliveryMethod==="mail"){var mn=document.getElementById("tfMailName");var ma=document.getElementById("tfMailAddr");var mc=document.getElementById("tfMailCity");var ms=document.getElementById("tfMailState");var mz=document.getElementById("tfMailZip");var mnv=mn?mn.value.trim():"";var mav=ma?ma.value.trim():"";var mcv=mc?mc.value.trim():"";var msv=ms?ms.value.trim():"";var mzv=mz?mz.value.trim():"";if(!mnv||!mav||!mcv||!msv||!mzv){setStatus("tfMailStatus"," err","All mailing address fields are required.");ok=false;}else if(!S.shippingService){setStatus("tfMailStatus"," err","Please select a shipping method.");ok=false;}else{setStatus("tfMailStatus","","");S.tfMailName=mnv;S.tfMailAddr=mav;S.tfMailCity=mcv;S.tfMailState=msv;S.tfMailZip=mzv;}}}if(ok){S.clientName=name;S.clientPhone=phone;S.clientEmail=email;}return ok;}
+function validateStep6(){var name=document.getElementById("clientName").value.trim();var phone=document.getElementById("clientPhone").value.trim();var email=document.getElementById("clientEmail").value.trim();var ok=true;function setStatus(id,cls,msg){var el=document.getElementById(id);if(el){el.className="addr-status"+cls;el.textContent=msg;}}if(!name){setStatus("nameStatus"," err","Name is required.");ok=false;}else{setStatus("nameStatus","","");}if(!phone){setStatus("phoneStatus"," err","Phone is required.");ok=false;}else{setStatus("phoneStatus","","");}if(!email||email.indexOf("@")<0){setStatus("emailStatus"," err","Valid email is required.");ok=false;}else{setStatus("emailStatus","","");}if(!S.tosAgreed){alert("Please agree to the Terms of Service to continue.");ok=false;}if(!S.referralSource){var rs6=document.getElementById("refStatus6");if(rs6){rs6.className="addr-status err";rs6.textContent="Please tell us how you heard about us.";}ok=false;}else if(S.referralSource==="Other"){var ri6=document.getElementById("refWhoInput6");var rv6=ri6?ri6.value.trim():"";if(!rv6){var rws6=document.getElementById("refWhoStatus6");if(rws6)rws6.style.display="block";ok=false;}else{S.referralName=rv6;}}if(S.timeFlies){if(!S.tfDeliveryMethod){alert("Please select a delivery method for your Time Flies document delivery.");ok=false;}else if(S.tfDeliveryMethod==="email"){var tfe=document.getElementById("tfEmail");var tfev=tfe?tfe.value.trim():"";if(!tfev||tfev.indexOf("@")<0){setStatus("tfEmailStatus"," err","Valid delivery email is required.");ok=false;}else{setStatus("tfEmailStatus","","");S.tfEmail=tfev;}}else if(S.tfDeliveryMethod==="fax"){var tff=document.getElementById("tfFax");var tffv=tff?tff.value.replace(/\D/g,""):"";if(tffv.length<10){setStatus("tfFaxStatus"," err","Valid fax number is required (10 digits).");ok=false;}else{setStatus("tfFaxStatus","","");S.tfFax=tff.value.trim();}}else if(S.tfDeliveryMethod==="mail"){var mn=document.getElementById("tfMailName");var ma=document.getElementById("tfMailAddr");var mc=document.getElementById("tfMailCity");var ms=document.getElementById("tfMailState");var mz=document.getElementById("tfMailZip");var mnv=mn?mn.value.trim():"";var mav=ma?ma.value.trim():"";var mcv=mc?mc.value.trim():"";var msv=ms?ms.value.trim():"";var mzv=mz?mz.value.trim():"";if(!mnv||!mav||!mcv||!msv||!mzv){setStatus("tfMailStatus"," err","All mailing address fields are required.");ok=false;}else if(!S.shippingService){setStatus("tfMailStatus"," err","Please select a shipping method.");ok=false;}else{setStatus("tfMailStatus","","");S.tfMailName=mnv;S.tfMailAddr=mav;S.tfMailCity=mcv;S.tfMailState=msv;S.tfMailZip=mzv;}}}if(ok){S.clientName=name;S.clientPhone=phone;S.clientEmail=email;}return ok;}
 
 function buildPaymentStep(){var total=calcTotal(),dep=S.deposit,due=total-dep;function set(id,v){var el=document.getElementById(id);if(el)el.textContent=v;}var psl=document.getElementById("paymentSummaryLines");if(psl)psl.innerHTML=buildLines().map(function(l){return"<div class='rt-line'><span>"+l.k+"</span><span class='rt-val"+(l.free?" free":"")+"'>"+l.v+"</span></div>";}).join("");set("paymentTotal",total.toFixed(2));set("paymentDepositAmt",fmt(dep));set("paymentDueAmt",fmt(due));set("mockDepositLabel",fmt(dep));var atd=document.getElementById("apptTimeDisplay");if(atd)atd.textContent=S.apptDate?(S.apptDate+" at "+S.apptTime):"Free Quote — No specific time selected";var ldn=document.getElementById("longDistNotice");if(ldn)ldn.style.display=S.isFar?"block":"none";var ppContainer=document.getElementById("paypal-button-container");var mockBtn=document.getElementById("paypalMockBtn");if(ppContainer)ppContainer.innerHTML="";if(window.paypal&&ppContainer&&mockBtn){mockBtn.style.display="none";ppContainer.style.display="block";window.paypal.Buttons({style:{layout:"vertical",color:"blue",shape:"rect",label:"pay"},createOrder:function(data,actions){return actions.order.create({purchase_units:[{description:"Round the Clock Notary — Appointment Deposit",amount:{value:dep.toFixed(2),currency_code:"USD"}}]});},onApprove:function(data,actions){return actions.order.capture().then(function(details){S.depositPaid=true;S.paypalOrderId=details.id;S.bookingId=genBookingId();logBooking();buildStep8();showStep(8);});},onError:function(){alert("Payment error. Please try again or call 817-512-7217.");}}).render("#paypal-button-container");}else{if(ppContainer)ppContainer.style.display="none";if(mockBtn)mockBtn.style.display="block";}}
 
@@ -1627,7 +1652,9 @@ function logBooking(){
     stateFee:S.stateFee,
     travelFee:S.travelFee,
     addonsTotal:Math.round((S.extraTicks*10+S.minuteSeals*10+S.print1+S.print2*1.5+S.witness*20+(S.digitalClock?5:0)+(S.timeFlies?5:0))*100)/100,
-    surchargesTotal:Math.round(Object.values(S.surcharges).reduce(function(a,b){return a+b;},0)*100)/100
+    surchargesTotal:Math.round(Object.values(S.surcharges).reduce(function(a,b){return a+b;},0)*100)/100,
+    referralSource:S.referralSource||"",
+    referralName:S.referralName||""
   }));fetch(_getUrl).catch(function(){});
 }
 
@@ -1733,6 +1760,10 @@ function startOver(){
   var rw=document.getElementById("refWhoWrap");if(rw)rw.className="ref-who-wrap";
   var ri=document.getElementById("refWhoInput");if(ri)ri.value="";
   var rs=document.getElementById("refWhoStatus");if(rs)rs.style.display="none";
+  var rw6=document.getElementById("refWhoWrap6");if(rw6)rw6.className="ref-who-wrap";
+  var ri6=document.getElementById("refWhoInput6");if(ri6)ri6.value="";
+  var rs6=document.getElementById("refWhoStatus6");if(rs6)rs6.style.display="none";
+  var rst6=document.getElementById("refStatus6");if(rst6){rst6.className="addr-status";rst6.textContent="";}
   showStep(1);
 }
 
@@ -1749,6 +1780,23 @@ function selectRef(btn){
   var inp=document.getElementById("refWhoInput");
   if(wrap)wrap.className="ref-who-wrap"+(ref==="Other"?" show":"");
   if(ws)ws.style.display="none";
+  if(inp&&ref!=="Other")inp.value="";
+  if(inp&&ref==="Other")setTimeout(function(){inp.focus();},50);
+}
+
+function selectRef6(btn){
+  document.querySelectorAll("#refOpts6 .ref-btn").forEach(function(b){b.classList.remove("sel");});
+  btn.classList.add("sel");
+  var ref=btn.dataset.ref;
+  S.referralSource=ref;
+  S.referralName="";
+  var wrap=document.getElementById("refWhoWrap6");
+  var ws=document.getElementById("refWhoStatus6");
+  var inp=document.getElementById("refWhoInput6");
+  var st=document.getElementById("refStatus6");
+  if(wrap)wrap.className="ref-who-wrap"+(ref==="Other"?" show":"");
+  if(ws)ws.style.display="none";
+  if(st){st.className="addr-status";st.textContent="";}
   if(inp&&ref!=="Other")inp.value="";
   if(inp&&ref==="Other")setTimeout(function(){inp.focus();},50);
 }
