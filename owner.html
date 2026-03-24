@@ -201,10 +201,28 @@
   .copy-btn { background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.25); color: var(--gold); font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 8px 12px; border-radius: 6px; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
   .copy-btn:hover { background: var(--gold); color: var(--navy); }
   .preview-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; padding: 12px; font-size: 11px; color: rgba(255,255,255,0.65); white-space: pre-line; line-height: 1.7; font-family: 'DM Sans', sans-serif; margin-top: 6px; }
+  .email-body-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 7px; padding: 12px; font-size: 11px; color: rgba(255,255,255,0.65); white-space: pre-line; line-height: 1.7; font-family: 'DM Sans', sans-serif; margin-top: 6px; max-height: 160px; overflow-y: auto; }
   .status-msg { font-size: 13px; font-weight: 600; margin-bottom: 12px; min-height: 20px; }
   .open-paypal { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; background: #009cde; color: white; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; text-decoration: none; transition: background 0.15s; }
   .open-paypal:hover { background: #007db7; }
   .divider { height: 1px; background: rgba(201,168,76,0.12); margin: 12px 0; }
+
+  /* SEND ACTION BUTTONS */
+  .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+  .action-btn {
+    padding: 11px 10px; border-radius: 8px; font-family: 'DM Sans', sans-serif;
+    font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.15s;
+    background: rgba(201,168,76,0.12); color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.28);
+  }
+  .action-btn:hover { background: var(--gold); color: var(--navy); }
+  .action-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .action-btn.dormant {
+    background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.07); cursor: not-allowed;
+  }
+  .action-btn.dormant:hover { background: rgba(255,255,255,0.03); color: rgba(255,255,255,0.2); }
+  .action-status { font-size: 12px; min-height: 18px; margin-top: 8px; color: rgba(255,255,255,0.5); }
 
   /* ── PAYOUTS SCREEN ── */
   .payouts-main { max-width: 860px; margin: 0 auto; padding: 24px 16px 60px; }
@@ -426,16 +444,33 @@
     <!-- OUTPUT -->
     <div class="output-card" id="outputCard">
       <div class="status-msg" id="statusMsg"></div>
+
       <div class="output-label">PayPal Invoice / PayPal.me Link</div>
       <div class="copy-row">
         <input type="text" id="outLink" readonly>
         <button class="copy-btn" onclick="cp('outLink',this)">Copy</button>
       </div>
+
       <div class="output-label">Text Message</div>
       <div class="copy-row">
         <input type="text" id="outText" readonly>
         <button class="copy-btn" onclick="cp('outText',this)">Copy</button>
       </div>
+
+      <div class="output-label">Email Body (Copy → Paste into Gmail)</div>
+      <div class="email-body-box" id="outEmail"></div>
+      <button class="copy-btn" style="width:100%;margin-top:6px;" onclick="cpEmail(this)">Copy Email Body</button>
+
+      <div class="divider"></div>
+
+      <!-- SEND ACTIONS -->
+      <div class="action-grid">
+        <button class="action-btn" id="sendEmailBtn" onclick="sendEmailDirect()">📧 Send Email</button>
+        <button class="action-btn dormant" id="sendSMSBtn" title="Pending: 817-512-7217 port in progress">📱 Send SMS <span style="font-size:9px;opacity:0.6;">(pending port)</span></button>
+      </div>
+      <div class="action-status" id="actionStatus"></div>
+
+      <div class="divider"></div>
       <div class="output-label">Invoice Summary</div>
       <div class="preview-box" id="outPreview"></div>
       <button class="copy-btn" style="width:100%;margin-top:8px;" onclick="cpPreview(this)">Copy Summary</button>
@@ -524,6 +559,7 @@ let currentBooking = null;
 let payoutsOpen = false;
 let ytdMode = false;
 let payoutData = null;
+let lastInvoicePayload = null; // stored for email/SMS send
 
 // ── SCREEN NAVIGATION ───────────────────────────────────
 function showScreen(id) {
@@ -549,7 +585,6 @@ function togglePayouts() {
     document.getElementById('payoutsToggle').classList.add('active');
     document.getElementById('payoutsToggle').textContent = '← Invoice';
     payoutsOpen = true;
-    // Set current month
     const now = new Date();
     document.getElementById('selMonth').value = now.getMonth() + 1;
   } else {
@@ -610,7 +645,6 @@ function loadEditor(b) {
   document.getElementById('adjAmt').value           = '';
   document.getElementById('adjReason').value        = '';
 
-  // Clear and populate line items
   document.getElementById('lineItems').innerHTML = '';
   if (b.service)                              addLine(b.service, 1, b.baseFee || 0, true);
   if (parseFloat(b.stateFee) > 0)            addLine('Texas State Notary Fee', 1, b.stateFee, true);
@@ -619,6 +653,8 @@ function loadEditor(b) {
   if (parseFloat(b.surchargesTotal) > 0)     addLine('Surcharges', 1, b.surchargesTotal, true);
 
   document.getElementById('outputCard').classList.remove('show');
+  document.getElementById('actionStatus').textContent = '';
+  lastInvoicePayload = null;
   updateTotals();
   showScreen('editorScreen');
   document.getElementById('backBtn').style.display = 'block';
@@ -694,8 +730,8 @@ function updateTotals() {
   document.getElementById('sendBtn').textContent = '⚡ Send PayPal Invoice — ' + fmt(t.balance);
 }
 
-// ── SEND INVOICE ─────────────────────────────────────────
-async function sendInvoice() {
+// ── BUILD INVOICE PAYLOAD ────────────────────────────────
+function buildPayload() {
   const t         = calcTotals();
   const name      = document.getElementById('custName').value.trim() || 'Customer';
   const contact   = document.getElementById('custContact').value.trim();
@@ -705,29 +741,51 @@ async function sendInvoice() {
   const depRef    = document.getElementById('depositRef').value.trim();
   const adjReason = document.getElementById('adjReason').value.trim();
   const apptStr   = date + (time ? ' at ' + time : '');
+  const isEmail   = contact.includes('@');
+
+  return {
+    t, name, contact, location, date, time, depRef, adjReason, apptStr,
+    clientEmail:  isEmail  ? contact : '',
+    clientPhone:  !isEmail ? contact : '',
+    paypalMeLink: 'https://paypal.me/RTCNotary/' + t.balance.toFixed(2),
+    bookingId: currentBooking ? currentBooking.bookingId : ''
+  };
+}
+
+// ── SEND INVOICE (PayPal) ────────────────────────────────
+async function sendInvoice() {
+  const p = buildPayload();
+  const { t, name, contact, location, apptStr, depRef, adjReason, clientEmail, clientPhone, paypalMeLink, bookingId } = p;
 
   if (!t.lines.length)  { showToast('Add at least one service.'); return; }
   if (t.balance <= 0)   { showToast('Balance is $0 — nothing to invoice.'); return; }
 
-  const isEmail      = contact.includes('@');
-  const customerEmail = isEmail ? contact : '';
-  const customerPhone = !isEmail ? contact : '';
-  const paypalMeLink  = 'https://paypal.me/RTCNotary/' + t.balance.toFixed(2);
-
-  // Build outputs immediately
-  document.getElementById('outLink').value  = paypalMeLink;
-  document.getElementById('openPaypal').href = paypalMeLink;
-  document.getElementById('outText').value  =
-    'Hi ' + name.split(' ')[0] + '! Your notary invoice is ready. Balance due: ' + fmt(t.balance) +
-    '. ' + (customerEmail ? 'Check your email for the PayPal invoice.' : 'Pay here: ' + paypalMeLink) +
+  // Build text message
+  const smsText = 'Hi ' + name.split(' ')[0] + '! Your notary invoice is ready. Balance due: ' + fmt(t.balance) +
+    '. ' + (clientEmail ? 'Check your email for the PayPal invoice.' : 'Pay here: ' + paypalMeLink) +
     ' — Round the Clock Notary · (817) 512-7217';
 
+  // Build email body (plain text for copy-paste)
+  let emailBody = 'Hi ' + name.split(' ')[0] + ',\n\n';
+  emailBody += 'Thank you for choosing Round The Clock Notary. Your final invoice is ready.\n\n';
+  if (apptStr)   emailBody += 'Appointment: ' + apptStr + '\n';
+  if (location)  emailBody += 'Location: ' + location + '\n';
+  if (bookingId) emailBody += 'Booking #: ' + bookingId + '\n';
+  emailBody += '\nSERVICES:\n';
+  t.lines.forEach(l => { emailBody += '  ' + l.desc + (l.qty>1?' ×'+l.qty:'') + '  —  ' + fmt(l.total) + '\n'; });
+  if (t.adjAmt > 0) emailBody += (adjType==='add'?'\n+ ':'\n− ') + (adjReason||'Adjustment') + ': ' + (adjType==='add'?'+':'-') + fmt(t.adjAmt) + '\n';
+  if (t.deposit > 0) emailBody += '\nDeposit Paid' + (depRef?' ('+depRef+')':'') + ': -' + fmt(t.deposit) + '\n';
+  emailBody += '\nBALANCE DUE: ' + fmt(t.balance) + '\n\n';
+  emailBody += 'Pay here: ' + paypalMeLink + '\n\n';
+  emailBody += 'Questions? Call or text (817) 512-7217.\n\nThank you!\nRound The Clock Notary\nroundtheclocknotary.com';
+
+  // Build plain summary
   let summary = 'ROUND THE CLOCK NOTARY\nFinal Invoice\n─────────────────────\n';
   summary += 'Client: ' + name;
   if (contact)  summary += '\nContact: ' + contact;
   if (apptStr)  summary += '\nAppointment: ' + apptStr;
   if (location) summary += '\nLocation: ' + location;
-  if (currentBooking && currentBooking.bookingId) summary += '\nBooking #: ' + currentBooking.bookingId;
+  if (bookingId) summary += '\nBooking #: ' + bookingId;
   summary += '\n\nSERVICES:\n';
   t.lines.forEach(l => { summary += '  ' + l.desc + (l.qty>1?' (×'+l.qty+')':'') + ' .... ' + fmt(l.total) + '\n'; });
   if (t.adjAmt > 0) summary += '\n' + (adjType==='add'?'Additional':'Discount') + ' (' + (adjReason||'Adjustment') + '): ' + (adjType==='add'?'+':'-') + fmt(t.adjAmt);
@@ -736,30 +794,50 @@ async function sendInvoice() {
   summary += '\n\nPay: ' + paypalMeLink;
   summary += '\n\nThank you for choosing Round the Clock Notary!\n(817) 512-7217 · roundtheclocknotary.com';
 
+  // Populate outputs
+  document.getElementById('outLink').value       = paypalMeLink;
+  document.getElementById('openPaypal').href     = paypalMeLink;
+  document.getElementById('outText').value       = smsText;
+  document.getElementById('outEmail').textContent = emailBody;
   document.getElementById('outPreview').textContent = summary;
+  document.getElementById('actionStatus').textContent = '';
   document.getElementById('outputCard').classList.add('show');
   document.getElementById('outputCard').scrollIntoView({ behavior: 'smooth' });
 
-  if (!customerEmail) {
-    document.getElementById('statusMsg').textContent = '⚠ No email on file — send PayPal.me link via text.';
+  // Store payload for direct send buttons
+  lastInvoicePayload = {
+    action: 'sendInvoiceEmail',
+    clientName: name, clientEmail, clientPhone,
+    apptDate: apptStr, location, bookingId,
+    lineItems: t.lines.map(l => ({ name: l.desc, qty: l.qty, unitPrice: l.price })),
+    depositPaid: t.deposit, depositRef: depRef,
+    adjReason, adjAmount: t.adjAmt, adjType,
+    balanceDue: t.balance,
+    paypalLink: paypalMeLink,
+    smsText
+  };
+
+  if (!clientEmail) {
+    document.getElementById('statusMsg').textContent = '⚠ No email on file — use text or copy-paste.';
     document.getElementById('statusMsg').style.color = '#e2a030';
     return;
   }
 
+  // Attempt PayPal invoice
   const btn = document.getElementById('sendBtn');
   btn.textContent = '⏳ Sending PayPal Invoice...'; btn.disabled = true;
 
   try {
     const payload = {
       action: 'createPayPalInvoice',
-      customerName: name, customerEmail, customerPhone,
+      customerName: name, customerEmail: clientEmail, customerPhone: clientPhone,
       apptDate: apptStr, location,
       lineItems: t.lines.map(l => ({ name: l.desc, qty: l.qty, unitPrice: l.price })),
       depositPaid: t.deposit, depositRef: depRef,
       adjReason, adjAmount: t.adjAmt, adjType,
       balanceDue: t.balance,
       invoiceNote: 'Notary services' + (apptStr?' — '+apptStr:'') + (location?' — '+location:''),
-      bookingId: currentBooking ? currentBooking.bookingId : ''
+      bookingId
     };
     const url  = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify(payload)) + '&action=createPayPalInvoice';
     const resp = await fetch(url);
@@ -772,8 +850,9 @@ async function sendInvoice() {
         document.getElementById('outText').value   =
           'Hi ' + name.split(' ')[0] + '! Invoice ready — balance due: ' + fmt(t.balance) +
           '. Pay: ' + res.invoiceUrl + ' — Round the Clock Notary';
+        if (lastInvoicePayload) lastInvoicePayload.paypalLink = res.invoiceUrl;
       }
-      document.getElementById('statusMsg').textContent = '✓ PayPal invoice sent to ' + customerEmail + ' · ID: ' + res.invoiceId;
+      document.getElementById('statusMsg').textContent = '✓ PayPal invoice sent to ' + clientEmail + ' · ID: ' + res.invoiceId;
       document.getElementById('statusMsg').style.color = '#5dda85';
       showToast('Invoice sent!');
     } else {
@@ -787,6 +866,38 @@ async function sendInvoice() {
 
   btn.textContent = '⚡ Send PayPal Invoice — ' + fmt(t.balance);
   btn.disabled = false;
+}
+
+// ── SEND EMAIL DIRECT ────────────────────────────────────
+async function sendEmailDirect() {
+  if (!lastInvoicePayload) { showToast('Build the invoice first.'); return; }
+  if (!lastInvoicePayload.clientEmail) {
+    setActionStatus('⚠ No email address on file for this booking.', '#e08080');
+    return;
+  }
+  const btn = document.getElementById('sendEmailBtn');
+  btn.textContent = '⏳ Sending...'; btn.disabled = true;
+  try {
+    const payload = { ...lastInvoicePayload, action: 'sendInvoiceEmail' };
+    const url  = SCRIPT_URL + '?data=' + encodeURIComponent(JSON.stringify(payload));
+    const resp = await fetch(url);
+    const res  = await resp.json();
+    if (res.success) {
+      setActionStatus('✓ Email sent to ' + res.sentTo, '#5dda85');
+      showToast('Email sent!');
+    } else {
+      setActionStatus('⚠ ' + (res.error || 'Email failed.'), '#e08080');
+    }
+  } catch(err) {
+    setActionStatus('⚠ Network error.', '#e08080');
+  }
+  btn.textContent = '📧 Send Email'; btn.disabled = false;
+}
+
+function setActionStatus(msg, color) {
+  const el = document.getElementById('actionStatus');
+  el.textContent = msg;
+  el.style.color = color || 'rgba(255,255,255,0.5)';
 }
 
 // ── PAYOUTS ──────────────────────────────────────────────
@@ -835,7 +946,6 @@ function renderPayouts(data, label) {
   }
   document.getElementById('pStatus').textContent = '✓ ' + label + ' loaded — ' + contractors.length + ' contractor(s)';
 
-  // Build tabs
   const tabsEl = document.getElementById('ctabs');
   tabsEl.innerHTML = '';
   contractors.forEach((c, i) => {
@@ -851,7 +961,6 @@ function renderPayouts(data, label) {
     tabsEl.appendChild(tab);
   });
 
-  // Build content
   let grandJobs = 0, grandOwe = 0, grandFees = 0;
   const contentEl = document.getElementById('payoutContent');
   contentEl.innerHTML = '';
@@ -967,7 +1076,6 @@ function renderPayouts(data, label) {
     contentEl.appendChild(sec);
   });
 
-  // Grand totals
   document.getElementById('gJobs').textContent  = grandJobs;
   document.getElementById('gOwe').textContent   = fmt(grandOwe);
   document.getElementById('gFees').textContent  = fmt(grandFees);
@@ -1001,13 +1109,18 @@ function cpPreview(btn) {
   setTimeout(() => btn.textContent = o, 1500);
   showToast();
 }
+function cpEmail(btn) {
+  navigator.clipboard.writeText(document.getElementById('outEmail').textContent);
+  const o = btn.textContent; btn.textContent = '✓ Copied';
+  setTimeout(() => btn.textContent = o, 1500);
+  showToast('Email body copied!');
+}
 function showToast(msg='Copied!') {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2200);
 }
 
-// Set current month on load
 document.getElementById('selMonth').value = new Date().getMonth() + 1;
 </script>
 </body>
